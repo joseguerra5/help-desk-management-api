@@ -1,0 +1,39 @@
+## Funcionalidades e Regras
+
+- [ ]  Deve ser possível cadastrar novos usuários
+    - [ ]  Deve ser feito o hash da senha do usuário
+    - [ ]  Não deve ser possível cadastrar usuário com e-mail duplicado
+- [ ]  Deve ser possível atualizar os dados do usuário
+    - [ ]  Deve ser feito o hash da senha do usuário
+    - [ ]  Não deve ser possível atualizar para um e-mail duplicado
+- [ ]  Deve ser possível obter o token de autenticação
+    - [ ]  Não deve ser possível se autenticar com credenciais incorretas
+- [ ]  Deve ser possível realizar o upload de arquivos
+- [ ]  Deve ser possível criar e editar um colaborador
+    - [ ]  Não deve ser possível criar/editar um colaborador com um id ine istente
+    - [ ]  Não deve ser possível editar um colaborador ine istente
+- [ ]  Deve ser possível obter dados de um colaborador
+    - [ ]  Qualquer usuário deve poder obter dados do colaborador
+- [ ]  Deve ser possível obter dados do inventário de um colaborador
+- [ ]  Deve ser possível registrar os empréstimos e devoluções de cada colaborador
+  - [ ]  Não deve ser possível emprestar para colaboradores inexistentes
+  - [ ]  Não deve ser possível emprestar para colaboradores que não são efetivos
+  - [] Deve ser possível fazer o upload do pdf assinado para cada registro de emprestimo e devolução
+- [ ]  Deve ser possível listar todos os emprestimos de um colaborador
+    - [ ]  Não deve ser possível listar os emprestimos de um colaborador ine istente
+    - [ ]  Deve ser possível filtrar pelo Status
+    - [ ]  Deve ser possível buscar pelo título ou pela descrição do produto
+    - [ ]  Deve ser possível configurar alertas automáticos para devoluções pendentes.
+- [ ]  Deve ser possível obter dados das tipificações do colaborador
+- [ ]  Deve ser possível listar todos os colaboradores por ordem de criação (mais recente)
+    - [ ]  Qualquer usuário deve poder obter a lista de colaboradores
+    - [ ]  Deve ser possível realizar paginação pela lista de colaboradores
+    - [ ]  Deve ser possível filtrar pelo Status
+    - [ ]  Deve ser possível buscar pelo nome ou pelo id do colaborador
+- [ ]  Métricas
+    - [ ]  Não deve ser possível obter métricas de colaborador ine istentes
+    - [ ]  Deve ser possível obter a métrica de emprestimos realizados nos últimos 30 dias
+    - [ ]  Deve ser possível obter a métrica de emprestimos devolvidos nos últimos 30 dias
+    - [ ]  Deve ser possível obter a métrica colaborador com mais ligações para o hd
+    - [ ]  Deve ser possível obter a métrica computadores emprestados 
+    - [ ]  Deve ser possível obter a métrica computadores emprestados 
