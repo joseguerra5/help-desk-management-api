@@ -4,7 +4,11 @@ export class Entity<Props> {
   private _id: UniqueEntityId;
   protected props: any;
 
-  public equals(entity: Entity<props>): boolean {
+  get id() {
+    return this._id
+  }
+
+  public equals(entity: Entity<Props>): boolean {
     if (this === entity) {
       return true;
     }

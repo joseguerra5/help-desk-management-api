@@ -1,16 +1,17 @@
 ## Funcionalidades e Regras
 
-- [ ]  Deve ser possível cadastrar novos usuários
-    - [ ]  Deve ser feito o hash da senha do usuário
-    - [ ]  Não deve ser possível cadastrar usuário com e-mail duplicado
-- [ ]  Deve ser possível atualizar os dados do usuário
-    - [ ]  Deve ser feito o hash da senha do usuário
-    - [ ]  Não deve ser possível atualizar para um e-mail duplicado
+- [x]  Deve ser possível cadastrar novos gerenciadores(helpdesk / coordenador)
+    - [x]  Deve ser feito o hash da senha do gerenciador
+    - [x]  Não deve ser possível cadastrar gerenciador com e-mail duplicado
+    - [x]  Não deve ser possível cadastrar gerenciador com id da empresa duplicado
+- [x]  Deve ser possível atualizar os dados do gerenciador
+    - [x]  Deve ser feito o hash da senha do usuário
+    - [x]  Não deve ser possível atualizar para um e-mail duplicado
 - [ ]  Deve ser possível obter o token de autenticação
     - [ ]  Não deve ser possível se autenticar com credenciais incorretas
 - [ ]  Deve ser possível realizar o upload de arquivos
 - [ ]  Deve ser possível criar e editar um colaborador
-    - [ ]  Não deve ser possível criar/editar um colaborador com um id ine istente
+    - [ ]  Não deve ser possível criar/editar um colaborador com um id inexistente
     - [ ]  Não deve ser possível editar um colaborador ine istente
 - [ ]  Deve ser possível obter dados de um colaborador
     - [ ]  Qualquer usuário deve poder obter dados do colaborador

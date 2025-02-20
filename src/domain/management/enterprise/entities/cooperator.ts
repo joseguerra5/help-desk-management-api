@@ -1,23 +1,106 @@
 import { Entity } from '@/core/entities/entity';
-import { EquipmentList } from './inventory-list';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
+import { Optional } from '@/core/types/optional';
+import { InventoryList } from './inventory-list';
 
 export interface CooperatorProps {
   name: string;
   userName: string;
-  employeeId: number;
+  employeeId: string;
   nif?: number;
   phone: string;
   email: string;
-  createdAt: Date;
-  inventory: EquipmentList
+  inventory: InventoryList
+  createdAt?: Date;
   departureDate?: Date | null;
   updatedAt?: Date | null;
 }
 
 export class Cooperator extends Entity<CooperatorProps> {
-  static create(props: CooperatorProps, id?: UniqueEntityId): Cooperator {
-    const cooperator = new Cooperator(props, id);
+  get name() {
+    return this.props.name
+  }
+
+  set name(name: string) {
+    this.props.name = name
+    this.touch()
+  }
+
+  get userName() {
+    return this.props.userName
+  }
+
+  set userName(userName: string) {
+    this.props.userName = userName
+    this.touch()
+  }
+
+  get employeeId() {
+    return this.props.employeeId
+  }
+
+  set employeeId(employeeId: string) {
+    this.props.employeeId = employeeId
+    this.touch()
+  }
+
+  get nif() {
+    return this.props.nif
+  }
+
+
+  get phone() {
+    return this.props.phone
+  }
+
+  set phone(phone: string) {
+    this.props.phone = phone
+    this.touch()
+  }
+
+  get email() {
+    return this.props.email
+  }
+
+  set email(email: string) {
+    this.props.email = email
+    this.touch()
+  }
+
+  get inventory() {
+    return this.props.inventory
+  }
+
+  set inventory(inventory: InventoryList) {
+    this.props.inventory = inventory
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get departureDate() {
+    return this.props.departureDate
+  }
+
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+
+
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  static create(props: Optional<CooperatorProps, "createdAt" | "inventory">, id?: UniqueEntityId): Cooperator {
+    const cooperator = new Cooperator({
+      ...props,
+      inventory: props.inventory ?? new InventoryList(),
+      createdAt: props.createdAt ?? new Date(),
+    }, id);
 
     return cooperator;
   }

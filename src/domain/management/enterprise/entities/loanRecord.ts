@@ -10,7 +10,7 @@ export interface LoanRecordProps {
   madeBy: UniqueEntityId
   type: RecordType
   equipments: Equipment[]
-  ocurredAt?: Date | null;
+  ocurredAt?: Date;
   attachment?: PDFAttachment | null
 }
 
@@ -115,11 +115,7 @@ export class LoanRecord extends Entity<LoanRecordProps> {
     const loanrecord = new LoanRecord({
       ...props,
       ocurredAt: props.ocurredAt ?? new Date(),
-      attachment: props.attachment ?? PDFAttachment.create({
-        cooperatorId: props.cooperatorId,
-        loanRecordId: id ?? new UniqueEntityId(id), //pode ter erro
-      }),
-
+      attachment: props.attachment ?? null
     }, id);
 
     return loanrecord;

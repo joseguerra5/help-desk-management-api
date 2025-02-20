@@ -3,7 +3,6 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 
 export type EquipmentType = "COMPUTER" | "MONITOR" | "HEADSET" | "KEYBOARD" | "MOUSE" | "BLM" | "ICCID" | "OTHERS"
 export interface EquipmentProps {
-  cooperatorId: UniqueEntityId;
   type: EquipmentType
   name: string
   serialNumber: string
@@ -13,8 +12,16 @@ export interface EquipmentProps {
 // inventário é o tipo do produto, etiqueta do produto se existir, 
 
 export class Equipment extends Entity<EquipmentProps> {
+  get id(): UniqueEntityId {
+    return this.id
+  }
+
   get cooperatorId() {
     return this.props.cooperatorId
+  }
+
+  set cooperatorId(id: string) {
+    this.props.cooperatorId = id;
   }
 
   get type() {

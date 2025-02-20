@@ -1,8 +1,9 @@
 import { WatchedList } from '@/core/entities/watched-list'
 import { Equipment } from './equipment'
+import { CooperatorEquipment } from './cooperator-equipment'
 
-export class EquipmentList extends WatchedList<Equipment> {
-  compareItems(a: Equipment, b: Equipment): boolean {
-    return a.type.equals(b.cooperatorId)
+export class InventoryList extends WatchedList<CooperatorEquipment> {
+  compareItems(a: CooperatorEquipment, b: CooperatorEquipment): boolean {
+    return a.equipmentId.equals(b.equipmentId)
   }
 }
