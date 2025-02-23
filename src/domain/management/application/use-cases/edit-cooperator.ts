@@ -16,7 +16,6 @@ interface EditCooperatorUseCaseRequest {
   employeeId: string,
   email: string,
   phone: string,
-  equipmentsIds: string[]
 }
 
 type EditCooperatorUseCaseReponse = Either<AlreadyExistsError, {
@@ -27,7 +26,6 @@ type EditCooperatorUseCaseReponse = Either<AlreadyExistsError, {
 export class EditCooperatorUseCase {
   constructor(
     private cooperatorRepository: CooperatorRepository,
-    private cooperatorEquipmentRepository: CooperatorEquipmentRepository,
   ) { }
   async execute({
     cooperatorId,
@@ -35,7 +33,6 @@ export class EditCooperatorUseCase {
     userName,
     employeeId,
     email,
-    equipmentsIds,
   }: EditCooperatorUseCaseRequest): Promise<EditCooperatorUseCaseReponse> {
     const cooperator = await this.cooperatorRepository.findById(cooperatorId)
 
@@ -62,21 +59,6 @@ export class EditCooperatorUseCase {
 
       cooperator.employeeId = employeeId
     }
-
-    const currentEquipmentList = await this.cooperatorEquipmentRepository.findManyByCooperatorId(cooperatorId)
-
-    const equipmentList = new InventoryList(currentEquipmentList)
-
-    const equipments = equipmentsIds.map(equipmentId => {
-      return CooperatorEquipment.create({
-        cooperatorId: cooperator.id,
-        equipmentId: new UniqueEntityId(equipmentId)
-      })
-    })
-
-    equipmentList.update(equipments)
-
-    cooperator.inventory = equipmentList
 
     cooperator.name = name
     cooperator.userName = userName

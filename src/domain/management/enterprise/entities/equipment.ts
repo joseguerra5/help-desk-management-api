@@ -12,9 +12,17 @@ export interface EquipmentProps {
 // inventário é o tipo do produto, etiqueta do produto se existir, 
 
 export class Equipment extends Entity<EquipmentProps> {
-  get id(): UniqueEntityId {
-    return this.id
+
+
+
+  get name() {
+    return this.props.name
   }
+
+  set name(id: string) {
+    this.props.name = id;
+  }
+
 
   get cooperatorId() {
     return this.props.cooperatorId
@@ -24,8 +32,20 @@ export class Equipment extends Entity<EquipmentProps> {
     this.props.cooperatorId = id;
   }
 
+  get serialNumber() {
+    return this.props.serialNumber
+  }
+
+  set serialNumber(id: string) {
+    this.props.serialNumber = id;
+  }
+
   get type() {
     return this.props.type
+  }
+
+  set type(type: string) {
+    this.props.type = type;
   }
 
   static create(props: EquipmentProps, id?: UniqueEntityId): Equipment {

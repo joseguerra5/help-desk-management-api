@@ -7,30 +7,35 @@
 - [x]  Deve ser possível atualizar os dados do gerenciador
     - [x]  Deve ser feito o hash da senha do usuário
     - [x]  Não deve ser possível atualizar para um e-mail duplicado
-- [ ]  Deve ser possível obter o token de autenticação
-    - [ ]  Não deve ser possível se autenticar com credenciais incorretas
-- [ ]  Deve ser possível realizar o upload de arquivos
-- [ ]  Deve ser possível criar e editar um colaborador
-    - [ ]  Não deve ser possível criar/editar um colaborador com um id inexistente
-    - [ ]  Não deve ser possível editar um colaborador ine istente
-- [ ]  Deve ser possível obter dados de um colaborador
-    - [ ]  Qualquer usuário deve poder obter dados do colaborador
+- [x]  Deve ser possível realizar o upload de arquivos
+- [x]  Deve ser possível criar e editar um colaborador
+    - [x]  Não deve ser possível criar/editar um colaborador com um id inexistente
+    - [x]  Não deve ser possível editar um colaborador inexistente
+- [x]  Deve ser possível criar tipificações para cada colaborador
+    - [x]  Não deve ser possível criar uma tipificação com um id de colaborador inexistente
+    - [ ] Não deve ser possivel criar uma tipificação com um manager inexistente
+    - [ ] Só deve ser possóvel mudar o status da tipificação para concluído com um comentário de conclusão
+- [x]  Deve ser possível registrar equipamentos
+    - [x]  Não deve ser possível criar um equipamento com um S/N duplicado
+- [ ]  Deve ser possível editar tipificações para cada colaborador e mudar o status no seguimento da tipificação
+- [x]  Deve ser possível obter dados de  um colaborador
+    - [x]  Qualquer usuário deve poder obter dados do colaborador
 - [ ]  Deve ser possível obter dados do inventário de um colaborador
-- [ ]  Deve ser possível registrar os empréstimos e devoluções de cada colaborador
-  - [ ]  Não deve ser possível emprestar para colaboradores inexistentes
-  - [ ]  Não deve ser possível emprestar para colaboradores que não são efetivos
-  - [] Deve ser possível fazer o upload do pdf assinado para cada registro de emprestimo e devolução
-- [ ]  Deve ser possível listar todos os emprestimos de um colaborador
-    - [ ]  Não deve ser possível listar os emprestimos de um colaborador ine istente
+- [x]  Deve ser possível registrar os empréstimos e devoluções de cada colaborador
+  - [x]  Não deve ser possível emprestar para colaboradores inexistentes
+  - [x] Deve ser possível fazer o upload do pdf assinado para cada registro de emprestimo e devolução
+- [x]  Deve ser possível listar todos os emprestimos de um colaborador
+    - [x]  Não deve ser possível listar os emprestimos de um colaborador ine istente
     - [ ]  Deve ser possível filtrar pelo Status
     - [ ]  Deve ser possível buscar pelo título ou pela descrição do produto
     - [ ]  Deve ser possível configurar alertas automáticos para devoluções pendentes.
-- [ ]  Deve ser possível obter dados das tipificações do colaborador
 - [ ]  Deve ser possível listar todos os colaboradores por ordem de criação (mais recente)
     - [ ]  Qualquer usuário deve poder obter a lista de colaboradores
     - [ ]  Deve ser possível realizar paginação pela lista de colaboradores
     - [ ]  Deve ser possível filtrar pelo Status
     - [ ]  Deve ser possível buscar pelo nome ou pelo id do colaborador
+- [ ]  Deve ser possível obter o token de autenticação
+    - [ ]  Não deve ser possível se autenticar com credenciais incorretas
 - [ ]  Métricas
     - [ ]  Não deve ser possível obter métricas de colaborador ine istentes
     - [ ]  Deve ser possível obter a métrica de emprestimos realizados nos últimos 30 dias

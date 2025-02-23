@@ -1,5 +1,6 @@
 import { Entity } from '@/core/entities/entity';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
+import { Optional } from '@/core/types/optional';
 
 export type CallType = "Technical Issue" | "Citrix Issue" | "Procedure Question" | "Other"
 
@@ -67,8 +68,11 @@ export class CallLog extends Entity<CallLogProps> {
   private touch() {
     this.props.updatedAt = new Date();
   }
-  static create(props: CallLogProps, id?: UniqueEntityId): CallLog {
-    const calllog = new CallLog(props, id);
+  static create(props: Optional<CallLogProps, "createdAt">, id?: UniqueEntityId): CallLog {
+    const calllog = new CallLog({
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+    }, id);
 
     return calllog;
   }
