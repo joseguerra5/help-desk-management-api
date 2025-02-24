@@ -32,6 +32,14 @@ export class LoanRecord extends Entity<LoanRecordProps> {
     this.props.attachment = attachment;
     this.touch();
   }
+  get equipments() {
+    return this.props.equipments;
+  }
+
+  get type() {
+    return this.props.type;
+  }
+
 
   get madeBy() {
     return this.props.madeBy;

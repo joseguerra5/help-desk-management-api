@@ -15,8 +15,8 @@ export class CooperatorEquipment extends Entity<CooperatorEquipmentProps> {
   }
 
   static create(props: CooperatorEquipmentProps, id?: UniqueEntityId) {
-    const attachment = new CooperatorEquipment(props, id)
+    const equipment = new CooperatorEquipment(props, id)
 
-    return attachment
+    return equipment
   }
 }

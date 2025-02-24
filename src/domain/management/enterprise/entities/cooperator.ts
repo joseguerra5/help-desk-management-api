@@ -83,6 +83,11 @@ export class Cooperator extends Entity<CooperatorProps> {
     return this.props.departureDate
   }
 
+  set departureDate(departureDate: Date) {
+    this.props.departureDate = departureDate
+    this.touch()
+  }
+
 
   get updatedAt() {
     return this.props.updatedAt

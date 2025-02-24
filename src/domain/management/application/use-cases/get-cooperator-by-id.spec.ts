@@ -46,7 +46,6 @@ describe('Get Cooperator By Id', () => {
       cooperatorId: cooperator.id.toString()
     })
 
-    console.log(result.value)
     expect(result.isRight()).toEqual(true)
     expect(result.value).toEqual({ cooperator })
   })
