@@ -7,6 +7,8 @@ export interface EquipmentProps {
   name: string
   serialNumber: string
   createdAt?: Date | null;
+  brokenAt?: Date | null;
+  brokenReason?: string | null
 }
 
 // inventário é o tipo do produto, etiqueta do produto se existir, 
@@ -40,6 +42,14 @@ export class Equipment extends Entity<EquipmentProps> {
     this.props.serialNumber = id;
   }
 
+  get brokenReason() {
+    return this.props.brokenReason
+  }
+
+  set brokenReason(reason: string) {
+    this.props.brokenReason = reason;
+  }
+
   get type() {
     return this.props.type
   }
@@ -47,6 +57,23 @@ export class Equipment extends Entity<EquipmentProps> {
   set type(type: string) {
     this.props.type = type;
   }
+
+  get brokenAt() {
+    return this.props.brokenAt
+  }
+
+  set brokenAt(brokenAt: Date) {
+    this.props.brokenAt = brokenAt;
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  set createdAt(createdAt: Date) {
+    this.props.createdAt = createdAt;
+  }
+
 
   static create(props: EquipmentProps, id?: UniqueEntityId): Equipment {
     const equipment = new Equipment(props, id);

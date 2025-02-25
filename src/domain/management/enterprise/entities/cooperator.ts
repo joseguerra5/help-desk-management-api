@@ -7,7 +7,7 @@ export interface CooperatorProps {
   name: string;
   userName: string;
   employeeId: string;
-  nif?: number;
+  nif?: string;
   phone: string;
   email: string;
   inventory: InventoryList

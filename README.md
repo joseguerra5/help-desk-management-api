@@ -24,7 +24,7 @@
     - [x]  Não deve ser possível criar uma tipificação com um id de colaborador inexistente
     - [x] Não deve ser possivel criar uma tipificação com um manager inexistente
 - [x]  Deve ser possível listar todos os emprestimos de um colaborador
-    - [x]  Não deve ser possível listar os emprestimos de um colaborador ine istente
+    - [x]  Não deve ser possível listar os emprestimos de um colaborador inexistente
     - [x]  Deve ser possível filtrar pelo Status
     - [ ]  Deve ser possível configurar alertas automáticos para devoluções pendentes.
 - [x]  Deve ser possível listar todos os colaboradores por ordem de criação (mais recente)
@@ -37,9 +37,12 @@
 # Equipamentos
 - [x]  Deve ser possível registrar equipamentos
     - [x]  Não deve ser possível criar um equipamento com um S/N duplicado
+    - [x]  Deve ser possível registrar o equipamento como avariado e ter o motivo
 
 
 - [x]  Deve ser possível realizar o upload de arquivos
 - [x]  Métricas
     - [x]  Deve ser possível obter a métrica de emprestimos realizados nos últimos 30 dias
     - [x]  Deve ser possível obter a métrica de emprestimos devolvidos nos últimos 30 dias
+    - [ ]  Deve ser possível obter a métrica de colaboradores ativos
+    - [ ]  Deve ser possível obter a métrica de colaboradores inativos 

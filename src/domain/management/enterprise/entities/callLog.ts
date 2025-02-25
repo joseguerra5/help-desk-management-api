@@ -2,7 +2,7 @@ import { Entity } from '@/core/entities/entity';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { Optional } from '@/core/types/optional';
 
-export type CallType = "Technical Issue" | "Citrix Issue" | "Procedure Question" | "Other"
+export type CallType = "TECHNICAL_ISSUE" | "CITRIX_ISSUE" | "PROCEDURE_QUESTION" | "OTHERS"
 
 
 export interface CallLogProps {

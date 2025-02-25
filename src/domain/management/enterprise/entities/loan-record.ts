@@ -9,8 +9,8 @@ export interface LoanRecordProps {
   cooperatorId: UniqueEntityId;
   madeBy: UniqueEntityId
   type: RecordType
-  equipments: CooperatorEquipment[]
-  ocurredAt?: Date;
+  equipments?: CooperatorEquipment[]
+  ocurredAt: Date;
   attachment?: PDFAttachment | null
 }
 
