@@ -1,18 +1,16 @@
-import { RecordType } from "@/domain/management/enterprise/entities/loan-record"
+import { RecordType } from '@/domain/management/enterprise/entities/loan-record';
 
 export interface PaginationParams {
-  page: number
+  page: number;
 }
 
 export interface PaginationLoanRecordParams {
-  page: number
-  status?: RecordType
+  page: number;
+  status?: RecordType;
 }
 
 export interface PaginationCooperatorParams {
-  page: number
-  status?: "inactive" | "active"
-  search?: string
+  page: number;
+  status?: 'inactive' | 'active';
+  search?: string;
 }
-
-

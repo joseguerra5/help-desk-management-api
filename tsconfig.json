@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "commonJS",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -23,8 +23,12 @@
         "./src/*"
       ]
     },
+    
     "types": [
       "vitest/globals",
-    ],
-  }
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
 }

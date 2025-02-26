@@ -1,6 +1,6 @@
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-import { Manager } from "@/domain/management/enterprise/entities/manager";
-import { Prisma, User as PrismaManager } from "@prisma/client";
+import { UniqueEntityId } from '@/core/entities/unique-entity-id';
+import { Manager } from '@/domain/management/enterprise/entities/manager';
+import { Prisma, User as PrismaManager } from '@prisma/client';
 
 export class PrismaManagerMapper {
   static toPersistence(manager: Manager): Prisma.UserUncheckedCreateInput {
@@ -12,19 +12,22 @@ export class PrismaManagerMapper {
       userName: manager.userName,
       createdAt: manager.createdAt,
       updatedAt: manager.updatedAt,
-      id: manager.id.toString()
-    }
+      id: manager.id.toString(),
+    };
   }
 
   static toDomain(raw: PrismaManager) {
-    return Manager.create({
-      email: raw.email,
-      employeeId: raw.employeeId,
-      name: raw.name,
-      password: raw.password,
-      userName: raw.userName,
-      createdAt: raw.createdAt,
-      updatedAt: raw.updatedAt,
-    }, new UniqueEntityId(raw.id))
+    return Manager.create(
+      {
+        email: raw.email,
+        employeeId: raw.employeeId,
+        name: raw.name,
+        password: raw.password,
+        userName: raw.userName,
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
+      },
+      new UniqueEntityId(raw.id),
+    );
   }
 }

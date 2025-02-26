@@ -1,46 +1,48 @@
-import { EquipmentRepository } from "@/domain/management/application/repositories/equipment-repository";
-import { Equipment } from "@/domain/management/enterprise/entities/equipment";
+import { EquipmentRepository } from '@/domain/management/application/repositories/equipment-repository';
+import { Equipment } from '@/domain/management/enterprise/entities/equipment';
 
 export class InMemoryEquipmentRepository implements EquipmentRepository {
-  public items: Equipment[] = []
+  public items: Equipment[] = [];
 
   async findBySerialNumber(id: string): Promise<Equipment | null> {
-    const manager = this.items.find((item) => item.serialNumber.toString() === id)
+    const manager = this.items.find(
+      (item) => item.serialNumber.toString() === id,
+    );
 
     if (!manager) {
-      return null
+      return null;
     }
 
-    return manager
+    return manager;
   }
 
   async findManyByCooperatorId(cooperatorId: string): Promise<Equipment[]> {
     const equipments = this.items.filter(
       (item) => item.cooperatorId.toString() === cooperatorId,
-    )
+    );
 
-    return equipments
+    return equipments;
   }
 
-
   async save(equipment: Equipment): Promise<void> {
-    const itemIndex = this.items.findIndex((item) => item.id.equals(equipment.id))
+    const itemIndex = this.items.findIndex((item) =>
+      item.id.equals(equipment.id),
+    );
 
-    this.items[itemIndex] = equipment
+    this.items[itemIndex] = equipment;
   }
 
   async findById(id: string): Promise<Equipment | null> {
-    const equipment = this.items.find((item) => item.id.toString() === id)
+    const equipment = this.items.find((item) => item.id.toString() === id);
 
     if (!equipment) {
-      return null
+      return null;
     }
 
-    return equipment
+    return equipment;
   }
 
   async create(equipment: Equipment): Promise<void> {
-    this.items.push(equipment)
+    this.items.push(equipment);
   }
-
 }

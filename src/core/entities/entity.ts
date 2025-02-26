@@ -5,7 +5,7 @@ export class Entity<Props> {
   protected props: any;
 
   get id() {
-    return this._id
+    return this._id;
   }
 
   public equals(entity: Entity<Props>): boolean {

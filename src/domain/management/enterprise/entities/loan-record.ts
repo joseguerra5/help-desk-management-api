@@ -4,14 +4,14 @@ import { PDFAttachment } from './PDF-attachment';
 import { Optional } from '@/core/types/optional';
 import { CooperatorEquipment } from './cooperator-equipment';
 
-export type RecordType = "CHECK_IN" | "CHECK_OUT"
+export type RecordType = 'CHECK_IN' | 'CHECK_OUT';
 export interface LoanRecordProps {
   cooperatorId: UniqueEntityId;
-  madeBy: UniqueEntityId
-  type: RecordType
-  equipments?: CooperatorEquipment[]
+  madeBy: UniqueEntityId;
+  type: RecordType;
+  equipments?: CooperatorEquipment[];
   ocurredAt: Date;
-  attachment?: PDFAttachment | null
+  attachment?: PDFAttachment | null;
 }
 
 export class LoanRecord extends Entity<LoanRecordProps> {
@@ -40,28 +40,30 @@ export class LoanRecord extends Entity<LoanRecordProps> {
     return this.props.type;
   }
 
-
   get madeBy() {
     return this.props.madeBy;
   }
-
-
 
   get ocurredAt() {
     return this.props.ocurredAt;
   }
 
-
   private touch() {
     this.props.updatedAt = new Date();
   }
 
-  static create(props: Optional<LoanRecordProps, "ocurredAt" | "attachment">, id?: UniqueEntityId): LoanRecord {
-    const loanrecord = new LoanRecord({
-      ...props,
-      ocurredAt: props.ocurredAt ?? new Date(),
-      attachment: props.attachment ?? null
-    }, id);
+  static create(
+    props: Optional<LoanRecordProps, 'ocurredAt' | 'attachment'>,
+    id?: UniqueEntityId,
+  ): LoanRecord {
+    const loanrecord = new LoanRecord(
+      {
+        ...props,
+        ocurredAt: props.ocurredAt ?? new Date(),
+        attachment: props.attachment ?? null,
+      },
+      id,
+    );
 
     return loanrecord;
   }

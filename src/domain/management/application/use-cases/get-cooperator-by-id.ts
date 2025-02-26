@@ -1,41 +1,34 @@
-import { Either, left, right } from '@/core/either'
-import { Injectable } from '@nestjs/common'
-import { LoanRecord } from '../../enterprise/entities/loan-record'
-import { LoanRecordRepository } from '../repositories/loan-record-repository'
-import { Cooperator } from '../../enterprise/entities/cooperator'
-import { CooperatorRepository } from '../repositories/cooperator-repository'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { Either, left, right } from '@/core/either';
+import { Injectable } from '@nestjs/common';
+import { Cooperator } from '../../enterprise/entities/cooperator';
+import { CooperatorRepository } from '../repositories/cooperator-repository';
+import { ResourceNotFoundError } from './errors/resource-not-found-error';
 
 interface GetCooperatorByIdUseCaseRequest {
-  cooperatorId: string
+  cooperatorId: string;
 }
 
 type GetCooperatorByIdUseCaseReponse = Either<
   ResourceNotFoundError,
   {
-    cooperator: Cooperator
+    cooperator: Cooperator;
   }
->
+>;
 
 @Injectable()
 export class GetCooperatorByIdUseCase {
-  constructor(
-    private cooperatorRepository: CooperatorRepository,
-  ) { }
+  constructor(private cooperatorRepository: CooperatorRepository) { }
   async execute({
     cooperatorId,
   }: GetCooperatorByIdUseCaseRequest): Promise<GetCooperatorByIdUseCaseReponse> {
-    const cooperator =
-      await this.cooperatorRepository.findById(
-        cooperatorId
-      )
+    const cooperator = await this.cooperatorRepository.findById(cooperatorId);
 
     if (!cooperator) {
-      throw left(new ResourceNotFoundError("Cooperator", cooperatorId))
+      throw left(new ResourceNotFoundError('Cooperator', cooperatorId));
     }
 
     return right({
       cooperator,
-    })
+    });
   }
 }

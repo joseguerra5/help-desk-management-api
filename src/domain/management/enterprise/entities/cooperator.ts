@@ -10,7 +10,7 @@ export interface CooperatorProps {
   nif?: string;
   phone: string;
   email: string;
-  inventory: InventoryList
+  inventory: InventoryList;
   createdAt?: Date;
   departureDate?: Date | null;
   updatedAt?: Date | null;
@@ -18,94 +18,95 @@ export interface CooperatorProps {
 
 export class Cooperator extends Entity<CooperatorProps> {
   get name() {
-    return this.props.name
+    return this.props.name;
   }
 
   set name(name: string) {
-    this.props.name = name
-    this.touch()
+    this.props.name = name;
+    this.touch();
   }
 
   get userName() {
-    return this.props.userName
+    return this.props.userName;
   }
 
   set userName(userName: string) {
-    this.props.userName = userName
-    this.touch()
+    this.props.userName = userName;
+    this.touch();
   }
 
   get employeeId() {
-    return this.props.employeeId
+    return this.props.employeeId;
   }
 
   set employeeId(employeeId: string) {
-    this.props.employeeId = employeeId
-    this.touch()
+    this.props.employeeId = employeeId;
+    this.touch();
   }
 
   get nif() {
-    return this.props.nif
+    return this.props.nif;
   }
 
-
   get phone() {
-    return this.props.phone
+    return this.props.phone;
   }
 
   set phone(phone: string) {
-    this.props.phone = phone
-    this.touch()
+    this.props.phone = phone;
+    this.touch();
   }
 
   get email() {
-    return this.props.email
+    return this.props.email;
   }
 
   set email(email: string) {
-    this.props.email = email
-    this.touch()
+    this.props.email = email;
+    this.touch();
   }
 
   get inventory() {
-    return this.props.inventory
+    return this.props.inventory;
   }
 
   set inventory(inventory: InventoryList) {
-    this.props.inventory = inventory
+    this.props.inventory = inventory;
   }
 
   get createdAt() {
-    return this.props.createdAt
+    return this.props.createdAt;
   }
 
   get departureDate() {
-    return this.props.departureDate
+    return this.props.departureDate;
   }
 
   set departureDate(departureDate: Date) {
-    this.props.departureDate = departureDate
-    this.touch()
+    this.props.departureDate = departureDate;
+    this.touch();
   }
-
 
   get updatedAt() {
-    return this.props.updatedAt
+    return this.props.updatedAt;
   }
-
-
-
 
   private touch() {
-    this.props.updatedAt = new Date()
+    this.props.updatedAt = new Date();
   }
 
-  static create(props: Optional<CooperatorProps, "createdAt" | "inventory">, id?: UniqueEntityId): Cooperator {
-    const cooperator = new Cooperator({
-      ...props,
-      inventory: props.inventory ?? new InventoryList(),
-      createdAt: props.createdAt ?? new Date(),
-    }, id);
+  static create(
+    props: Optional<CooperatorProps, 'createdAt' | 'inventory'>,
+    id?: UniqueEntityId,
+  ): Cooperator {
+    const cooperator = new Cooperator(
+      {
+        ...props,
+        inventory: props.inventory ?? new InventoryList(),
+        createdAt: props.createdAt ?? new Date(),
+      },
+      id,
+    );
 
     return cooperator;
   }

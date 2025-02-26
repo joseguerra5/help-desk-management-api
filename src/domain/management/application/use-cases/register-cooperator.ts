@@ -1,11 +1,11 @@
-import { Either, left, right } from "@/core/either"
-import { Cooperator } from "../../enterprise/entities/cooperator"
-import { AlreadyExistsError } from "./errors/already-exist-error"
-import { Injectable } from "@nestjs/common"
-import { CooperatorRepository } from "../repositories/cooperator-repository"
-import { CooperatorEquipment } from "../../enterprise/entities/cooperator-equipment"
-import { UniqueEntityId } from "@/core/entities/unique-entity-id"
-import { InventoryList } from "../../enterprise/entities/inventory-list"
+import { Either, left, right } from '@/core/either';
+import { Cooperator } from '../../enterprise/entities/cooperator';
+import { AlreadyExistsError } from './errors/already-exist-error';
+import { Injectable } from '@nestjs/common';
+import { CooperatorRepository } from '../repositories/cooperator-repository';
+import { CooperatorEquipment } from '../../enterprise/entities/cooperator-equipment';
+import { UniqueEntityId } from '@/core/entities/unique-entity-id';
+import { InventoryList } from '../../enterprise/entities/inventory-list';
 
 interface RegisterCooperatorUseCaseRequest {
   name: string;
@@ -13,19 +13,20 @@ interface RegisterCooperatorUseCaseRequest {
   employeeId: string;
   phone: string;
   email: string;
-  equipmentIds: string[]
-  nif?: number;
+  equipmentIds: string[];
+  nif?: string;
 }
 
-type RegisterCooperatorUseCaseReponse = Either<AlreadyExistsError, {
-  cooperator: Cooperator
-}>
+type RegisterCooperatorUseCaseReponse = Either<
+  AlreadyExistsError,
+  {
+    cooperator: Cooperator;
+  }
+>;
 
 @Injectable()
 export class RegisterCooperatorUseCase {
-  constructor(
-    private cooperatorRepository: CooperatorRepository,
-  ) { }
+  constructor(private cooperatorRepository: CooperatorRepository) {}
   async execute({
     name,
     userName,
@@ -35,10 +36,11 @@ export class RegisterCooperatorUseCase {
     nif,
     equipmentIds,
   }: RegisterCooperatorUseCaseRequest): Promise<RegisterCooperatorUseCaseReponse> {
-    const cooperatorWithsameEmployeeId = await this.cooperatorRepository.findByEmployeeId(employeeId)
+    const cooperatorWithsameEmployeeId =
+      await this.cooperatorRepository.findByEmployeeId(employeeId);
 
     if (cooperatorWithsameEmployeeId) {
-      return left(new AlreadyExistsError("EmployeeId", employeeId))
+      return left(new AlreadyExistsError('EmployeeId', employeeId));
     }
 
     const cooperator = Cooperator.create({
@@ -48,21 +50,21 @@ export class RegisterCooperatorUseCase {
       name,
       phone,
       userName,
-    })
+    });
 
-    const equipments = equipmentIds.map(equipmentId => {
+    const equipments = equipmentIds.map((equipmentId) => {
       return CooperatorEquipment.create({
         cooperatorId: cooperator.id,
-        equipmentId: new UniqueEntityId(equipmentId)
-      })
-    })
+        equipmentId: new UniqueEntityId(equipmentId),
+      });
+    });
 
-    cooperator.inventory = new InventoryList(equipments)
+    cooperator.inventory = new InventoryList(equipments);
 
-    await this.cooperatorRepository.create(cooperator)
+    await this.cooperatorRepository.create(cooperator);
 
     return right({
-      cooperator
-    })
+      cooperator,
+    });
   }
 }

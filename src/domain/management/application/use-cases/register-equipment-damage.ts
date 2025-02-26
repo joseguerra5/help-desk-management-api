@@ -1,47 +1,49 @@
-import { Either, left, right } from "@/core/either"
-import { AlreadyExistsError } from "./errors/already-exist-error"
-import { Injectable } from "@nestjs/common"
-import { Equipment } from "../../enterprise/entities/equipment"
-import { EquipmentRepository } from "../repositories/equipment-repository"
-import { ResourceNotFoundError } from "./errors/resource-not-found-error"
+import { Either, left, right } from '@/core/either';
+import { AlreadyExistsError } from './errors/already-exist-error';
+import { Injectable } from '@nestjs/common';
+import { Equipment } from '../../enterprise/entities/equipment';
+import { EquipmentRepository } from '../repositories/equipment-repository';
+import { ResourceNotFoundError } from './errors/resource-not-found-error';
 
 interface RegisterEquipmentDamageUseCaseRequest {
-  equipmentId: string
-  reason: string
-  brokedAt: Date
+  equipmentId: string;
+  reason: string;
+  brokedAt: Date;
 }
 
-type RegisterEquipmentDamageUseCaseReponse = Either<AlreadyExistsError, {
-  equipment: Equipment
-}>
+type RegisterEquipmentDamageUseCaseReponse = Either<
+  AlreadyExistsError,
+  {
+    equipment: Equipment;
+  }
+>;
 
 @Injectable()
 export class RegisterEquipmentDamageUseCase {
-  constructor(
-    private equipmentdamageRepository: EquipmentRepository,
-  ) { }
+  constructor(private equipmentdamageRepository: EquipmentRepository) {}
   async execute({
     equipmentId,
     reason,
-    brokedAt
+    brokedAt,
   }: RegisterEquipmentDamageUseCaseRequest): Promise<RegisterEquipmentDamageUseCaseReponse> {
-    const equipment = await this.equipmentdamageRepository.findById(equipmentId)
+    const equipment =
+      await this.equipmentdamageRepository.findById(equipmentId);
 
     if (!equipment) {
-      return left(new ResourceNotFoundError("Equipment", equipmentId))
+      return left(new ResourceNotFoundError('Equipment', equipmentId));
     }
 
-    if (equipment.brokedAt !== undefined) {
-      return right({ equipment })
+    if (equipment.brokenAt !== undefined) {
+      return right({ equipment });
     }
 
-    equipment.brokedAt = brokedAt
-    equipment.brokedWhy = reason
+    equipment.brokenAt = brokedAt;
+    equipment.brokenReason = reason;
 
-    await this.equipmentdamageRepository.save(equipment)
+    await this.equipmentdamageRepository.save(equipment);
 
     return right({
-      equipment
-    })
+      equipment,
+    });
   }
 }

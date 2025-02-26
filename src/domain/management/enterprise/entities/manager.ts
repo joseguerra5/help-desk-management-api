@@ -69,11 +69,17 @@ export class Manager extends Entity<ManagerProps> {
   private touch() {
     this.props.updatedAt = new Date();
   }
-  static create(props: Optional<ManagerProps, "createdAt">, id?: UniqueEntityId): Manager {
-    const manager = new Manager({
-      ...props,
-      createdAt: props.createdAt ?? new Date()
-    }, id);
+  static create(
+    props: Optional<ManagerProps, 'createdAt'>,
+    id?: UniqueEntityId,
+  ): Manager {
+    const manager = new Manager(
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+      },
+      id,
+    );
 
     return manager;
   }

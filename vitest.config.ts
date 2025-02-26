@@ -1,4 +1,6 @@
 import { defineConfig } from 'vitest/config';
+import swc from 'unplugin-swc';
+
 
 export default defineConfig(async () => {
   const tsconfigPaths = (await import('vite-tsconfig-paths')).default;
@@ -6,7 +8,13 @@ export default defineConfig(async () => {
     test: {
       globals: true,
       root: './',
+      environment: 'node',
     },
-    plugins: [tsconfigPaths()],
+    plugins: [
+      tsconfigPaths(),
+      swc.vite({
+        module: { type: "es6" }
+      })
+    ],
   };
 });
