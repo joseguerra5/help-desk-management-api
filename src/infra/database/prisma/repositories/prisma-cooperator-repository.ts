@@ -11,7 +11,7 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
   constructor(
     private prisma: PrismaService,
     private cooperatorEquipmentRepository: CooperatorEquipmentRepository,
-  ) {}
+  ) { }
   async findMany({
     page,
     search,
@@ -27,9 +27,9 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
               : undefined,
         OR: search
           ? [
-              { employeeId: { contains: search, mode: 'insensitive' } },
-              { userName: { contains: search, mode: 'insensitive' } },
-            ]
+            { employeeId: { contains: search, mode: 'insensitive' } },
+            { userName: { contains: search, mode: 'insensitive' } },
+          ]
           : undefined,
       },
       orderBy: {
@@ -106,8 +106,13 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
   async create(cooperator: Cooperator): Promise<void> {
     const data = PrismaCooperatorMapper.toPersistence(cooperator);
 
+
     await this.prisma.cooperator.create({
       data,
-    });
+    })
+
+    await this.cooperatorEquipmentRepository.createMany(
+      cooperator.inventory.getItems(),
+    )
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "help-desk-management-api",
-  "type": "commonjs",
+  "type": "module",
   "version": "0.0.1",
   "description": "",
   "author": "",

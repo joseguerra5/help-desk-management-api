@@ -6,6 +6,8 @@ import { CooperatorRepository } from '../repositories/cooperator-repository';
 import { CooperatorEquipment } from '../../enterprise/entities/cooperator-equipment';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { InventoryList } from '../../enterprise/entities/inventory-list';
+import { ManagerRepository } from '../repositories/manager-repository';
+import { NotAllowedError } from '@/core/errors/not-allowed-error';
 
 interface RegisterCooperatorUseCaseRequest {
   name: string;
@@ -13,12 +15,13 @@ interface RegisterCooperatorUseCaseRequest {
   employeeId: string;
   phone: string;
   email: string;
-  equipmentIds: string[];
-  nif?: string;
+  madeBy: string;
+  equipmentIds?: string[] | null;
+  nif?: string | null;
 }
 
 type RegisterCooperatorUseCaseReponse = Either<
-  AlreadyExistsError,
+  AlreadyExistsError | NotAllowedError,
   {
     cooperator: Cooperator;
   }
@@ -26,7 +29,10 @@ type RegisterCooperatorUseCaseReponse = Either<
 
 @Injectable()
 export class RegisterCooperatorUseCase {
-  constructor(private cooperatorRepository: CooperatorRepository) {}
+  constructor(
+    private cooperatorRepository: CooperatorRepository,
+    private managerRepository: ManagerRepository
+  ) { }
   async execute({
     name,
     userName,
@@ -35,7 +41,13 @@ export class RegisterCooperatorUseCase {
     email,
     nif,
     equipmentIds,
+    madeBy
   }: RegisterCooperatorUseCaseRequest): Promise<RegisterCooperatorUseCaseReponse> {
+    const manager = await this.managerRepository.findById(madeBy)
+
+    if (!manager) {
+      return left(new NotAllowedError());
+    }
     const cooperatorWithsameEmployeeId =
       await this.cooperatorRepository.findByEmployeeId(employeeId);
 
@@ -52,14 +64,16 @@ export class RegisterCooperatorUseCase {
       userName,
     });
 
-    const equipments = equipmentIds.map((equipmentId) => {
-      return CooperatorEquipment.create({
-        cooperatorId: cooperator.id,
-        equipmentId: new UniqueEntityId(equipmentId),
+    if (equipmentIds) {
+      const equipments = equipmentIds.map((equipmentId) => {
+        return CooperatorEquipment.create({
+          cooperatorId: cooperator.id,
+          equipmentId: new UniqueEntityId(equipmentId),
+        });
       });
-    });
 
-    cooperator.inventory = new InventoryList(equipments);
+      cooperator.inventory = new InventoryList(equipments);
+    }
 
     await this.cooperatorRepository.create(cooperator);
 

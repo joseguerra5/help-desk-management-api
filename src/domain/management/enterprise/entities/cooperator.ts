@@ -7,7 +7,7 @@ export interface CooperatorProps {
   name: string;
   userName: string;
   employeeId: string;
-  nif?: string;
+  nif?: string | null;
   phone: string;
   email: string;
   inventory: InventoryList;
@@ -96,7 +96,7 @@ export class Cooperator extends Entity<CooperatorProps> {
   }
 
   static create(
-    props: Optional<CooperatorProps, 'createdAt' | 'inventory'>,
+    props: Optional<CooperatorProps, 'createdAt' | 'inventory' | "nif">,
     id?: UniqueEntityId,
   ): Cooperator {
     const cooperator = new Cooperator(

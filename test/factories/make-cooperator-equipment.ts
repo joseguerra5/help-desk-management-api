@@ -18,3 +18,4 @@ export function makeCooperatorEquipment(
   );
   return cooperatorequipment;
 }
+

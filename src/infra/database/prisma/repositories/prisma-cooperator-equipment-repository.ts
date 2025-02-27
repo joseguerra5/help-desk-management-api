@@ -29,8 +29,7 @@ export class PrismaCooperatorEquipmentRepository
       return;
     }
 
-    const data =
-      PrismaCooperatorEquipmentMapper.toPersistenceUpdateMany(equipments);
+    const data = PrismaCooperatorEquipmentMapper.toPersistenceUpdateMany(equipments);
 
     await this.prisma.equipment.updateMany(data);
   }

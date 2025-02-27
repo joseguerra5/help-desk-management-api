@@ -8,10 +8,14 @@ import {
 import { LoanRecord } from '@/domain/management/enterprise/entities/loan-record';
 import { PrismaLoanRecordMapper } from '../mappers/prisma-loan-record-mapper';
 import { LoanRecordType } from '@prisma/client';
+import { PDFAttachmentRepository } from '@/domain/management/application/repositories/PDF-attachment-repository';
 
 @Injectable()
 export class PrismaLoanRecordRepository implements LoanRecordRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private PDFattachmentRepository: PDFAttachmentRepository
+  ) { }
   async count({ from, status }: Count): Promise<number> {
     const count = await this.prisma.loanRecord.count({
       where: {
@@ -50,6 +54,8 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
       },
       data,
     });
+
+    await this.PDFattachmentRepository.create(loanrecord.attachment)
   }
 
   async findById(id: string): Promise<LoanRecord | null> {

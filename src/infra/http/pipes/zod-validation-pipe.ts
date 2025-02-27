@@ -3,7 +3,7 @@ import { ZodError, ZodSchema } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
 export class ZodValidadtionPipe implements PipeTransform {
-  constructor(private readonly schema: ZodSchema) {}
+  constructor(private readonly schema: ZodSchema) { }
 
   transform(value: unknown) {
     try {

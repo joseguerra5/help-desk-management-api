@@ -15,6 +15,8 @@ export class PrismaCooperatorMapper {
       userName: cooperator.userName,
       createdAt: cooperator.updatedAt,
       updatedAt: cooperator.updatedAt,
+      departureDate: cooperator.departureDate,
+      id: cooperator.id.toString(),
     };
   }
 

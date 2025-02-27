@@ -8,7 +8,7 @@ import { ResourceNotFoundError } from './errors/resource-not-found-error';
 interface RegisterEquipmentDamageUseCaseRequest {
   equipmentId: string;
   reason: string;
-  brokedAt: Date;
+  brokenAt: Date;
 }
 
 type RegisterEquipmentDamageUseCaseReponse = Either<
@@ -20,11 +20,11 @@ type RegisterEquipmentDamageUseCaseReponse = Either<
 
 @Injectable()
 export class RegisterEquipmentDamageUseCase {
-  constructor(private equipmentdamageRepository: EquipmentRepository) {}
+  constructor(private equipmentdamageRepository: EquipmentRepository) { }
   async execute({
     equipmentId,
     reason,
-    brokedAt,
+    brokenAt,
   }: RegisterEquipmentDamageUseCaseRequest): Promise<RegisterEquipmentDamageUseCaseReponse> {
     const equipment =
       await this.equipmentdamageRepository.findById(equipmentId);
@@ -33,11 +33,7 @@ export class RegisterEquipmentDamageUseCase {
       return left(new ResourceNotFoundError('Equipment', equipmentId));
     }
 
-    if (equipment.brokenAt !== undefined) {
-      return right({ equipment });
-    }
-
-    equipment.brokenAt = brokedAt;
+    equipment.brokenAt = brokenAt;
     equipment.brokenReason = reason;
 
     await this.equipmentdamageRepository.save(equipment);

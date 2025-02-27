@@ -6,6 +6,9 @@ import {
 } from '@/domain/management/enterprise/entities/loan-record';
 import { faker } from '@faker-js/faker';
 import { makeCooperatorEquipment } from './make-cooperator-equipment';
+import { Injectable } from '@nestjs/common';
+import { PrismaLoanRecordMapper } from '@/infra/database/prisma/mappers/prisma-loan-record-mapper';
+import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
 export function makeLoanRecord(
   override: Partial<LoanRecordProps> = {},
@@ -29,4 +32,19 @@ export function makeLoanRecord(
     id,
   );
   return loanrecord;
+}
+
+@Injectable()
+export class LoanRecordFactory {
+  constructor(private prisma: PrismaService) { }
+
+  async makePrismaLoanRecord(data: Partial<LoanRecordProps> = {}): Promise<LoanRecord> {
+    const loanrecord = makeLoanRecord(data)
+
+    await this.prisma.loanRecord.create({
+      data: PrismaLoanRecordMapper.toPersistence(loanrecord)
+    })
+
+    return loanrecord
+  }
 }

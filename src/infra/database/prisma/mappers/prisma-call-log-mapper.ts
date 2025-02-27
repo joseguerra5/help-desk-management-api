@@ -10,6 +10,7 @@ export class PrismaCallLogMapper {
       madeBy: callLog.madeBy,
       type: callLog.type,
       createdAt: callLog.createdAt,
+      id: callLog.id.toString(),
     };
   }
 

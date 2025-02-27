@@ -56,7 +56,7 @@ enum EquipmentType {
 
 model Equipment {
   id           String        @id @default(uuid())
-  cooperatorId String?       @map("cooperator_id")  
+  cooperatorId String?       @map("cooperator_id")
   serialNumber String        @unique @map("serial_number")
   type         EquipmentType
   name         String
@@ -80,7 +80,7 @@ model LoanRecord {
   cooperatorId String         @map("cooperator_id")
   madeBy       String         @map("made_by")
   type         LoanRecordType
-  ocurredAt   DateTime      @map("ocurred_at")
+  ocurredAt    DateTime       @map("ocurred_at")
 
   cooperator Cooperator @relation(fields: [cooperatorId], references: [id])
   madeByUser User       @relation(fields: [madeBy], references: [id])
@@ -121,7 +121,7 @@ model Attachment {
   loanRecordId String? @map("loan_record_id")
 
   cooperator Cooperator? @relation(fields: [cooperatorId], references: [id])
-  laonRecord LoanRecord? @relation(fields: [loanRecordId], references: [id])
+  loanRecord LoanRecord? @relation(fields: [loanRecordId], references: [id])
 
   @@map("attachments")
 }

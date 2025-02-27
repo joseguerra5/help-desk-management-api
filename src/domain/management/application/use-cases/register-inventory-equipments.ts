@@ -12,7 +12,7 @@ import { Cooperator } from '../../enterprise/entities/cooperator';
 import { LoanRecordRepository } from '../repositories/loan-record-repository';
 
 interface RegisterInventoryUseCaseRequest {
-  equipmentsIds: string[];
+  equipmentsIds: string[] | null;
   cooperatorId: string;
   managerId: string;
 }
@@ -30,7 +30,7 @@ export class RegisterInventoryUseCase {
     private cooperatorRepository: CooperatorRepository,
     private cooperatorEquipmentRepository: CooperatorEquipmentRepository,
     private loanRecordRepository: LoanRecordRepository,
-  ) {}
+  ) { }
   async execute({
     equipmentsIds,
     cooperatorId,
@@ -47,7 +47,28 @@ export class RegisterInventoryUseCase {
         cooperatorId,
       );
 
+
     const equipmentList = new InventoryList(currentEquipmentList);
+
+    if (equipmentsIds === null) {
+      await this.cooperatorEquipmentRepository.deleteManyByCooperatorId(cooperatorId)
+
+      const loanRecord = LoanRecord.create({
+        cooperatorId: cooperator.id,
+        equipments: equipmentList.getItems(),
+        madeBy: new UniqueEntityId(managerId),
+        type: 'CHECK_OUT',
+      });
+
+      await this.loanRecordRepository.create(loanRecord);
+
+      cooperator.inventory = new InventoryList([]); // Atualizando o inventário do cooperador para vazio
+      await this.cooperatorRepository.save(cooperator);
+
+      return right({
+        cooperator,
+      });
+    }
 
     const equipments = equipmentsIds.map((equipmentId) => {
       return CooperatorEquipment.create({

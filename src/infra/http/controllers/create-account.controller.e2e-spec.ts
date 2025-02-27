@@ -35,7 +35,6 @@ describe("Create account (E2E)", () => {
         email: "jhondoe@example.com"
       }
     })
-    console.log(userOnDatabase)
 
     expect(userOnDatabase).toBeTruthy()
   })
