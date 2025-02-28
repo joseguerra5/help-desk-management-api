@@ -26,7 +26,7 @@ export function makeEquipment(
   const equipment = Equipment.create(
     {
       name: faker.commerce.productName(),
-      serialNumber: faker.commerce.product(),
+      serialNumber: override.serialNumber ?? new UniqueEntityId().toString(),
       type: override.type ?? faker.helpers.arrayElement(equipmentTypes),
       ...override,
     },

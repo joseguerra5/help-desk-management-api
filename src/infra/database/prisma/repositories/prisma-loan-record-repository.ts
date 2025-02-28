@@ -35,6 +35,7 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
         cooperatorId,
         type: status ? (status.toUpperCase() as LoanRecordType) : undefined,
       },
+      include: { attachment: true },
       orderBy: {
         ocurredAt: 'desc',
       },

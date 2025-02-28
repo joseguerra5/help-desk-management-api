@@ -19,6 +19,22 @@ import { LinkAttachmentToLoanRecordUseCase } from '@/domain/management/applicati
 import { LinkAttachmentToLoanRecordController } from './controllers/link-attachment-to-loan-record.controller';
 import { GetCooperatorByIdController } from './controllers/get-cooperator.controller';
 import { GetCooperatorByIdUseCase } from '@/domain/management/application/use-cases/get-cooperator-by-id';
+import { FetchLoanRecordByCooperatorIdUseCase } from '@/domain/management/application/use-cases/fetch-loan-record';
+import { FetchLoanRecordByCooperatorIdController } from './controllers/fetch-loan-records.controller';
+import { FetchCooperatorUseCase } from '@/domain/management/application/use-cases/fetch-cooperators';
+import { FetchCooperatorController } from './controllers/fetch-cooperator.controller';
+import { EditManagerController } from './controllers/edit-manager.controller';
+import { EditManagerUseCase } from '@/domain/management/application/use-cases/edit-manager';
+import { EditCooperatorUseCase } from '@/domain/management/application/use-cases/edit-cooperator';
+import { EditCooperatorController } from './controllers/edit-cooperator.controller';
+import { CreateCallLogController } from './controllers/create-call-log.controller';
+import { CreateCallLogUseCase } from '@/domain/management/application/use-cases/create-call-log';
+import { FetchCallLogsController } from './controllers/fetch-call-logs.controller';
+import { FetchCallLogsUseCase } from '@/domain/management/application/use-cases/fetch-call-logs';
+import { GetCountLoanCheckOuController } from './controllers/count-loan-checkout';
+import { CountLoanCheckoutUseCase } from '@/domain/management/application/use-cases/count-loan-checkout';
+import { CountLoanCheckInUseCase } from '@/domain/management/application/use-cases/count-loan-checkin';
+import { GetCountLoanCheckInController } from './controllers/count-loan-checkin';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -31,7 +47,15 @@ import { GetCooperatorByIdUseCase } from '@/domain/management/application/use-ca
     RegisterEquipmentDamageController,
     RegisterDepartureDateController,
     LinkAttachmentToLoanRecordController,
-    GetCooperatorByIdController
+    GetCooperatorByIdController,
+    FetchLoanRecordByCooperatorIdController,
+    FetchCooperatorController,
+    EditManagerController,
+    EditCooperatorController,
+    CreateCallLogController,
+    FetchCallLogsController,
+    GetCountLoanCheckOuController,
+    GetCountLoanCheckInController
   ],
   providers: [
     RegisterManagerUseCase,
@@ -42,7 +66,15 @@ import { GetCooperatorByIdUseCase } from '@/domain/management/application/use-ca
     RegisterEquipmentDamageUseCase,
     RegisterDepartureDateUseCase,
     LinkAttachmentToLoanRecordUseCase,
-    GetCooperatorByIdUseCase
+    GetCooperatorByIdUseCase,
+    FetchLoanRecordByCooperatorIdUseCase,
+    FetchCooperatorUseCase,
+    EditManagerUseCase,
+    EditCooperatorUseCase,
+    CreateCallLogUseCase,
+    FetchCallLogsUseCase,
+    CountLoanCheckoutUseCase,
+    CountLoanCheckInUseCase
   ],
 })
 

@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { LoanRecord, RecordType } from '../../enterprise/entities/loan-record';
 import { LoanRecordRepository } from '../repositories/loan-record-repository';
 
-interface FetchLoanRecordUseCaseRequest {
+interface FetchLoanRecordByCooperatorIdUseCaseRequest {
   cooperatorId: string;
   page: number;
   status?: RecordType;
 }
 
-type FetchLoanRecordUseCaseReponse = Either<
+type FetchLoanRecordByCooperatorIdUseCaseReponse = Either<
   null,
   {
     loanRecords: LoanRecord[];
@@ -17,13 +17,13 @@ type FetchLoanRecordUseCaseReponse = Either<
 >;
 
 @Injectable()
-export class FetchLoanRecordUseCase {
-  constructor(private loanRecordRepository: LoanRecordRepository) {}
+export class FetchLoanRecordByCooperatorIdUseCase {
+  constructor(private loanRecordRepository: LoanRecordRepository) { }
   async execute({
     page,
     cooperatorId,
     status,
-  }: FetchLoanRecordUseCaseRequest): Promise<FetchLoanRecordUseCaseReponse> {
+  }: FetchLoanRecordByCooperatorIdUseCaseRequest): Promise<FetchLoanRecordByCooperatorIdUseCaseReponse> {
     const loanRecords = await this.loanRecordRepository.findManyByCooperatorId(
       cooperatorId,
       { page, status },

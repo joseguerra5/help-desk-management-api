@@ -84,7 +84,7 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
       ),
 
       this.cooperatorEquipmentRepository.deleteMany(
-        cooperator.inventory.getNewItems(),
+        cooperator.inventory.getRemovedItems(),
       ),
     ]);
   }

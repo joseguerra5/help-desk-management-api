@@ -2,17 +2,17 @@ import { InMemoryLoanRecordRepository } from 'test/repositories/in-memory-loan-r
 import { InMemoryCooperatorRepository } from 'test/repositories/in-memory-cooperator-repository';
 import { makeCooperator } from 'test/factories/make-cooperator';
 import { makeLoanRecord } from 'test/factories/make-loan-record';
-import { FetchLoanRecordUseCase } from './fetch-loan-record';
+import { FetchLoanRecordByCooperatorIdUseCase } from './fetch-loan-record';
 
 let inMemoryLoanRecordRepository: InMemoryLoanRecordRepository;
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
-let sut: FetchLoanRecordUseCase;
+let sut: FetchLoanRecordByCooperatorIdUseCase;
 
 describe('Fetch Loan Records by Cooperator Id', () => {
   beforeEach(() => {
     inMemoryLoanRecordRepository = new InMemoryLoanRecordRepository();
     inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
-    sut = new FetchLoanRecordUseCase(inMemoryLoanRecordRepository);
+    sut = new FetchLoanRecordByCooperatorIdUseCase(inMemoryLoanRecordRepository);
   });
   it('should be able to fetch recent loan Records', async () => {
     const cooperator = makeCooperator();

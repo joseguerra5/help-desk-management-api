@@ -7,7 +7,7 @@ export class PrismaCallLogMapper {
     return {
       cooperatorId: callLog.cooperatorId.toString(),
       description: callLog.description,
-      madeBy: callLog.madeBy,
+      madeBy: callLog.madeBy.toString(),
       type: callLog.type,
       createdAt: callLog.createdAt,
       id: callLog.id.toString(),

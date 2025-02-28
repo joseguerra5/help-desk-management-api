@@ -1,7 +1,7 @@
 import { ResourceNotFoundError } from "@/domain/management/application/use-cases/errors/resource-not-found-error";
 import { GetCooperatorByIdUseCase } from "@/domain/management/application/use-cases/get-cooperator-by-id";
-import { PrismaCooperatorMapper } from "@/infra/database/prisma/mappers/prisma-cooperator-mapper";
 import { BadRequestException, ConflictException, Controller, Get, HttpCode, Param } from "@nestjs/common";
+import { CooperatorPresenter } from "../presenters/cooperator-presenter";
 
 
 
@@ -31,7 +31,7 @@ export class GetCooperatorByIdController {
     }
 
     return {
-      cooperator: PrismaCooperatorMapper.toPersistence(result.value.cooperator)
+      cooperator: CooperatorPresenter.toHTTP(result.value.cooperator)
     }
   }
 }
