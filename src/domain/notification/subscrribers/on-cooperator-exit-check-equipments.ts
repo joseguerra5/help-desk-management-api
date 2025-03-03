@@ -6,7 +6,9 @@ import { CooperatorRepository } from "@/domain/management/application/repositori
 import { ManagerRepository } from "@/domain/management/application/repositories/manager-repository";
 import { Schedule } from "../aplication/schedule/schedule-registry";
 import { Job } from "../aplication/schedule/job";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class OnCooperatorExitCheckEquipment implements EventHandler {
   constructor(
     private sendNotification: SendNotificationUseCase,
@@ -25,12 +27,14 @@ export class OnCooperatorExitCheckEquipment implements EventHandler {
     )
   }
 
-  private async scheduleEquipmentCheck({ cooperator, ocurredAt }: CooperatorExitedEvent) {
+  private async scheduleEquipmentCheck({ cooperator }: CooperatorExitedEvent) {
     const checkDates = [
-      ocurredAt,
-      this.addDays(ocurredAt, 7),
-      this.addDays(ocurredAt, 15),
+      new Date(),
+      cooperator.departureDate,
+      this.addDays(cooperator.departureDate, 7),
+      this.addDays(cooperator.departureDate, 15),
     ]
+
 
     checkDates.forEach((date, index) => {
       const jobName = `check-equipment-${cooperator.id.toString()}-${index}`
@@ -47,15 +51,17 @@ export class OnCooperatorExitCheckEquipment implements EventHandler {
   }
 
   private async verifyEquipment(cooperatorId: string) {
+    console.log(`Cooperator ${cooperatorId} still has ${cooperatorId} equipment(s) borrowed.`)
     const cooperator = await this.cooperatorRepository.findById(cooperatorId)
     if (!cooperator) {
       return
     }
 
-    if (cooperator.inventory.currentItems.length > 0) {
 
+    if (cooperator.inventory.currentItems.length > 0) {
       const managers = await this.managerRepository.findMany()
 
+      console.log(`Cooperator ${cooperator.userName} still has ${cooperator.inventory.currentItems.length} equipment(s) borrowed.`)
       await Promise.all(
         managers.map(manager =>
           this.sendNotification.execute({

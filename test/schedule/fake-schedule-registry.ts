@@ -7,14 +7,16 @@ export class FakeScheduleRegistry implements Schedule {
   async scheduleOnce(name: string, date: Date, callback: () => Promise<void>) {
     const job = { name, callback }
     this.jobs.push(job)
-    console.log(`Job scheduled: ${name} at ${date.toISOString()}`)
+
+    if (date <= new Date()) {
+      await callback()
+    }
   }
 
   // Armazena o job recorrente
   async scheduleRecurring(name: string, cron: string, callback: () => Promise<void>) {
     const job = { name, callback }
     this.jobs.push(job)
-    console.log(`Recurring job scheduled: ${name} with cron: ${cron}`)
   }
 
 }

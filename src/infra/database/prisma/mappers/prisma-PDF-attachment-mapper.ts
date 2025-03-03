@@ -30,7 +30,7 @@ export class PrismaPDFAttachmentMapper {
       {
         attachmentId: new UniqueEntityId(raw.id),
         cooperatorId: new UniqueEntityId(raw.cooperatorId),
-        loanRecordId: new UniqueEntityId(raw.loanRecordId),
+        loanRecordId: new UniqueEntityId(raw.loanRecordId ?? ""),
       },
       new UniqueEntityId(raw.id),
     );

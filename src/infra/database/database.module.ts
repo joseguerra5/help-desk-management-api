@@ -16,6 +16,8 @@ import { PrismaManagerRepository } from './prisma/repositories/prisma-manager-re
 import { EquipmentRepository } from '@/domain/management/application/repositories/equipment-repository';
 import { PDFAttachmentRepository } from '@/domain/management/application/repositories/PDF-attachment-repository';
 import { PrismaPDFAttachmentRepository } from './prisma/repositories/prisma-PDF-attachment-repository';
+import { NotificationRepository } from '@/domain/notification/aplication/repositories/notification-repository'
+import { PrismaNotificationRepository } from './prisma/repositories/prisma-notification-repository';
 
 @Module({
   providers: [
@@ -52,6 +54,10 @@ import { PrismaPDFAttachmentRepository } from './prisma/repositories/prisma-PDF-
       provide: PDFAttachmentRepository,
       useClass: PrismaPDFAttachmentRepository,
     },
+    {
+      provide: NotificationRepository,
+      useClass: PrismaNotificationRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -62,7 +68,8 @@ import { PrismaPDFAttachmentRepository } from './prisma/repositories/prisma-PDF-
     EquipmentRepository,
     LoanRecordRepository,
     ManagerRepository,
-    PDFAttachmentRepository
+    PDFAttachmentRepository,
+    NotificationRepository
   ],
 })
 export class DatabaseModule { }

@@ -18,6 +18,7 @@ export class InMemoryNotificationRepository implements NotificationRepository {
     this.items[itemIndex] = notification
   }
   async create(notification: Notification) {
+    console.log("aqui", notification)
     this.items.push(notification)
   }
 }

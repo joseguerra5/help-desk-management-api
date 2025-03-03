@@ -5,6 +5,7 @@ import { CooperatorRepository } from '@/domain/management/application/repositori
 import { PaginationCooperatorParams } from '@/core/repositories/pagination-param';
 import { PrismaCooperatorMapper } from '../mappers/prisma-cooperator-mapper';
 import { CooperatorEquipmentRepository } from '@/domain/management/application/repositories/cooperator-equipment-repository';
+import { DomainEvents } from '@/core/events/domain-events';
 
 @Injectable()
 export class PrismaCooperatorRepository implements CooperatorRepository {
@@ -70,7 +71,6 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
   }
   async save(cooperator: Cooperator): Promise<void> {
     const data = PrismaCooperatorMapper.toPersistence(cooperator);
-
     await Promise.all([
       this.prisma.cooperator.update({
         where: {
@@ -87,6 +87,7 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
         cooperator.inventory.getRemovedItems(),
       ),
     ]);
+    DomainEvents.dispatchEventsForAggregate(cooperator.id);
   }
 
   async findById(id: string): Promise<Cooperator | null> {

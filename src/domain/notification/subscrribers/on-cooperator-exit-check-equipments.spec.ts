@@ -75,10 +75,13 @@ describe('On cooperator exit', () => {
     cooperator.departureDate = new Date();
     await inMemoryCooperatorRepository.save(cooperator);
 
-    console.log(inMemoryNotificationRepository.items[0])
 
     await waitFor(() => {
       expect(sendNotificationExecuteSpy).toHaveBeenCalled(); // Espera 2 notificações (1 por gerente)
+
+      const notificationOnDatabase = inMemoryNotificationRepository.items[0]
+
+      expect(notificationOnDatabase).not.toBeNull()
     });
   });
   it('should schedule jobs to check equipment after cooperator exit', async () => {
@@ -109,12 +112,20 @@ describe('On cooperator exit', () => {
 
     await inMemoryCooperatorRepository.create(cooperator)
 
-    cooperator.departureDate = new Date()
+    cooperator.departureDate = new Date("2025-04-04")
     await inMemoryCooperatorRepository.save(cooperator)
 
+
     await waitFor(() => {
-      expect(scheduleOnceSpy).toHaveBeenCalledTimes(3) // Espera que o job de verificação seja agendado 3 vezes
+      expect(scheduleOnceSpy).toHaveBeenCalledTimes(4) // Espera que o job de verificação seja agendado 3 
+
+
+      const notificationOnDatabase = inMemoryNotificationRepository.items[0]
+
+
+      expect(notificationOnDatabase).not.toBeNull()
     })
+    console.log(inMemoryNotificationRepository.items)
   })
 
 })

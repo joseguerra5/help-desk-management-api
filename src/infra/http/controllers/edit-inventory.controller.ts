@@ -55,7 +55,7 @@ export class EditInventoryController {
     }
 
     return ({
-      equipment: result.value.cooperator
+      cooperator: result.value.cooperator
     })
   }
 }

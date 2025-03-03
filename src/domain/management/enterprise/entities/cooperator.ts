@@ -84,12 +84,14 @@ export class Cooperator extends AggregateRoot<CooperatorProps> {
   }
 
   set departureDate(departureDate: Date) {
-    const wasDismissing = this.props.departureDate === null && departureDate !== null;
+    if (departureDate === undefined) {
+      return
+    }
 
-    if (wasDismissing && departureDate !== null) {
-      // Aqui você cria o evento de saída do colaborador e o adiciona.
+    if (this.props.departureDate === undefined || this.props.departureDate !== departureDate) {
       this.addDomainEvent(new CooperatorExitedEvent(this, departureDate));
     }
+
     this.props.departureDate = departureDate;
     this.touch();
 

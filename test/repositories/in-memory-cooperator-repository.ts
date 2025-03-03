@@ -49,6 +49,7 @@ export class InMemoryCooperatorRepository implements CooperatorRepository {
 
     this.items[itemIndex] = cooperator;
 
+
     DomainEvents.dispatchEventsForAggregate(cooperator.id)
   }
 

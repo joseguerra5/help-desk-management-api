@@ -26,6 +26,8 @@ const schemaId = randomUUID()
 beforeAll(async () => {
   const databaseURL = generateUniqueDatabaseURL(schemaId)
 
+  console.log(`Usando a URL do banco de dados: ${databaseURL}`);  // Log da URL
+
   process.env.DATABASE_URL = databaseURL
 
   execSync("npx prisma migrate deploy")

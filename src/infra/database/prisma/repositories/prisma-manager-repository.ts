@@ -6,7 +6,11 @@ import { PrismaManagerMapper } from '../mappers/prisma-manager-mapper';
 
 @Injectable()
 export class PrismaManagerRepository implements ManagerRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+  async findMany(): Promise<Manager[]> {
+    const managers = await this.prisma.user.findMany();
+    return managers.map(PrismaManagerMapper.toDomain);
+  }
   async findByEmail(email: string): Promise<Manager | null> {
     const manager = await this.prisma.user.findUnique({
       where: {
