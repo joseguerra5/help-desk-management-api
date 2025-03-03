@@ -6,4 +6,5 @@ export abstract class ManagerRepository {
   abstract findById(id: string): Promise<Manager | null>;
   abstract findByEmail(email: string): Promise<Manager | null>;
   abstract findByEmployeeId(id: string): Promise<Manager | null>;
+  abstract findMany(): Promise<Manager[]>;
 }

@@ -3,6 +3,11 @@ import { Manager } from '@/domain/management/enterprise/entities/manager';
 
 export class InMemoryManagerRepository implements ManagerRepository {
   public items: Manager[] = [];
+  async findMany(): Promise<Manager[]> {
+    const manager = this.items
+
+    return manager;
+  }
 
   async save(manager: Manager): Promise<void> {
     const itemIndex = this.items.findIndex((item) =>

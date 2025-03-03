@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events';
 import { PaginationCooperatorParams } from '@/core/repositories/pagination-param';
 import { CooperatorRepository } from '@/domain/management/application/repositories/cooperator-repository';
 import { Cooperator } from '@/domain/management/enterprise/entities/cooperator';
@@ -47,6 +48,8 @@ export class InMemoryCooperatorRepository implements CooperatorRepository {
     );
 
     this.items[itemIndex] = cooperator;
+
+    DomainEvents.dispatchEventsForAggregate(cooperator.id)
   }
 
   async findById(id: string): Promise<Cooperator | null> {

@@ -1,7 +1,8 @@
-import { Entity } from '@/core/entities/entity';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { Optional } from '@/core/types/optional';
 import { InventoryList } from './inventory-list';
+import { AggregateRoot } from '@/core/entities/aggregate-root';
+import { CooperatorExitedEvent } from '../events/cooperator-exited-event';
 
 export interface CooperatorProps {
   name: string;
@@ -16,7 +17,7 @@ export interface CooperatorProps {
   updatedAt?: Date | null;
 }
 
-export class Cooperator extends Entity<CooperatorProps> {
+export class Cooperator extends AggregateRoot<CooperatorProps> {
   get name() {
     return this.props.name;
   }
@@ -83,8 +84,15 @@ export class Cooperator extends Entity<CooperatorProps> {
   }
 
   set departureDate(departureDate: Date) {
+    const wasDismissing = this.props.departureDate === null && departureDate !== null;
+
+    if (wasDismissing && departureDate !== null) {
+      // Aqui você cria o evento de saída do colaborador e o adiciona.
+      this.addDomainEvent(new CooperatorExitedEvent(this, departureDate));
+    }
     this.props.departureDate = departureDate;
     this.touch();
+
   }
 
   get updatedAt() {
