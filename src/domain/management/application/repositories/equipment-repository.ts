@@ -1,3 +1,4 @@
+import { PaginationEquipmentsParams } from '@/core/repositories/pagination-param';
 import { Equipment } from '../../enterprise/entities/equipment';
 
 export abstract class EquipmentRepository {
@@ -6,4 +7,5 @@ export abstract class EquipmentRepository {
   abstract findById(id: string): Promise<Equipment | null>;
   abstract findBySerialNumber(id: string): Promise<Equipment | null>;
   abstract findManyByCooperatorId(cooperatorId: string): Promise<Equipment[]>;
+  abstract findManyBySearchParms(params: PaginationEquipmentsParams): Promise<Equipment[]>;
 }

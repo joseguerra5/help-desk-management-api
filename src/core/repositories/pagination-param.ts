@@ -1,3 +1,4 @@
+import { EquipmentType } from '@/domain/management/enterprise/entities/equipment';
 import { RecordType } from '@/domain/management/enterprise/entities/loan-record';
 
 export interface PaginationParams {
@@ -14,3 +15,12 @@ export interface PaginationCooperatorParams {
   status?: 'inactive' | 'active';
   search?: string;
 }
+
+export interface PaginationEquipmentsParams {
+  page: number;
+  status?: "broken" | "available" | "loaned"
+  search?: string;
+  type?: EquipmentType
+
+}
+

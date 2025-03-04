@@ -35,6 +35,8 @@ import { GetCountLoanCheckOuController } from './controllers/count-loan-checkout
 import { CountLoanCheckoutUseCase } from '@/domain/management/application/use-cases/count-loan-checkout';
 import { CountLoanCheckInUseCase } from '@/domain/management/application/use-cases/count-loan-checkin';
 import { GetCountLoanCheckInController } from './controllers/count-loan-checkin';
+import { FetchEquipmentsController } from './controllers/fetch-equipments.controller';
+import { FetchEquipmentsUseCase } from '@/domain/management/application/use-cases/fetch-equipments';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -55,7 +57,8 @@ import { GetCountLoanCheckInController } from './controllers/count-loan-checkin'
     CreateCallLogController,
     FetchCallLogsController,
     GetCountLoanCheckOuController,
-    GetCountLoanCheckInController
+    GetCountLoanCheckInController,
+    FetchEquipmentsController,
   ],
   providers: [
     RegisterManagerUseCase,
@@ -74,7 +77,8 @@ import { GetCountLoanCheckInController } from './controllers/count-loan-checkin'
     CreateCallLogUseCase,
     FetchCallLogsUseCase,
     CountLoanCheckoutUseCase,
-    CountLoanCheckInUseCase
+    CountLoanCheckInUseCase,
+    FetchEquipmentsUseCase
   ],
 })
 

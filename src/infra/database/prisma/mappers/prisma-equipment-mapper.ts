@@ -8,6 +8,7 @@ export class PrismaEquipmentMapper {
     equipment: Equipment,
   ): Prisma.EquipmentUncheckedCreateInput {
     return {
+      id: equipment.id.toString(),
       name: equipment.name,
       serialNumber: equipment.serialNumber,
       type: equipment.type as EquipmentType,
@@ -15,7 +16,6 @@ export class PrismaEquipmentMapper {
       brokenReason: equipment.brokenReason,
       cooperatorId: equipment.cooperatorId,
       createdAt: equipment.createdAt,
-      id: equipment.id.toString(),
     };
   }
 
