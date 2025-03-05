@@ -1,7 +1,12 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { Cooperator } from '@/domain/management/enterprise/entities/cooperator';
-import { Prisma, Cooperator as PrismaCooperator } from '@prisma/client';
+import { Prisma, Cooperator as PrismaCooperator, Equipment as PrismaEquipment } from '@prisma/client';
+import { InventoryList } from '@/domain/management/enterprise/entities/inventory-list';
+import { PrismaCooperatorEquipmentMapper } from './prisma-cooperator-equipment-mapper';
 
+type PrismaCooperatorDetails = PrismaCooperator & {
+  Equipment: PrismaEquipment[];
+};
 export class PrismaCooperatorMapper {
   static toPersistence(
     cooperator: Cooperator,
@@ -13,14 +18,15 @@ export class PrismaCooperatorMapper {
       nif: cooperator.nif,
       phone: cooperator.phone,
       userName: cooperator.userName,
-      createdAt: cooperator.updatedAt,
+      createdAt: cooperator.createdAt,
       updatedAt: cooperator.updatedAt,
       departureDate: cooperator.departureDate,
       id: cooperator.id.toString(),
+
     };
   }
 
-  static toDomain(raw: PrismaCooperator) {
+  static toDomain(raw: PrismaCooperatorDetails) {
     return Cooperator.create(
       {
         email: raw.email,
@@ -32,6 +38,7 @@ export class PrismaCooperatorMapper {
         createdAt: raw.createdAt,
         departureDate: raw.departureDate,
         updatedAt: raw.updatedAt,
+        inventory: new InventoryList(raw.Equipment.map(PrismaCooperatorEquipmentMapper.toDomain))
       },
       new UniqueEntityId(raw.id),
     );

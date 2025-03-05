@@ -46,29 +46,33 @@ describe('On cooperator exit (E2E)', () => {
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
-    const equipment = await equipmentFactory.makePrismaEquipment({
-
-    })
+    const equipment = await equipmentFactory.makePrismaEquipment()
+    const equipment2 = await equipmentFactory.makePrismaEquipment()
 
     await cooperatorequipmentFactory.makePrismaCooperatorEquipment({
       cooperatorId: cooperator.id,
       equipmentId: equipment.id,
     })
 
+    await cooperatorequipmentFactory.makePrismaCooperatorEquipment({
+      cooperatorId: cooperator.id,
+      equipmentId: equipment2.id,
+    })
+
+
     const departureDate = new Date(Date.now() + 5000)
 
-    const response = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .put(`/cooperator/${cooperator.id.toString()}/departure`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         departureDate,
       })
 
-    console.log("response", response.body)
     await waitFor(async () => {
       const notificationOnDatabase = await prisma.notification.findFirst({
         where: {
-          recipientId: user.id.toString(),
+          recipientId: user.id.toString()
         },
       })
 

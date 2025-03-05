@@ -8,7 +8,6 @@ import { PrismaNotificationMapper } from "../mappers/prisma-notification-mapper"
 export class PrismaNotificationRepository implements NotificationRepository {
   constructor(private prisma: PrismaService) { }
   async create(notification: Notification): Promise<void> {
-    console.log("aqui", notification)
     const data = PrismaNotificationMapper.toPersistence(notification)
 
     await this.prisma.notification.create({

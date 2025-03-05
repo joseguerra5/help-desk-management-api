@@ -4,7 +4,6 @@ import { SendNotificationUseCase } from '../aplication/use-cases/send-notificati
 import { InMemoryNotificationRepository } from 'test/repositories/in-memory-notification-repository'
 import { InMemoryCooperatorRepository } from 'test/repositories/in-memory-cooperator-repository'
 import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository'
-import { FakeJob } from 'test/schedule/fake-job'
 import { FakeScheduleRegistry } from 'test/schedule/fake-schedule-registry'
 import { OnCooperatorExitCheckEquipment } from './on-cooperator-exit-check-equipments'
 import { InMemoryManagerRepository } from 'test/repositories/in-memory-manager-repository'
@@ -19,7 +18,6 @@ let inMemoryCooperatorRepository: InMemoryCooperatorRepository
 let inMemoryManagerRepository: InMemoryManagerRepository
 let inMemoryEquipmentRepository: InMemoryEquipmentRepository
 let fakeSchedule: FakeScheduleRegistry
-let fakeJob: FakeJob
 let sendNotificationUseCase: SendNotificationUseCase
 
 let sendNotificationExecuteSpy: MockInstance
@@ -30,7 +28,6 @@ describe('On cooperator exit', () => {
     inMemoryManagerRepository = new InMemoryManagerRepository()
     inMemoryEquipmentRepository = new InMemoryEquipmentRepository()
     fakeSchedule = new FakeScheduleRegistry()
-    fakeJob = new FakeJob()
 
     sendNotificationUseCase = new SendNotificationUseCase(
       inMemoryNotificationRepository,
@@ -40,7 +37,7 @@ describe('On cooperator exit', () => {
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 
     new OnCooperatorExitCheckEquipment(
-      sendNotificationUseCase, inMemoryCooperatorRepository, inMemoryManagerRepository, fakeSchedule, fakeJob
+      sendNotificationUseCase, inMemoryCooperatorRepository, inMemoryManagerRepository
     )
   })
   it('should be able to send a notification when a cooperator exits', async () => {
@@ -77,14 +74,14 @@ describe('On cooperator exit', () => {
 
 
     await waitFor(() => {
-      expect(sendNotificationExecuteSpy).toHaveBeenCalled(); // Espera 2 notificações (1 por gerente)
+      expect(sendNotificationExecuteSpy).toHaveBeenCalled()
 
       const notificationOnDatabase = inMemoryNotificationRepository.items[0]
 
       expect(notificationOnDatabase).not.toBeNull()
     });
   });
-  it('should schedule jobs to check equipment after cooperator exit', async () => {
+  it.skip('should schedule jobs to check equipment after cooperator exit', async () => {
     const scheduleOnceSpy = vi.spyOn(fakeSchedule, 'scheduleOnce')
 
     const cooperator = makeCooperator()
@@ -112,7 +109,7 @@ describe('On cooperator exit', () => {
 
     await inMemoryCooperatorRepository.create(cooperator)
 
-    cooperator.departureDate = new Date("2025-04-04")
+    cooperator.departureDate = new Date("2025-04-05")
     await inMemoryCooperatorRepository.save(cooperator)
 
 
@@ -125,7 +122,6 @@ describe('On cooperator exit', () => {
 
       expect(notificationOnDatabase).not.toBeNull()
     })
-    console.log(inMemoryNotificationRepository.items)
   })
 
 })

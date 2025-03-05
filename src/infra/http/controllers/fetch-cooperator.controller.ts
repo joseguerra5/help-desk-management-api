@@ -45,10 +45,15 @@ export class FetchCooperatorController {
       throw new BadRequestException(error)
     }
 
-    const cooperators = result.value.cooperators
+    const cooperators = result.value.data
 
     return {
-      cooperators: cooperators.map(CooperatorPresenter.toHTTP)
+      cooperators: cooperators.map(CooperatorPresenter.toHTTP),
+      meta: {
+        pageIndex: result.value.meta.pageIndex,
+        perPage: result.value.meta.perPage,
+        totalCount: result.value.meta.totalCount,
+      }
     }
   }
 }

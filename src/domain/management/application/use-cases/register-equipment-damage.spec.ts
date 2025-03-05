@@ -18,7 +18,7 @@ describe('Register Equipment Damage', () => {
     await inMemoryEquipmentRepository.create(equipment);
 
     const result = await sut.execute({
-      brokedAt: new Date(),
+      brokenAt: new Date(),
       equipmentId: equipment.id.toString(),
       reason: 'teste',
     });

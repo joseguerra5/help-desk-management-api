@@ -1,7 +1,6 @@
 import { Either, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
-import { Cooperator } from '../../enterprise/entities/cooperator';
-import { CooperatorRepository } from '../repositories/cooperator-repository';
+import { CooperatorRepository, FindManyCooperators } from '../repositories/cooperator-repository';
 
 interface FetchCooperatorUseCaseRequest {
   page: number;
@@ -11,14 +10,12 @@ interface FetchCooperatorUseCaseRequest {
 
 type FetchCooperatorUseCaseReponse = Either<
   null,
-  {
-    cooperators: Cooperator[];
-  }
+  FindManyCooperators
 >;
 
 @Injectable()
 export class FetchCooperatorUseCase {
-  constructor(private cooperatorRepository: CooperatorRepository) {}
+  constructor(private cooperatorRepository: CooperatorRepository) { }
   async execute({
     page,
     status,
@@ -31,7 +28,12 @@ export class FetchCooperatorUseCase {
     });
 
     return right({
-      cooperators,
+      data: cooperators.data,
+      meta: {
+        pageIndex: cooperators.meta.pageIndex,
+        perPage: cooperators.meta.perPage,
+        totalCount: cooperators.meta.totalCount
+      }
     });
   }
 }
