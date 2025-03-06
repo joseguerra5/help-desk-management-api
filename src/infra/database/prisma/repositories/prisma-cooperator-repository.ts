@@ -6,6 +6,8 @@ import { PaginationCooperatorParams } from '@/core/repositories/pagination-param
 import { PrismaCooperatorMapper } from '../mappers/prisma-cooperator-mapper';
 import { CooperatorEquipmentRepository } from '@/domain/management/application/repositories/cooperator-equipment-repository';
 import { DomainEvents } from '@/core/events/domain-events';
+import { CooperatorDetails } from '@/domain/management/enterprise/entities/value-objects/cooperator-with-details';
+import { PrismaCooperatorDetailsMapper } from '../mappers/prisma-cooperator-details-mapper';
 
 @Injectable()
 export class PrismaCooperatorRepository implements CooperatorRepository {
@@ -113,7 +115,7 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
         id,
       },
       include: {
-        Equipment: true
+        Equipment: true,
       }
     });
 
@@ -122,6 +124,24 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
     }
 
     return PrismaCooperatorMapper.toDomain(cooperator);
+  }
+
+  async findByIdWithDetails(id: string): Promise<CooperatorDetails | null> {
+    const cooperator = await this.prisma.cooperator.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        Equipment: true,
+        CallLog: true
+      }
+    });
+
+    if (!cooperator) {
+      return null;
+    }
+
+    return PrismaCooperatorDetailsMapper.toDomain(cooperator);
   }
 
   async create(cooperator: Cooperator): Promise<void> {

@@ -1,7 +1,7 @@
 import { ResourceNotFoundError } from "@/domain/management/application/use-cases/errors/resource-not-found-error";
 import { GetCooperatorByIdUseCase } from "@/domain/management/application/use-cases/get-cooperator-by-id";
 import { BadRequestException, ConflictException, Controller, Get, HttpCode, Param } from "@nestjs/common";
-import { CooperatorPresenter } from "../presenters/cooperator-presenter";
+import { CooperatorDetailsPresenter } from "../presenters/cooperator-details-presenter";
 
 
 
@@ -31,7 +31,7 @@ export class GetCooperatorByIdController {
     }
 
     return {
-      cooperator: CooperatorPresenter.toHTTP(result.value.cooperator)
+      cooperator: CooperatorDetailsPresenter.toHTTP(result.value.cooperator)
     }
   }
 }
