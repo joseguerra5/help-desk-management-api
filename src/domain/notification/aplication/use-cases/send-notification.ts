@@ -29,7 +29,6 @@ export class SendNotificationUseCase {
       title
     })
 
-    console.log("use case", notification)
     await this.notificationsRepository.create(notification)
 
 

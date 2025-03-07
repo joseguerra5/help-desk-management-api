@@ -4,11 +4,13 @@ import { Equipment } from '@/domain/management/enterprise/entities/equipment';
 import { EquipmentRepository } from '@/domain/management/application/repositories/equipment-repository';
 import { PrismaEquipmentMapper } from '../mappers/prisma-equipment-mapper';
 import { PaginationEquipmentsParams } from '@/core/repositories/pagination-param';
+import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-objects/equipment-with-details';
+import { PrismaEquipmentDetailsMapper } from '../mappers/prisma-equipment-details-mapper';
 
 @Injectable()
 export class PrismaEquipmentRepository implements EquipmentRepository {
   constructor(private prisma: PrismaService) { }
-  async findManyBySearchParms({ page, search, status, type }: PaginationEquipmentsParams): Promise<Equipment[]> {
+  async findManyBySearchParms({ page, search, status, type, cooperatorId }: PaginationEquipmentsParams): Promise<EquipmentDetails[]> {
     const equipments = await this.prisma.equipment.findMany({
       where: {
         brokenAt:
@@ -18,14 +20,11 @@ export class PrismaEquipmentRepository implements EquipmentRepository {
               ? { not: null }
               : status === 'loaned'
                 ? null : undefined,
-
-
-
         cooperatorId:
-          status === 'loaned'
-            ? { not: null }
-            : undefined,
-
+          cooperatorId ? cooperatorId :
+            status === 'loaned'
+              ? { not: null }
+              : undefined,
         type,
         OR: search
           ? [
@@ -41,7 +40,7 @@ export class PrismaEquipmentRepository implements EquipmentRepository {
       skip: (page - 1) * 20,
     });
 
-    return equipments.map(PrismaEquipmentMapper.toDomain);
+    return equipments.map(PrismaEquipmentDetailsMapper.toDomain);
   }
   async findBySerialNumber(id: string): Promise<Equipment | null> {
     const equipment = await this.prisma.equipment.findUnique({

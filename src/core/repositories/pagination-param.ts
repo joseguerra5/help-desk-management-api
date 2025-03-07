@@ -21,6 +21,6 @@ export interface PaginationEquipmentsParams {
   status?: "broken" | "available" | "loaned"
   search?: string;
   type?: EquipmentType
-
+  cooperatorId?: string
 }
 

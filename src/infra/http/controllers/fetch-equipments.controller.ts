@@ -3,13 +3,14 @@ import { z } from "zod";
 import { ZodValidadtionPipe } from "../pipes/zod-validation-pipe";
 import { EquipmentType } from "@prisma/client";
 import { FetchEquipmentsUseCase } from "@/domain/management/application/use-cases/fetch-equipments";
-import { PrismaEquipmentMapper } from "@/infra/database/prisma/mappers/prisma-equipment-mapper";
+import { EquipmentPresenter } from "../presenters/inventory-presenter";
 
 const queryParamSchema = z.object({
   page: z.string().optional().default("1").transform(Number).pipe(z.number().min(1)),
   status: z.string().optional(),
   type: z.string().optional(),
   search: z.string().optional(),
+  cooperatorId: z.string().optional(),
 })
 
 
@@ -23,7 +24,7 @@ export class FetchEquipmentsController {
   async handle(
     @Query(new ZodValidadtionPipe(queryParamSchema)) query: QueryParamSchema,
   ) {
-    const { page, search } = query
+    const { page, search, cooperatorId } = query
 
     let status: 'available' | 'loaned' | 'broken' | undefined;
 
@@ -42,7 +43,8 @@ export class FetchEquipmentsController {
       status,
       page,
       search,
-      type
+      type,
+      cooperatorId
     })
 
     if (result.isLeft()) {
@@ -53,8 +55,9 @@ export class FetchEquipmentsController {
 
     const equipments = result.value.equipments
 
+
     return {
-      equipments: equipments.map(PrismaEquipmentMapper.toPersistence)
+      equipments: equipments.map(EquipmentPresenter.toHTTP)
     }
   }
 }

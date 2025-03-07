@@ -46,5 +46,4 @@ describe('Fetch Equipments with search params', () => {
 
     expect(result.value?.equipments).toHaveLength(20);
   });
-
 });

@@ -36,7 +36,6 @@ export class OnCooperatorExitCheckEquipment implements EventHandler {
 
       await Promise.all(
         managers.map(manager => {
-          console.log(manager)
           this.sendNotification.execute({
             recipientId: manager.id.toString(),
             title: `Colaborador com equipamentos pendentes`,
