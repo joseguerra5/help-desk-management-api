@@ -55,7 +55,6 @@ describe("Fetch Equipments (E2E)", () => {
 
     expect(response.statusCode).toBe(200)
 
-    console.log(response.body.equipments)
     expect(response.body.equipments).toHaveLength(2)
   })
 })

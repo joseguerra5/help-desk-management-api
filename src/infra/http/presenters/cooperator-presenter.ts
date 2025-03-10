@@ -3,7 +3,7 @@ import { Cooperator } from "@/domain/management/enterprise/entities/cooperator";
 export class CooperatorPresenter {
   static toHTTP(cooperator: Cooperator) {
     return {
-      id: cooperator.id.toString(),
+      cooperatorId: cooperator.id.toString(),
       name: cooperator.name,
       userName: cooperator.userName,
       employeeId: cooperator.employeeId,

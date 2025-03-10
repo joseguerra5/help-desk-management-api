@@ -2,7 +2,6 @@ import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-
 
 export class EquipmentPresenter {
   static toHTTP(equipment: EquipmentDetails) {
-    console.log(equipment)
     return {
       id: equipment.equipmentId.toString(),
       type: equipment.type,

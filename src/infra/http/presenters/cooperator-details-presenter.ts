@@ -6,7 +6,7 @@ import { CallLogPresenter } from "./call-logs-presenter";
 export class CooperatorDetailsPresenter {
   static toHTTP(cooperatorDetails: CooperatorDetails) {
     return {
-      id: cooperatorDetails.cooperatorId.toString(),
+      cooperatorId: cooperatorDetails.cooperatorId.toString(),
       name: cooperatorDetails.name,
       userName: cooperatorDetails.userName,
       employeeId: cooperatorDetails.employeeId,
