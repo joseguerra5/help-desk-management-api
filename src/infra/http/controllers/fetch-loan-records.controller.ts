@@ -1,29 +1,45 @@
-import { FetchLoanRecordByCooperatorIdUseCase } from "@/domain/management/application/use-cases/fetch-loan-record";
-import { BadRequestException, Controller, Get, HttpCode, Param, Query } from "@nestjs/common";
+import { BadRequestException, Controller, Get, HttpCode, Query } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidadtionPipe } from "../pipes/zod-validation-pipe";
 import { LoanRecordPresenter } from "../presenters/loan-record-presenter";
+import { LoanRecordType } from "@prisma/client";
+import { FetchLoanRecordUseCase } from "@/domain/management/application/use-cases/fetch-loan-record";
 
-const pageQueryParamSchema = z.string().optional().default("1").transform(Number).pipe(z.number().min(1))
+const queryParamSchema = z.object({
+  page: z.string()
+    .optional()
+    .default('1')
+    .transform(Number)
+    .pipe(z.number().min(1)),
+  status: z.string().optional(),
+})
 
-const queryValidationPipe = new ZodValidadtionPipe(pageQueryParamSchema)
+const queryValidationPipe = new ZodValidadtionPipe(queryParamSchema)
 
-type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
+type QueryParamSchema = z.infer<typeof queryParamSchema>
 
-@Controller("/cooperator/:cooperatorId/loan_records")
+@Controller("/loan_records")
 export class FetchLoanRecordByCooperatorIdController {
-  constructor(private fetchLoanRecord: FetchLoanRecordByCooperatorIdUseCase) { }
+  constructor(private fetchLoanRecord: FetchLoanRecordUseCase) { }
   @Get()
   @HttpCode(200)
   async handle(
-    @Param("cooperatorId") cooperatorId: string,
-    @Query("page", queryValidationPipe) page: PageQueryParamSchema,
+    @Query(queryValidationPipe) query: QueryParamSchema,
   ) {
+    const { page } = query
+
+    let status: 'CHECK_IN' | 'CHECK_OUT' | undefined;
+
+    if (query.status) {
+      status = query.status as LoanRecordType
+    }
+
 
     const result = await this.fetchLoanRecord.execute({
-      cooperatorId,
       page,
+      status
     })
+
 
     if (result.isLeft()) {
       const error = result.value
@@ -31,10 +47,15 @@ export class FetchLoanRecordByCooperatorIdController {
       throw new BadRequestException(error)
     }
 
-    const loanRecords = result.value.loanRecords
+    const loanRecords = result.value.data
 
     return {
-      loanRecords: loanRecords.map(LoanRecordPresenter.toHTTP)
+      loanRecords: loanRecords.map(LoanRecordPresenter.toHTTP),
+      meta: {
+        pageIndex: result.value.meta.pageIndex,
+        perPage: result.value.meta.perPage,
+        totalCount: result.value.meta.totalCount,
+      }
     }
   }
 }

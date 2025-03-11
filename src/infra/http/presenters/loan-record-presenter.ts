@@ -3,6 +3,7 @@ import { LoanRecord } from "@/domain/management/enterprise/entities/loan-record"
 export class LoanRecordPresenter {
   static toHTTP(loanrecord: LoanRecord) {
     return {
+      id: loanrecord.id.toString(),
       cooperatorId: loanrecord.cooperatorId.toString(),
       madeBy: loanrecord.madeBy?.toString(),
       type: loanrecord.type,

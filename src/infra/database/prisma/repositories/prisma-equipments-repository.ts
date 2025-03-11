@@ -20,9 +20,11 @@ export class PrismaEquipmentRepository implements EquipmentRepository {
               ? { not: null }
               : status === 'loaned'
                 ? null : undefined,
-        cooperatorId:
-          cooperatorId ? cooperatorId :
-            status === 'loaned'
+        cooperatorId: cooperatorId
+          ? cooperatorId
+          : status === "available"
+            ? null
+            : status === "loaned"
               ? { not: null }
               : undefined,
         type,

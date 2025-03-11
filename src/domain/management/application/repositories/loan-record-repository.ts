@@ -6,11 +6,21 @@ export interface Count {
   status?: RecordType;
 }
 
+export interface FindManyLoanRecords {
+  data: LoanRecord[],
+  meta: {
+    totalCount: number,
+    pageIndex: number,
+    perPage: number,
+  }
+}
+
 export abstract class LoanRecordRepository {
   abstract create(loanRecord: LoanRecord): Promise<void>;
   abstract save(loanRecord: LoanRecord): Promise<void>;
   abstract count(params: Count): Promise<number>;
   abstract findById(id: string): Promise<LoanRecord | null>;
+  abstract findMany(params: PaginationLoanRecordParams): Promise<FindManyLoanRecords>;
   abstract findManyByCooperatorId(
     cooperatorId: string,
     params: PaginationLoanRecordParams,

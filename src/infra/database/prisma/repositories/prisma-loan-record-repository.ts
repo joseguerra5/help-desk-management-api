@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service';
 import { PaginationLoanRecordParams } from '@/core/repositories/pagination-param';
 import {
   Count,
+  FindManyLoanRecords,
   LoanRecordRepository,
 } from '@/domain/management/application/repositories/loan-record-repository';
 import { LoanRecord } from '@/domain/management/enterprise/entities/loan-record';
@@ -16,6 +17,35 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
     private prisma: PrismaService,
     private PDFattachmentRepository: PDFAttachmentRepository
   ) { }
+  async findMany({ page, status }: PaginationLoanRecordParams): Promise<FindManyLoanRecords> {
+    const whereCondition = status ? { type: status === 'CHECK_IN' ? LoanRecordType.CHECK_IN : LoanRecordType.CHECK_OUT } : {};
+
+    const totalCount = await this.prisma.loanRecord.count({
+      where: whereCondition
+    });
+    const loanRecords = await this.prisma.loanRecord.findMany({
+      where: whereCondition,
+      include: {
+        madeByUser: true,
+        cooperator: true,
+      },
+      orderBy: {
+        ocurredAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    });
+
+    return {
+      data: loanRecords.map(PrismaLoanRecordMapper.toDomain),
+      meta: {
+        totalCount,
+        perPage: 20,
+        pageIndex: page
+      }
+    }
+  }
+
   async count({ from, status }: Count): Promise<number> {
     const count = await this.prisma.loanRecord.count({
       where: {

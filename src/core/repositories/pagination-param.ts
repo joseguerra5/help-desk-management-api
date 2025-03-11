@@ -16,6 +16,7 @@ export interface PaginationCooperatorParams {
   search?: string;
 }
 
+
 export interface PaginationEquipmentsParams {
   page: number;
   status?: "broken" | "available" | "loaned"

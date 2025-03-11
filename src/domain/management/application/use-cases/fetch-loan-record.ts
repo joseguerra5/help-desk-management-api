@@ -1,36 +1,36 @@
 import { Either, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
-import { LoanRecord, RecordType } from '../../enterprise/entities/loan-record';
-import { LoanRecordRepository } from '../repositories/loan-record-repository';
+import { RecordType } from '../../enterprise/entities/loan-record';
+import { FindManyLoanRecords, LoanRecordRepository } from '../repositories/loan-record-repository';
 
-interface FetchLoanRecordByCooperatorIdUseCaseRequest {
-  cooperatorId: string;
+interface FetchLoanRecordUseCaseRequest {
   page: number;
   status?: RecordType;
 }
 
-type FetchLoanRecordByCooperatorIdUseCaseReponse = Either<
+type FetchLoanRecordUseCaseReponse = Either<
   null,
-  {
-    loanRecords: LoanRecord[];
-  }
+  FindManyLoanRecords
 >;
 
 @Injectable()
-export class FetchLoanRecordByCooperatorIdUseCase {
+export class FetchLoanRecordUseCase {
   constructor(private loanRecordRepository: LoanRecordRepository) { }
   async execute({
     page,
-    cooperatorId,
     status,
-  }: FetchLoanRecordByCooperatorIdUseCaseRequest): Promise<FetchLoanRecordByCooperatorIdUseCaseReponse> {
-    const loanRecords = await this.loanRecordRepository.findManyByCooperatorId(
-      cooperatorId,
-      { page, status },
+  }: FetchLoanRecordUseCaseRequest): Promise<FetchLoanRecordUseCaseReponse> {
+    const loanRecords = await this.loanRecordRepository.findMany(
+      { page, status, }
     );
 
     return right({
-      loanRecords,
+      data: loanRecords.data,
+      meta: {
+        pageIndex: loanRecords.meta.pageIndex,
+        perPage: loanRecords.meta.perPage,
+        totalCount: loanRecords.meta.totalCount
+      }
     });
   }
 }

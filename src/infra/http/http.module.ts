@@ -19,8 +19,8 @@ import { LinkAttachmentToLoanRecordUseCase } from '@/domain/management/applicati
 import { LinkAttachmentToLoanRecordController } from './controllers/link-attachment-to-loan-record.controller';
 import { GetCooperatorByIdController } from './controllers/get-cooperator.controller';
 import { GetCooperatorByIdUseCase } from '@/domain/management/application/use-cases/get-cooperator-by-id';
-import { FetchLoanRecordByCooperatorIdUseCase } from '@/domain/management/application/use-cases/fetch-loan-record';
-import { FetchLoanRecordByCooperatorIdController } from './controllers/fetch-loan-records.controller';
+import { FetchLoanRecordByCooperatorIdUseCase } from '@/domain/management/application/use-cases/fetch-loan-record-by-cooperator-id';
+import { FetchLoanRecordByCooperatorIdController } from './controllers/fetch-loan-records-by-cooperator-id.controller';
 import { FetchCooperatorUseCase } from '@/domain/management/application/use-cases/fetch-cooperators';
 import { FetchCooperatorController } from './controllers/fetch-cooperator.controller';
 import { EditManagerController } from './controllers/edit-manager.controller';
