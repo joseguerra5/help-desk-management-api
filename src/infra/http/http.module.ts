@@ -37,6 +37,8 @@ import { CountLoanCheckInUseCase } from '@/domain/management/application/use-cas
 import { GetCountLoanCheckInController } from './controllers/count-loan-checkin';
 import { FetchEquipmentsController } from './controllers/fetch-equipments.controller';
 import { FetchEquipmentsUseCase } from '@/domain/management/application/use-cases/fetch-equipments';
+import { FetchLoanRecordController } from './controllers/fetch-loan-records.controller';
+import { FetchLoanRecordUseCase } from '@/domain/management/application/use-cases/fetch-loan-record';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -50,7 +52,7 @@ import { FetchEquipmentsUseCase } from '@/domain/management/application/use-case
     RegisterDepartureDateController,
     LinkAttachmentToLoanRecordController,
     GetCooperatorByIdController,
-    FetchLoanRecordByCooperatorIdController,
+    //FetchLoanRecordByCooperatorIdController,
     FetchCooperatorController,
     EditManagerController,
     EditCooperatorController,
@@ -59,6 +61,7 @@ import { FetchEquipmentsUseCase } from '@/domain/management/application/use-case
     GetCountLoanCheckOuController,
     GetCountLoanCheckInController,
     FetchEquipmentsController,
+    FetchLoanRecordController
   ],
   providers: [
     RegisterManagerUseCase,
@@ -70,7 +73,7 @@ import { FetchEquipmentsUseCase } from '@/domain/management/application/use-case
     RegisterDepartureDateUseCase,
     LinkAttachmentToLoanRecordUseCase,
     GetCooperatorByIdUseCase,
-    FetchLoanRecordByCooperatorIdUseCase,
+    //FetchLoanRecordByCooperatorIdUseCase,
     FetchCooperatorUseCase,
     EditManagerUseCase,
     EditCooperatorUseCase,
@@ -78,7 +81,8 @@ import { FetchEquipmentsUseCase } from '@/domain/management/application/use-case
     FetchCallLogsUseCase,
     CountLoanCheckoutUseCase,
     CountLoanCheckInUseCase,
-    FetchEquipmentsUseCase
+    FetchEquipmentsUseCase,
+    FetchLoanRecordUseCase
   ],
 })
 

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { Equipment } from '@/domain/management/enterprise/entities/equipment';
-import { EquipmentRepository } from '@/domain/management/application/repositories/equipment-repository';
+import { EquipmentRepository, FindManyEquipments } from '@/domain/management/application/repositories/equipment-repository';
 import { PrismaEquipmentMapper } from '../mappers/prisma-equipment-mapper';
 import { PaginationEquipmentsParams } from '@/core/repositories/pagination-param';
-import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-objects/equipment-with-details';
 import { PrismaEquipmentDetailsMapper } from '../mappers/prisma-equipment-details-mapper';
 
 @Injectable()
 export class PrismaEquipmentRepository implements EquipmentRepository {
   constructor(private prisma: PrismaService) { }
-  async findManyBySearchParms({ page, search, status, type, cooperatorId }: PaginationEquipmentsParams): Promise<EquipmentDetails[]> {
+  async findManyBySearchParms({ page, search, status, type, cooperatorId }: PaginationEquipmentsParams): Promise<FindManyEquipments> {
+    const totalCount = await this.prisma.equipment.count()
     const equipments = await this.prisma.equipment.findMany({
       where: {
         brokenAt:
@@ -40,9 +40,17 @@ export class PrismaEquipmentRepository implements EquipmentRepository {
       },
       take: 20,
       skip: (page - 1) * 20,
+
     });
 
-    return equipments.map(PrismaEquipmentDetailsMapper.toDomain);
+    return {
+      data: equipments.map(PrismaEquipmentDetailsMapper.toDomain),
+      meta: {
+        totalCount,
+        perPage: 20,
+        pageIndex: page
+      }
+    }
   }
   async findBySerialNumber(id: string): Promise<Equipment | null> {
     const equipment = await this.prisma.equipment.findUnique({

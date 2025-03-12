@@ -10,6 +10,7 @@ import { LoanRecord } from '@/domain/management/enterprise/entities/loan-record'
 import { PrismaLoanRecordMapper } from '../mappers/prisma-loan-record-mapper';
 import { LoanRecordType } from '@prisma/client';
 import { PDFAttachmentRepository } from '@/domain/management/application/repositories/PDF-attachment-repository';
+import { PrismaLoanRecordDetailsMapper } from '../mappers/prisma-loanRecord-details';
 
 @Injectable()
 export class PrismaLoanRecordRepository implements LoanRecordRepository {
@@ -27,7 +28,11 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
       where: whereCondition,
       include: {
         madeByUser: true,
-        cooperator: true,
+        cooperator: {
+          include: { Equipment: true }
+        },
+        equipments: true,
+        attachment: true,
       },
       orderBy: {
         ocurredAt: 'desc',
@@ -37,7 +42,7 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
     });
 
     return {
-      data: loanRecords.map(PrismaLoanRecordMapper.toDomain),
+      data: loanRecords.map(PrismaLoanRecordDetailsMapper.toDomain),
       meta: {
         totalCount,
         perPage: 20,

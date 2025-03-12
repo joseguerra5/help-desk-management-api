@@ -1,20 +1,29 @@
-import { LoanRecord } from "@/domain/management/enterprise/entities/loan-record";
+import { LoanRecordDetails } from "@/domain/management/enterprise/entities/value-objects/loan-record-details";
+import { EquipmentPresenter } from "./inventory-presenter";
 
 export class LoanRecordPresenter {
-  static toHTTP(loanrecord: LoanRecord) {
+  static toHTTP(loanRecord: LoanRecordDetails) {
     return {
-      id: loanrecord.id.toString(),
-      cooperatorId: loanrecord.cooperatorId.toString(),
-      madeBy: loanrecord.madeBy?.toString(),
-      type: loanrecord.type,
-      equipments: loanrecord.equipments,
-      ocurredAt: loanrecord.ocurredAt,
-      attachment: loanrecord.attachment
-        ? {
-          id: loanrecord.attachment.id.toString(),
-          url: loanrecord.attachment.attachmentId.toString(),
-        }
-        : null,
+      loanrecordId: loanRecord.loanRecordId.toString(),
+      cooperator: {
+        id: loanRecord.cooperator.id.toString(),
+        name: loanRecord.cooperator.name,
+        userName: loanRecord.cooperator.userName,
+        employeeId: loanRecord.cooperator.employeeId,
+      },
+      madeBy: {
+        id: loanRecord.madeBy.id.toString(),
+        name: loanRecord.madeBy.name,
+        userName: loanRecord.madeBy.userName,
+        employeeId: loanRecord.madeBy.employeeId,
+      },
+      type: loanRecord.type,
+      equipments: loanRecord.equipments.map(EquipmentPresenter.toHTTPCooperatorEquipment),
+      ocurredAt: loanRecord.ocurredAt,
+      attachment: {
+        url: loanRecord.attachment.url,
+        title: loanRecord.attachment.title,
+      }
     }
   }
 }

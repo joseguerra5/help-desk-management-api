@@ -53,11 +53,16 @@ export class FetchEquipmentsController {
       throw new BadRequestException(error)
     }
 
-    const equipments = result.value.equipments
+    const equipments = result.value.data
 
 
     return {
-      equipments: equipments.map(EquipmentPresenter.toHTTP)
+      equipments: equipments.map(EquipmentPresenter.toHTTP),
+      meta: {
+        pageIndex: result.value.meta.pageIndex,
+        perPage: result.value.meta.perPage,
+        totalCount: result.value.meta.totalCount,
+      }
     }
   }
 }

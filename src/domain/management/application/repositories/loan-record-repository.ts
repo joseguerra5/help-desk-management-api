@@ -1,5 +1,6 @@
 import { PaginationLoanRecordParams } from '@/core/repositories/pagination-param';
 import { LoanRecord, RecordType } from '../../enterprise/entities/loan-record';
+import { LoanRecordDetails } from '../../enterprise/entities/value-objects/loan-record-details';
 
 export interface Count {
   from?: Date;
@@ -7,7 +8,7 @@ export interface Count {
 }
 
 export interface FindManyLoanRecords {
-  data: LoanRecord[],
+  data: LoanRecordDetails[],
   meta: {
     totalCount: number,
     pageIndex: number,

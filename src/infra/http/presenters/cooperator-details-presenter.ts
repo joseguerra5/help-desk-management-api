@@ -16,7 +16,7 @@ export class CooperatorDetailsPresenter {
       createdAt: cooperatorDetails.createdAt,
       departureDate: cooperatorDetails.departureDate,
       updatedAt: cooperatorDetails.updatedAt,
-      inventory: cooperatorDetails.inventory.map(EquipmentPresenter.toHTTP),
+      inventory: cooperatorDetails.inventory.map(EquipmentPresenter.toHTTPCooperatorEquipment),
       callLogs: cooperatorDetails.callLogs.map(CallLogPresenter.toHTTP)
     }
   }

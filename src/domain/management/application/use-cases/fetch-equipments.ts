@@ -1,8 +1,7 @@
 import { Either, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
 import { EquipmentType } from '../../enterprise/entities/equipment';
-import { EquipmentRepository } from '../repositories/equipment-repository';
-import { EquipmentDetails } from '../../enterprise/entities/value-objects/equipment-with-details';
+import { EquipmentRepository, FindManyEquipments } from '../repositories/equipment-repository';
 
 interface FetchEquipmentsUseCaseRequest {
   page: number;
@@ -14,9 +13,7 @@ interface FetchEquipmentsUseCaseRequest {
 
 type FetchEquipmentsUseCaseReponse = Either<
   null,
-  {
-    equipments: EquipmentDetails[];
-  }
+  FindManyEquipments
 >;
 
 @Injectable()
@@ -34,7 +31,12 @@ export class FetchEquipmentsUseCase {
     );
 
     return right({
-      equipments,
+      data: equipments.data,
+      meta: {
+        pageIndex: equipments.meta.pageIndex,
+        perPage: equipments.meta.perPage,
+        totalCount: equipments.meta.totalCount
+      }
     });
   }
 }

@@ -22,7 +22,6 @@ export class PrismaCooperatorMapper {
       updatedAt: cooperator.updatedAt,
       departureDate: cooperator.departureDate,
       id: cooperator.id.toString(),
-
     };
   }
 
@@ -38,7 +37,7 @@ export class PrismaCooperatorMapper {
         createdAt: raw.createdAt,
         departureDate: raw.departureDate,
         updatedAt: raw.updatedAt,
-        inventory: new InventoryList(raw.Equipment.map(PrismaCooperatorEquipmentMapper.toDomain))
+        inventory: raw.Equipment ? new InventoryList(raw.Equipment.map(PrismaCooperatorEquipmentMapper.toDomain)) : undefined
       },
       new UniqueEntityId(raw.id),
     );

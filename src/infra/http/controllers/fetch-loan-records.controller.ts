@@ -19,7 +19,7 @@ const queryValidationPipe = new ZodValidadtionPipe(queryParamSchema)
 type QueryParamSchema = z.infer<typeof queryParamSchema>
 
 @Controller("/loan_records")
-export class FetchLoanRecordByCooperatorIdController {
+export class FetchLoanRecordController {
   constructor(private fetchLoanRecord: FetchLoanRecordUseCase) { }
   @Get()
   @HttpCode(200)
