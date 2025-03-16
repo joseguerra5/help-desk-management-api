@@ -5,6 +5,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { CooperatorFactory } from 'test/factories/make-cooperator';
+import { CooperatorEquipmentFactory } from 'test/factories/make-cooperator-equipment';
+import { EquipmentFactory } from 'test/factories/make-equipment';
 import { LoanRecordFactory } from 'test/factories/make-loan-record';
 import { ManagerFactory } from 'test/factories/make-manager';
 
@@ -13,17 +15,21 @@ describe("Fetch LoanRecords By cooperator Id (E2E)", () => {
   let managerFactory: ManagerFactory
   let cooperatorFactory: CooperatorFactory
   let loanRecordFactory: LoanRecordFactory
+  let equipmentFactory: EquipmentFactory
+  let cooperatorEquipmentFactory: CooperatorEquipmentFactory
   let jwt: JwtService
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [ManagerFactory, CooperatorFactory, LoanRecordFactory]
+      providers: [ManagerFactory, CooperatorFactory, LoanRecordFactory, EquipmentFactory, CooperatorEquipmentFactory]
     }).compile();
 
     app = moduleRef.createNestApplication();
     managerFactory = moduleRef.get(ManagerFactory)
     cooperatorFactory = moduleRef.get(CooperatorFactory)
     loanRecordFactory = moduleRef.get(LoanRecordFactory)
+    equipmentFactory = moduleRef.get(EquipmentFactory)
+    cooperatorEquipmentFactory = moduleRef.get(CooperatorEquipmentFactory)
     jwt = moduleRef.get(JwtService)
     await app.init();
   });
@@ -34,15 +40,27 @@ describe("Fetch LoanRecords By cooperator Id (E2E)", () => {
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
 
+    const equipment = await equipmentFactory.makePrismaEquipment(
+      { createdAt: new Date(2024, 11, 2), },
+    );
+
+    const cooperatorEquipment = await cooperatorEquipmentFactory.makePrismaCooperatorEquipment({
+      cooperatorId: cooperator.id,
+      equipmentId: equipment.id
+    })
+
+
     await Promise.all([
       loanRecordFactory.makePrismaLoanRecord({
         cooperatorId: cooperator.id,
-        madeBy: user.id
+        madeBy: user.id,
+        equipments: [cooperatorEquipment]
       }),
 
       loanRecordFactory.makePrismaLoanRecord({
         cooperatorId: cooperator.id,
-        madeBy: user.id
+        madeBy: user.id,
+        equipments: [cooperatorEquipment]
       })
     ])
 
@@ -53,7 +71,6 @@ describe("Fetch LoanRecords By cooperator Id (E2E)", () => {
 
     expect(response.statusCode).toBe(200)
 
-    console.log(response.body.loanRecords)
 
     expect(response.body.loanRecords).toHaveLength(2)
   })

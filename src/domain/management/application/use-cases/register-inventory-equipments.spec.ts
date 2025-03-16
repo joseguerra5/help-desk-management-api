@@ -69,6 +69,7 @@ describe('Register inventory', () => {
     });
 
     expect(result.isRight()).toBe(true);
+
     expect(inMemoryLoanRecordRepository.items).toHaveLength(2);
   });
 });

@@ -1,10 +1,10 @@
 import { PaginationEquipmentsParams } from '@/core/repositories/pagination-param';
-import { EquipmentRepository } from '@/domain/management/application/repositories/equipment-repository';
+import { EquipmentRepository, FindManyEquipments } from '@/domain/management/application/repositories/equipment-repository';
 import { Equipment } from '@/domain/management/enterprise/entities/equipment';
 
 export class InMemoryEquipmentRepository implements EquipmentRepository {
   public items: Equipment[] = [];
-  async findManyBySearchParms({ page, search, status, type }: PaginationEquipmentsParams): Promise<Equipment[]> {
+  async findManyBySearchParms({ page, search, status, type }: PaginationEquipmentsParams): Promise<FindManyEquipments> {
     let filteredItems = this.items;
 
     if (status === "broken") {

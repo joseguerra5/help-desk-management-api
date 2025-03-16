@@ -9,6 +9,7 @@ import { makeCooperatorEquipment } from './make-cooperator-equipment';
 import { Injectable } from '@nestjs/common';
 import { PrismaLoanRecordMapper } from '@/infra/database/prisma/mappers/prisma-loan-record-mapper';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
+import { makeEquipment } from './make-equipment';
 
 export function makeLoanRecord(
   override: Partial<LoanRecordProps> = {},
@@ -16,6 +17,7 @@ export function makeLoanRecord(
 ) {
   const loanTypes: RecordType[] = ['CHECK_IN', 'CHECK_OUT'];
 
+  const equipment = makeEquipment()
   const loanrecord = LoanRecord.create(
     {
       cooperatorId: new UniqueEntityId(),
@@ -23,7 +25,7 @@ export function makeLoanRecord(
       equipments: [
         makeCooperatorEquipment({
           cooperatorId: id,
-          equipmentId: new UniqueEntityId(),
+          equipmentId: equipment.id,
         }),
       ],
       type: override.type ?? faker.helpers.arrayElement(loanTypes),

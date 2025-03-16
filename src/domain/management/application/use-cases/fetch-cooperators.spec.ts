@@ -22,8 +22,8 @@ describe('Fetch Cooperators', () => {
     });
 
     expect(result.isRight()).toBeTruthy();
-    expect(result.value?.cooperators).toHaveLength(2);
-    expect(result.value?.cooperators).toEqual([
+    expect(result.value?.data).toHaveLength(2);
+    expect(result.value?.data).toEqual([
       expect.objectContaining({ createdAt: new Date(2024, 11, 2) }),
       expect.objectContaining({ createdAt: new Date(2024, 11, 1) }),
     ]);
@@ -46,8 +46,8 @@ describe('Fetch Cooperators', () => {
     });
 
     expect(result.isRight()).toBeTruthy();
-    expect(result.value?.cooperators).toHaveLength(1);
-    expect(result.value?.cooperators).toEqual([
+    expect(result.value?.data).toHaveLength(1);
+    expect(result.value?.data).toEqual([
       expect.objectContaining({ userName: 'JOED' }),
     ]);
   });

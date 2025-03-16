@@ -28,9 +28,7 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
       where: whereCondition,
       include: {
         madeByUser: true,
-        cooperator: {
-          include: { Equipment: true }
-        },
+        cooperator: true,
         equipments: true,
         attachment: true,
       },
@@ -91,7 +89,21 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
       data,
     });
 
-    await this.PDFattachmentRepository.create(loanrecord.attachment)
+    if (loanrecord.equipments.length > 0) {
+      await this.prisma.loanRecord.update({
+        where: { id: data.id },
+        data: {
+          equipments: {
+            set: [], // Limpa associações antigas
+            connect: loanrecord.equipments.map((equipment) => ({
+              id: equipment.id.toString(),
+            })),
+          },
+        },
+      });
+
+      await this.PDFattachmentRepository.create(loanrecord.attachment)
+    }
   }
 
   async findById(id: string): Promise<LoanRecord | null> {
@@ -109,10 +121,25 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
   }
 
   async create(loanrecord: LoanRecord): Promise<void> {
+    console.log("logo qunado recebe", loanrecord.equipments[0])
     const data = PrismaLoanRecordMapper.toPersistence(loanrecord);
 
-    await this.prisma.loanRecord.create({
+    const createdLoanRecord = await this.prisma.loanRecord.create({
       data,
     });
+
+
+    if (loanrecord.equipments.length > 0) {
+      await this.prisma.loanRecord.update({
+        where: { id: createdLoanRecord.id },
+        data: {
+          equipments: {
+            connect: loanrecord.equipments.map((equipment) => ({
+              id: equipment.equipmentId.toString(),
+            })),
+          },
+        },
+      });
+    }
   }
 }

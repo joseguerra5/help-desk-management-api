@@ -12,7 +12,7 @@ export class PrismaLoanRecordMapper {
       type: loanRecord.type,
       id: loanRecord.id.toString(),
       ocurredAt: loanRecord.ocurredAt,
-    };
+    }
   }
 
   static toDomain(raw: PrismaLoanRecord) {

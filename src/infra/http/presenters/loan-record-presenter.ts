@@ -20,10 +20,10 @@ export class LoanRecordPresenter {
       type: loanRecord.type,
       equipments: loanRecord.equipments.map(EquipmentPresenter.toHTTPCooperatorEquipment),
       ocurredAt: loanRecord.ocurredAt,
-      attachment: {
-        url: loanRecord.attachment.url,
-        title: loanRecord.attachment.title,
-      }
+      attachment: loanRecord.attachment.length > 0 ? {
+        title: loanRecord.attachment[0].title,
+        url: loanRecord.attachment[0].url
+      } : null,
     }
   }
 }

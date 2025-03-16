@@ -36,6 +36,7 @@ export class RegisterInventoryUseCase {
     cooperatorId,
     managerId,
   }: RegisterInventoryUseCaseRequest): Promise<RegisterInventoryUseCaseReponse> {
+
     const cooperator = await this.cooperatorRepository.findById(cooperatorId);
 
     if (!cooperator) {
@@ -53,11 +54,12 @@ export class RegisterInventoryUseCase {
     if (equipmentsIds === null) {
       await this.cooperatorEquipmentRepository.deleteManyByCooperatorId(cooperatorId)
 
+
       const loanRecord = LoanRecord.create({
         cooperatorId: cooperator.id,
         equipments: equipmentList.getItems(),
         madeBy: new UniqueEntityId(managerId),
-        type: 'CHECK_OUT',
+        type: 'CHECK_IN',
       });
 
       await this.loanRecordRepository.create(loanRecord);
@@ -82,18 +84,21 @@ export class RegisterInventoryUseCase {
     if (equipmentList.getNewItems().length > 0) {
       const newEquipmentsItems = equipmentList.getNewItems();
 
+
       const equipments = newEquipmentsItems.map((newEquipmentItem) => {
         return CooperatorEquipment.create({
           cooperatorId: cooperator.id,
-          equipmentId: newEquipmentItem.id,
+          equipmentId: newEquipmentItem.equipmentId,
         });
       });
 
+      console.log("dentro do caso de uso primeiro if", equipmentsIds,
+        equipments)
       const loanRecord = LoanRecord.create({
         cooperatorId: cooperator.id,
         equipments: equipments,
         madeBy: new UniqueEntityId(managerId),
-        type: 'CHECK_IN',
+        type: 'CHECK_OUT',
       });
 
       await this.loanRecordRepository.create(loanRecord);
@@ -113,7 +118,7 @@ export class RegisterInventoryUseCase {
         cooperatorId: cooperator.id,
         equipments: equipments,
         madeBy: new UniqueEntityId(managerId),
-        type: 'CHECK_OUT',
+        type: 'CHECK_IN',
       });
 
       await this.loanRecordRepository.create(loanRecord);

@@ -1,16 +1,29 @@
 import { DomainEvents } from '@/core/events/domain-events';
 import { PaginationCooperatorParams } from '@/core/repositories/pagination-param';
-import { CooperatorRepository } from '@/domain/management/application/repositories/cooperator-repository';
+import { CooperatorRepository, FindManyCooperators } from '@/domain/management/application/repositories/cooperator-repository';
 import { Cooperator } from '@/domain/management/enterprise/entities/cooperator';
+import { CooperatorDetails } from '@/domain/management/enterprise/entities/value-objects/cooperator-with-details';
 
 export class InMemoryCooperatorRepository implements CooperatorRepository {
   public items: Cooperator[] = [];
+
+  async findByIdWithDetails(id: string): Promise<CooperatorDetails | null> {
+    const cooperator = this.items.find((item) => item.id.toString() === id);
+
+    if (!cooperator) {
+      return null;
+    }
+
+    return cooperator;
+  }
+
+
 
   async findMany({
     page,
     search,
     status,
-  }: PaginationCooperatorParams): Promise<Cooperator[]> {
+  }: PaginationCooperatorParams): Promise<FindManyCooperators> {
     let filteredItems = this.items;
 
     if (search) {

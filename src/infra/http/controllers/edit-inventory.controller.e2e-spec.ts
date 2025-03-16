@@ -64,6 +64,8 @@ describe("Edit Cooperator Inventory (E2E)", () => {
       }
     })
 
+    console.log(loanRecordOnDatabase)
+
     expect(loanRecordOnDatabase).toHaveLength(1)
 
   })

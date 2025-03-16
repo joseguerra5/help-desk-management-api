@@ -25,7 +25,7 @@ describe('Fetch Equipments with search params', () => {
       page: 1,
     });
 
-    expect(result.value?.equipments).toHaveLength(20);
+    expect(result.value?.data).toHaveLength(20);
   });
   it('should be able to fetch with search params', async () => {
     for (let i = 1; i <= 22; i++) {
@@ -44,6 +44,6 @@ describe('Fetch Equipments with search params', () => {
       status: "broken",
     });
 
-    expect(result.value?.equipments).toHaveLength(20);
+    expect(result.value?.data).toHaveLength(20);
   });
 });

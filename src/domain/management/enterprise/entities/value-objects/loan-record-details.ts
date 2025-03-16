@@ -2,12 +2,16 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { ValueObject } from '@/core/entities/value-object'
 import { Manager } from '../manager'
 import { Equipment } from '../equipment'
-import { Cooperator } from '../cooperator'
 
 // informações que eu quero transportar
 export interface LoanRecordDetailsProps {
   loanRecordId: UniqueEntityId
-  cooperator: Cooperator
+  cooperator: {
+    id: UniqueEntityId,
+    name: string,
+    userName: string,
+    employeeId: string,
+  }
   madeBy: Manager,
   type: string,
   equipments: Equipment[],
@@ -15,7 +19,7 @@ export interface LoanRecordDetailsProps {
   attachment: {
     url: string,
     title: string,
-  }
+  }[] | null
 }
 
 export class LoanRecordDetails extends ValueObject<LoanRecordDetailsProps> {
