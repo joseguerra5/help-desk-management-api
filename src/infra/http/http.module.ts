@@ -39,6 +39,8 @@ import { FetchEquipmentsController } from './controllers/fetch-equipments.contro
 import { FetchEquipmentsUseCase } from '@/domain/management/application/use-cases/fetch-equipments';
 import { FetchLoanRecordController } from './controllers/fetch-loan-records.controller';
 import { FetchLoanRecordUseCase } from '@/domain/management/application/use-cases/fetch-loan-record';
+import { GetManagerProfileController } from './controllers/get-profile.controller';
+import { GetManagerProfileUseCase } from '@/domain/management/application/use-cases/get-manager-profile';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -61,7 +63,8 @@ import { FetchLoanRecordUseCase } from '@/domain/management/application/use-case
     GetCountLoanCheckOuController,
     GetCountLoanCheckInController,
     FetchEquipmentsController,
-    FetchLoanRecordController
+    FetchLoanRecordController,
+    GetManagerProfileController
   ],
   providers: [
     RegisterManagerUseCase,
@@ -82,7 +85,8 @@ import { FetchLoanRecordUseCase } from '@/domain/management/application/use-case
     CountLoanCheckoutUseCase,
     CountLoanCheckInUseCase,
     FetchEquipmentsUseCase,
-    FetchLoanRecordUseCase
+    FetchLoanRecordUseCase,
+    GetManagerProfileUseCase
   ],
 })
 
