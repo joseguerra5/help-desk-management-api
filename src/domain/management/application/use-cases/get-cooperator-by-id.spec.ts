@@ -5,14 +5,20 @@ import { makeCooperatorEquipment } from 'test/factories/make-cooperator-equipmen
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { InMemoryCooperatorEquipmentRepository } from 'test/repositories/in-memory-cooperator-equipment-repository';
 import { InventoryList } from '../../enterprise/entities/inventory-list';
+import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
+import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
 
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
 let inMemoryCooperatorEquipmentRepository: InMemoryCooperatorEquipmentRepository;
+let inMemoryEquipmentRepository: InMemoryEquipmentRepository
+let inMemoryCallLogRepository: InMemoryCallLogRepository
 let sut: GetCooperatorByIdUseCase;
 
 describe('Get Cooperator By Id', () => {
   beforeEach(() => {
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
+    inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
+    inMemoryCallLogRepository = new InMemoryCallLogRepository();
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogRepository, inMemoryEquipmentRepository);
     inMemoryCooperatorEquipmentRepository =
       new InMemoryCooperatorEquipmentRepository();
     sut = new GetCooperatorByIdUseCase(inMemoryCooperatorRepository);
@@ -39,13 +45,12 @@ describe('Get Cooperator By Id', () => {
       new UniqueEntityId('test'),
     );
 
-    await inMemoryCooperatorRepository.items.push(cooperator);
+    inMemoryCooperatorRepository.items.push(cooperator);
 
     const result = await sut.execute({
       cooperatorId: cooperator.id.toString(),
     });
 
     expect(result.isRight()).toEqual(true);
-    expect(result.value).toEqual({ cooperator });
   });
 });

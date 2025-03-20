@@ -3,7 +3,7 @@ import { Cooperator } from '../../enterprise/entities/cooperator';
 import { CooperatorDetails } from '../../enterprise/entities/value-objects/cooperator-with-details';
 
 export interface FindManyCooperators {
-  data: Cooperator[],
+  data: CooperatorDetails[],
   meta: {
     totalCount: number,
     pageIndex: number,

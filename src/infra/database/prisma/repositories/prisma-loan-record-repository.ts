@@ -11,6 +11,7 @@ import { PrismaLoanRecordMapper } from '../mappers/prisma-loan-record-mapper';
 import { LoanRecordType } from '@prisma/client';
 import { PDFAttachmentRepository } from '@/domain/management/application/repositories/PDF-attachment-repository';
 import { PrismaLoanRecordDetailsMapper } from '../mappers/prisma-loanRecord-details';
+import { LoanRecordDetails } from '@/domain/management/enterprise/entities/value-objects/loan-record-details';
 
 @Injectable()
 export class PrismaLoanRecordRepository implements LoanRecordRepository {
@@ -18,6 +19,25 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
     private prisma: PrismaService,
     private PDFattachmentRepository: PDFAttachmentRepository
   ) { }
+  async findByIdWithDetails(id: string): Promise<LoanRecordDetails | null> {
+    const loanRecord = await this.prisma.loanRecord.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        madeByUser: true,
+        cooperator: true,
+        equipments: true,
+        attachment: true,
+      }
+    });
+
+    if (!loanRecord) {
+      return null;
+    }
+
+    return PrismaLoanRecordDetailsMapper.toDomain(loanRecord);
+  }
   async findMany({ page, status }: PaginationLoanRecordParams): Promise<FindManyLoanRecords> {
     const whereCondition = status ? { type: status === 'CHECK_IN' ? LoanRecordType.CHECK_IN : LoanRecordType.CHECK_OUT } : {};
 
@@ -89,12 +109,13 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
       data,
     });
 
-    if (loanrecord.equipments.length > 0) {
+
+    if (loanrecord.equipments && loanrecord.equipments.length > 0) {
       await this.prisma.loanRecord.update({
         where: { id: data.id },
         data: {
           equipments: {
-            set: [], // Limpa associações antigas
+            set: [],
             connect: loanrecord.equipments.map((equipment) => ({
               id: equipment.id.toString(),
             })),
@@ -102,8 +123,8 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
         },
       });
 
-      await this.PDFattachmentRepository.create(loanrecord.attachment)
     }
+    await this.PDFattachmentRepository.create(loanrecord.attachment)
   }
 
   async findById(id: string): Promise<LoanRecord | null> {
@@ -121,7 +142,6 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
   }
 
   async create(loanrecord: LoanRecord): Promise<void> {
-    console.log("logo qunado recebe", loanrecord.equipments[0])
     const data = PrismaLoanRecordMapper.toPersistence(loanrecord);
 
     const createdLoanRecord = await this.prisma.loanRecord.create({

@@ -27,7 +27,7 @@ export class PrismaCooperatorDetailsMapper {
       departureDate: raw.departureDate,
       updatedAt: raw.updatedAt,
       inventory: raw.Equipment.map(PrismaEquipmentMapper.toDomain),
-      callLogs: raw.CallLog.map(PrismaCallLogMapper.toDomain)
+      callLogs: raw.CallLog.map(PrismaCallLogMapper.toDomain) ?? []
     })
   }
 }

@@ -21,6 +21,7 @@ export abstract class LoanRecordRepository {
   abstract save(loanRecord: LoanRecord): Promise<void>;
   abstract count(params: Count): Promise<number>;
   abstract findById(id: string): Promise<LoanRecord | null>;
+  abstract findByIdWithDetails(id: string): Promise<LoanRecordDetails | null>;
   abstract findMany(params: PaginationLoanRecordParams): Promise<FindManyLoanRecords>;
   abstract findManyByCooperatorId(
     cooperatorId: string,

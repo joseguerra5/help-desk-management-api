@@ -1,13 +1,19 @@
 import { makeCooperator } from 'test/factories/make-cooperator';
 import { FetchCooperatorUseCase } from './fetch-cooperators';
 import { InMemoryCooperatorRepository } from 'test/repositories/in-memory-cooperator-repository';
+import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
+import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
 
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
+let inMemoryCallLogRepository: InMemoryCallLogRepository;
+let inMemoryEquipmentRepository: InMemoryEquipmentRepository;
 let sut: FetchCooperatorUseCase;
 
 describe('Fetch Cooperators', () => {
   beforeEach(() => {
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
+    inMemoryCallLogRepository = new InMemoryCallLogRepository();
+    inMemoryEquipmentRepository = new InMemoryCallLogRepository();
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogRepository, inMemoryEquipmentRepository);
     sut = new FetchCooperatorUseCase(inMemoryCooperatorRepository);
   });
   it('should be able to fetch recent cooperators', async () => {

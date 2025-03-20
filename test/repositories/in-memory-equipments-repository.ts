@@ -1,6 +1,8 @@
 import { PaginationEquipmentsParams } from '@/core/repositories/pagination-param';
 import { EquipmentRepository, FindManyEquipments } from '@/domain/management/application/repositories/equipment-repository';
 import { Equipment } from '@/domain/management/enterprise/entities/equipment';
+import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-objects/equipment-with-details';
+import { EquipmentType } from '@prisma/client';
 
 export class InMemoryEquipmentRepository implements EquipmentRepository {
   public items: Equipment[] = [];
@@ -8,43 +10,52 @@ export class InMemoryEquipmentRepository implements EquipmentRepository {
     let filteredItems = this.items;
 
     if (status === "broken") {
-      filteredItems = filteredItems.filter(
-        (item) => item.brokenAt !== null,
-      );
+      filteredItems = filteredItems.filter(item => item.brokenAt !== null);
     } else if (status === 'available') {
-      filteredItems = filteredItems.filter(
-        (item) => item.cooperatorId === null && item.brokenAt === null,
-      );
+      filteredItems = filteredItems.filter(item => item.cooperatorId === null && item.brokenAt === null);
     } else if (status === 'loaned') {
-      filteredItems = filteredItems.filter(
-        (item) => item.cooperatorId !== null && item.brokenAt === null,
-      );
+      filteredItems = filteredItems.filter(item => item.cooperatorId !== null && item.brokenAt === null);
     }
-
 
     if (search) {
       filteredItems = filteredItems.filter(
-        (item) =>
-          item.serialNumber.toLowerCase().includes(search.toLowerCase()) ||
-          item.name.toLowerCase().includes(search.toLowerCase()),
+        item => item.serialNumber.toLowerCase().includes(search.toLowerCase()) ||
+          item.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
     if (type) {
-      filteredItems = filteredItems.filter(
-        (item) => item.type === type,
-      );
+      filteredItems = filteredItems.filter(item => item.type === type);
     }
 
     // Ordenação por data de criação antes da paginação
     filteredItems = filteredItems.sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
     );
 
-    // Paginação
+    // Paginação corrigida
     const startIndex = (page - 1) * 20;
     const endIndex = page * 20;
-    return filteredItems.slice(startIndex, endIndex);
+    const paginatedItems = filteredItems.slice(startIndex, endIndex);
+
+    return {
+      data: paginatedItems.map(equipment => {
+        return EquipmentDetails.create({
+          createdAt: equipment.createdAt,
+          equipmentId: equipment.id,
+          name: equipment.name,
+          serialNumber: equipment.serialNumber,
+          type: equipment.type as EquipmentType,
+          brokenAt: equipment.brokenAt,
+          brokenReason: equipment.brokenReason,
+        });
+      }),
+      meta: {
+        pageIndex: page,
+        perPage: 20,
+        totalCount: filteredItems.length // Total após os filtros aplicados
+      }
+    };
   }
 
   async findBySerialNumber(id: string): Promise<Equipment | null> {

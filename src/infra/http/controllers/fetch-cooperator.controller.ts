@@ -2,7 +2,7 @@ import { BadRequestException, Controller, Get, HttpCode, Query } from "@nestjs/c
 import { z } from "zod";
 import { ZodValidadtionPipe } from "../pipes/zod-validation-pipe";
 import { FetchCooperatorUseCase } from "@/domain/management/application/use-cases/fetch-cooperators";
-import { CooperatorPresenter } from "../presenters/cooperator-presenter";
+import { CooperatorDetailsPresenter } from "../presenters/cooperator-details-presenter";
 
 export const fetchParamSchema = z.object({
   page: z.string()
@@ -48,7 +48,7 @@ export class FetchCooperatorController {
     const cooperators = result.value.data
 
     return {
-      cooperators: cooperators.map(CooperatorPresenter.toHTTP),
+      cooperators: cooperators.map(CooperatorDetailsPresenter.toHTTP),
       meta: {
         pageIndex: result.value.meta.pageIndex,
         perPage: result.value.meta.perPage,

@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { ValueObject } from '@/core/entities/value-object'
 import { Manager } from '../manager'
-import { Equipment } from '../equipment'
+import { EquipmentDetails } from './equipment-with-details'
 
 // informações que eu quero transportar
 export interface LoanRecordDetailsProps {
@@ -11,10 +11,12 @@ export interface LoanRecordDetailsProps {
     name: string,
     userName: string,
     employeeId: string,
+    departureDate: Date | null,
+    nif: string
   }
   madeBy: Manager,
   type: string,
-  equipments: Equipment[],
+  equipments: EquipmentDetails[],
   ocurredAt: Date,
   attachment: {
     url: string,
@@ -49,6 +51,14 @@ export class LoanRecordDetails extends ValueObject<LoanRecordDetailsProps> {
 
   get attachment() {
     return this.props.attachment
+  }
+
+  get departureDate() {
+    return this.props.departureDate
+  }
+
+  get nif() {
+    return this.props.nif
   }
 
   static create(props: LoanRecordDetailsProps): LoanRecordDetails {

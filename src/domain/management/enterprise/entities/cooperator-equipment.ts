@@ -14,6 +14,13 @@ export class CooperatorEquipment extends Entity<CooperatorEquipmentProps> {
     return this.props.equipmentId;
   }
 
+  set cooperatorId(cooperatorId: UniqueEntityId) {
+    this.props.cooperatorId = cooperatorId;
+  }
+
+  set equipmentId(equipmentId: UniqueEntityId) {
+    this.props.equipmentId = equipmentId;
+  }
   static create(props: CooperatorEquipmentProps, id?: UniqueEntityId) {
     const equipment = new CooperatorEquipment(props, id);
 

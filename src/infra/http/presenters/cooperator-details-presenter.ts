@@ -5,6 +5,7 @@ import { CallLogPresenter } from "./call-logs-presenter";
 
 export class CooperatorDetailsPresenter {
   static toHTTP(cooperatorDetails: CooperatorDetails) {
+    console.log(cooperatorDetails.inventory)
     return {
       cooperatorId: cooperatorDetails.cooperatorId.toString(),
       name: cooperatorDetails.name,
@@ -16,8 +17,8 @@ export class CooperatorDetailsPresenter {
       createdAt: cooperatorDetails.createdAt,
       departureDate: cooperatorDetails.departureDate,
       updatedAt: cooperatorDetails.updatedAt,
-      inventory: cooperatorDetails.inventory.map(EquipmentPresenter.toHTTPCooperatorEquipment),
-      callLogs: cooperatorDetails.callLogs.map(CallLogPresenter.toHTTP)
+      inventory: cooperatorDetails.inventory ? cooperatorDetails.inventory.map(EquipmentPresenter.toHTTP) : null,
+      callLogs: cooperatorDetails.callLogs ? cooperatorDetails.callLogs.map(CallLogPresenter.toHTTP) : null
     }
   }
 }

@@ -5,55 +5,60 @@ import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { CooperatorFactory } from 'test/factories/make-cooperator';
+import { CooperatorEquipmentFactory } from 'test/factories/make-cooperator-equipment';
+import { EquipmentFactory } from 'test/factories/make-equipment';
 import { LoanRecordFactory } from 'test/factories/make-loan-record';
 import { ManagerFactory } from 'test/factories/make-manager';
 
-describe("Fetch LoanRecords By cooperator Id (E2E)", () => {
+describe("Get loan record by Id (E2E)", () => {
   let app: INestApplication;
   let managerFactory: ManagerFactory
   let cooperatorFactory: CooperatorFactory
   let loanRecordFactory: LoanRecordFactory
+  let equipmentFactory: EquipmentFactory
+  let cooperatorEquipmentFactory: CooperatorEquipmentFactory
   let jwt: JwtService
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [ManagerFactory, CooperatorFactory, LoanRecordFactory]
+      providers: [ManagerFactory, CooperatorFactory, LoanRecordFactory, EquipmentFactory, CooperatorEquipmentFactory]
     }).compile();
 
     app = moduleRef.createNestApplication();
     managerFactory = moduleRef.get(ManagerFactory)
     cooperatorFactory = moduleRef.get(CooperatorFactory)
     loanRecordFactory = moduleRef.get(LoanRecordFactory)
+    equipmentFactory = moduleRef.get(EquipmentFactory)
+    cooperatorEquipmentFactory = moduleRef.get(CooperatorEquipmentFactory)
     jwt = moduleRef.get(JwtService)
     await app.init();
   });
-  test("[GET] /cooperator/:cooperatorId/loan_records", async () => {
+  test("[GET] /loan_record/:loanRecordId", async () => {
     const user = await managerFactory.makePrismaManager()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
+    const equipment = await equipmentFactory.makePrismaEquipment()
+    const cooperatorEquipment = await cooperatorEquipmentFactory.makePrismaCooperatorEquipment({
+      cooperatorId: cooperator.id,
+      equipmentId: equipment.id
+    })
 
-    await Promise.all([
-      loanRecordFactory.makePrismaLoanRecord({
-        cooperatorId: cooperator.id,
-        madeBy: user.id
-      }),
 
-      loanRecordFactory.makePrismaLoanRecord({
-        cooperatorId: cooperator.id,
-        madeBy: user.id
-      })
-    ])
+    const loanRecord = await loanRecordFactory.makePrismaLoanRecord({
+      cooperatorId: cooperator.id,
+      equipments: [cooperatorEquipment],
+      madeBy: user.id
+    })
+
 
     const response = await request(app.getHttpServer())
-      .get(`/cooperator/${cooperator.id.toString()}/loan_records`)
+      .get(`/loan_record/${loanRecord.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
 
-
-    expect(response.body.loanRecords).toHaveLength(2)
   })
 })

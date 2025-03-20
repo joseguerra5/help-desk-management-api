@@ -34,7 +34,7 @@ export class FetchLoanRecordByCooperatorIdController {
     const loanRecords = result.value.loanRecords
 
     return {
-      //loanRecords: loanRecords.map(LoanRecordPresenter.toHTTP)
+      loanRecords: loanRecords.map(LoanRecordPresenter.toHTTP)
     }
   }
 }

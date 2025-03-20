@@ -41,9 +41,14 @@ import { FetchLoanRecordController } from './controllers/fetch-loan-records.cont
 import { FetchLoanRecordUseCase } from '@/domain/management/application/use-cases/fetch-loan-record';
 import { GetManagerProfileController } from './controllers/get-profile.controller';
 import { GetManagerProfileUseCase } from '@/domain/management/application/use-cases/get-manager-profile';
+import { GetLoanRecordByIdController } from './controllers/get-loan-record-by-id.controller';
+import { GetLoanRecordByIdUseCase } from '@/domain/management/application/use-cases/get-loan-record-by-id';
+import { StorageModule } from '../storage/storage.module';
+import { UploadAttachmentController } from './controllers/upload-attachment.controller';
+import { UploadAndCreateAttachmentUseCase } from '@/domain/management/application/use-cases/upload-and-create-attachment';
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule],
   controllers: [
     CreateAccountController,
     AuthenticateController,
@@ -54,7 +59,7 @@ import { GetManagerProfileUseCase } from '@/domain/management/application/use-ca
     RegisterDepartureDateController,
     LinkAttachmentToLoanRecordController,
     GetCooperatorByIdController,
-    //FetchLoanRecordByCooperatorIdController,
+    FetchLoanRecordByCooperatorIdController,
     FetchCooperatorController,
     EditManagerController,
     EditCooperatorController,
@@ -64,7 +69,9 @@ import { GetManagerProfileUseCase } from '@/domain/management/application/use-ca
     GetCountLoanCheckInController,
     FetchEquipmentsController,
     FetchLoanRecordController,
-    GetManagerProfileController
+    GetManagerProfileController,
+    GetLoanRecordByIdController,
+    UploadAttachmentController
   ],
   providers: [
     RegisterManagerUseCase,
@@ -76,7 +83,7 @@ import { GetManagerProfileUseCase } from '@/domain/management/application/use-ca
     RegisterDepartureDateUseCase,
     LinkAttachmentToLoanRecordUseCase,
     GetCooperatorByIdUseCase,
-    //FetchLoanRecordByCooperatorIdUseCase,
+    FetchLoanRecordByCooperatorIdUseCase,
     FetchCooperatorUseCase,
     EditManagerUseCase,
     EditCooperatorUseCase,
@@ -86,7 +93,9 @@ import { GetManagerProfileUseCase } from '@/domain/management/application/use-ca
     CountLoanCheckInUseCase,
     FetchEquipmentsUseCase,
     FetchLoanRecordUseCase,
-    GetManagerProfileUseCase
+    GetManagerProfileUseCase,
+    GetLoanRecordByIdUseCase,
+    UploadAndCreateAttachmentUseCase
   ],
 })
 

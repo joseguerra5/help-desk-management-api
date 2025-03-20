@@ -80,6 +80,7 @@ export class PrismaEquipmentRepository implements EquipmentRepository {
   }
 
   async save(equipment: Equipment): Promise<void> {
+
     const data = PrismaEquipmentMapper.toPersistence(equipment);
 
     await this.prisma.equipment.update({

@@ -54,11 +54,13 @@ describe("Edit Cooperator Inventory (E2E)", () => {
 
     expect(response.statusCode).toBe(201)
 
+
     const attachmentOnDatabase = await prisma.attachment.findFirst({
       where: {
         id: attachment.id.toString()
       }
     })
+
     expect(attachmentOnDatabase?.loanRecordId).toBeTruthy()
   })
 })

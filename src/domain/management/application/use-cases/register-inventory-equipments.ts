@@ -92,8 +92,6 @@ export class RegisterInventoryUseCase {
         });
       });
 
-      console.log("dentro do caso de uso primeiro if", equipmentsIds,
-        equipments)
       const loanRecord = LoanRecord.create({
         cooperatorId: cooperator.id,
         equipments: equipments,

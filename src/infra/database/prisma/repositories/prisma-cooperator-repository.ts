@@ -37,7 +37,8 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
           : undefined,
       },
       include: {
-        Equipment: true
+        Equipment: true,
+        CallLog: true
       },
       orderBy: {
         createdAt: 'desc',
@@ -47,7 +48,7 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
     });
 
     return {
-      data: cooperators.map(PrismaCooperatorMapper.toDomain),
+      data: cooperators.map(PrismaCooperatorDetailsMapper.toDomain),
       meta: {
         totalCount,
         perPage: 20,

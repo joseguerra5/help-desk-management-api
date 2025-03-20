@@ -1,9 +1,9 @@
 import { BadRequestException, Controller, Get, HttpCode, Query } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidadtionPipe } from "../pipes/zod-validation-pipe";
-import { LoanRecordPresenter } from "../presenters/loan-record-presenter";
 import { LoanRecordType } from "@prisma/client";
 import { FetchLoanRecordUseCase } from "@/domain/management/application/use-cases/fetch-loan-record";
+import { LoanRecordDetailsPresenter } from "../presenters/loan-record-details-presenter";
 
 const queryParamSchema = z.object({
   page: z.string()
@@ -50,7 +50,7 @@ export class FetchLoanRecordController {
     const loanRecords = result.value.data
 
     return {
-      loanRecords: loanRecords.map(LoanRecordPresenter.toHTTP),
+      loanRecords: loanRecords.map(LoanRecordDetailsPresenter.toHTTP),
       meta: {
         pageIndex: result.value.meta.pageIndex,
         perPage: result.value.meta.perPage,
