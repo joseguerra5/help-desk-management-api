@@ -8,7 +8,7 @@ import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-
 export class PrismaEquipmentDetailsMapper {
   static toDomain(raw: PrismaEquipment): EquipmentDetails {
     return EquipmentDetails.create({
-      equipmentId: new UniqueEntityId(raw.id),
+      id: new UniqueEntityId(raw.id),
       name: raw.name,
       brokenAt: raw.brokenAt,
       brokenReason: raw.brokenReason,

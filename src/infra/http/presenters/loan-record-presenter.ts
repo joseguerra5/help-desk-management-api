@@ -3,7 +3,6 @@ import { EquipmentPresenter } from "./inventory-presenter";
 
 export class LoanRecordPresenter {
   static toHTTP(loanRecord: LoanRecord) {
-    console.log(loanRecord)
     return {
       cooperatorId: loanRecord.cooperatorId.toString(),
       madeBy: loanRecord.madeBy.toString(),

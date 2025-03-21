@@ -4,7 +4,7 @@ import { EquipmentType } from '../equipment'
 
 // informações que eu quero transportar
 export interface EquipmentDetailsProps {
-  equipmentId: UniqueEntityId,
+  id: UniqueEntityId,
   type: EquipmentType,
   name: string,
   serialNumber: string,
@@ -15,8 +15,8 @@ export interface EquipmentDetailsProps {
 }
 
 export class EquipmentDetails extends ValueObject<EquipmentDetailsProps> {
-  get equipmentId() {
-    return this.props.equipmentId
+  get id() {
+    return this.props.id
   }
 
   get type() {

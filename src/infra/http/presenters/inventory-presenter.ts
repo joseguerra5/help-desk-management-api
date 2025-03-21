@@ -2,8 +2,9 @@ import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-
 
 export class EquipmentPresenter {
   static toHTTP(equipment: EquipmentDetails) {
+    console.log(equipment)
     return {
-      id: equipment.equipmentId,
+      id: equipment.id.toString(),
       type: equipment.type,
       name: equipment.name,
       serialNumber: equipment.serialNumber,
@@ -15,9 +16,8 @@ export class EquipmentPresenter {
   }
 
   static toHTTPCooperatorEquipment(equipment: EquipmentDetails) {
-    console.log(equipment)
     return {
-      id: equipment.equipmentId.toString(),
+      id: equipment.id.toString(),
       type: equipment.type,
       name: equipment.name,
       serialNumber: equipment.serialNumber,

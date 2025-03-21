@@ -46,6 +46,8 @@ import { GetLoanRecordByIdUseCase } from '@/domain/management/application/use-ca
 import { StorageModule } from '../storage/storage.module';
 import { UploadAttachmentController } from './controllers/upload-attachment.controller';
 import { UploadAndCreateAttachmentUseCase } from '@/domain/management/application/use-cases/upload-and-create-attachment';
+import { GetAttachmentPresignedUrlController } from './controllers/get-presigned-attachment-url';
+import { GetAttachmentPresignedUrlUseCase } from '@/domain/management/application/use-cases/get-attachment-presigned-url.use-case';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -71,7 +73,8 @@ import { UploadAndCreateAttachmentUseCase } from '@/domain/management/applicatio
     FetchLoanRecordController,
     GetManagerProfileController,
     GetLoanRecordByIdController,
-    UploadAttachmentController
+    UploadAttachmentController,
+    GetAttachmentPresignedUrlController,
   ],
   providers: [
     RegisterManagerUseCase,
@@ -95,7 +98,8 @@ import { UploadAndCreateAttachmentUseCase } from '@/domain/management/applicatio
     FetchLoanRecordUseCase,
     GetManagerProfileUseCase,
     GetLoanRecordByIdUseCase,
-    UploadAndCreateAttachmentUseCase
+    UploadAndCreateAttachmentUseCase,
+    GetAttachmentPresignedUrlUseCase
   ],
 })
 

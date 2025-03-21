@@ -21,6 +21,7 @@ export interface LoanRecordDetailsProps {
   attachment: {
     url: string,
     title: string,
+    id: string
   }[] | null
 }
 

@@ -22,7 +22,7 @@ export class PrismaLoanRecordDetailsMapper {
     return LoanRecordDetails.create({
       loanRecordId: new UniqueEntityId(raw.id),
       attachment: raw.attachment.length > 0
-        ? raw.attachment.map(att => ({ title: att.title, url: att.url }))
+        ? raw.attachment.map(att => ({ title: att.title, url: att.url, id: att.id }))
         : [],
       cooperator: {
         id: new UniqueEntityId(raw.cooperator.id),

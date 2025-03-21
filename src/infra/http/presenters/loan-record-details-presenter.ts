@@ -23,6 +23,7 @@ export class LoanRecordDetailsPresenter {
       equipments: loanRecord.equipments.map(EquipmentPresenter.toHTTPCooperatorEquipment),
       ocurredAt: loanRecord.ocurredAt,
       attachment: loanRecord.attachment.length > 0 ? {
+        id: loanRecord.attachment[0].id,
         title: loanRecord.attachment[0].title,
         url: loanRecord.attachment[0].url
       } : null,

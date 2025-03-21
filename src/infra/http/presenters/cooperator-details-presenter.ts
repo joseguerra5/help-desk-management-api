@@ -5,7 +5,6 @@ import { CallLogPresenter } from "./call-logs-presenter";
 
 export class CooperatorDetailsPresenter {
   static toHTTP(cooperatorDetails: CooperatorDetails) {
-    console.log(cooperatorDetails.inventory)
     return {
       cooperatorId: cooperatorDetails.cooperatorId.toString(),
       name: cooperatorDetails.name,
