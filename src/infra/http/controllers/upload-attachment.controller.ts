@@ -25,12 +25,14 @@ export class UploadAttachmentController {
     )
     file: Express.Multer.File
   ) {
+    console.log(file)
     const result = await this.uploadAndCreateAttachment.execute({
       fileName: file.originalname,
       fileType: file.mimetype,
       body: file.buffer
     })
 
+    console.log(result.value)
 
     if (result.isLeft()) {
       const error = result.value

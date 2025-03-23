@@ -38,7 +38,6 @@ export class UploadAndCreateAttachmentUseCase {
       fileType,
     });
 
-
     const attachment = Attachment.create({
       title: fileName,
       url,

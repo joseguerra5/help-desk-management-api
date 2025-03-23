@@ -2,7 +2,8 @@ import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-
 import { Equipment } from '@prisma/client'
 
 export class EquipmentPresenter {
-  static toHTTP(equipment: Equipment) {
+  static toHTTP(equipment: EquipmentDetails) {
+    console.log(equipment)
     return {
       id: equipment.id.toString(),
       type: equipment.type,
@@ -17,7 +18,7 @@ export class EquipmentPresenter {
 
   static toHTTPCooperatorEquipment(equipment: EquipmentDetails) {
     return {
-      id: equipment.equipmentId.toString(),
+      id: equipment.id.toString(),
       type: equipment.type,
       name: equipment.name,
       serialNumber: equipment.serialNumber,
