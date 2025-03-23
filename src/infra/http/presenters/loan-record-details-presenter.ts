@@ -24,7 +24,8 @@ export class LoanRecordDetailsPresenter {
       ocurredAt: loanRecord.ocurredAt,
       attachment: loanRecord.attachment.length > 0 ? {
         title: loanRecord.attachment[0].title,
-        url: loanRecord.attachment[0].url
+        url: loanRecord.attachment[0].url,
+        id: loanRecord.attachment[0].id
       } : null,
     }
   }

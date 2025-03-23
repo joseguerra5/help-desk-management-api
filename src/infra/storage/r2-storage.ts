@@ -31,7 +31,6 @@ export class R2Storage implements Uploader {
     fileName,
     fileType,
   }: UploadParams): Promise<{ url: string }> {
-    console.log('Iniciando o upload', body, fileName, fileType);
     const uploadId = randomUUID()
 
     const uniqueFileName = `${uploadId}-${fileName}`

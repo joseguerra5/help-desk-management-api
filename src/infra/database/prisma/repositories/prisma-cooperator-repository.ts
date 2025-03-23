@@ -134,7 +134,11 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
       },
       include: {
         Equipment: true,
-        CallLog: true
+        CallLog: {
+          orderBy: {
+            createdAt: "desc"
+          }
+        }
       }
     });
 

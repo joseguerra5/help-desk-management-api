@@ -57,7 +57,7 @@ export class FetchEquipmentsController {
 
 
     return {
-      equipments: equipments.map(EquipmentPresenter.toHTTP),
+      equipments: equipments.map(EquipmentPresenter.toHTTPCooperatorEquipment),
       meta: {
         pageIndex: result.value.meta.pageIndex,
         perPage: result.value.meta.perPage,
