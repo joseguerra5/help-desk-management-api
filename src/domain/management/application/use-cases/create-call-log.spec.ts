@@ -3,18 +3,21 @@ import { makeCooperator } from 'test/factories/make-cooperator';
 import { CreateCallLogUseCase } from './create-call-log';
 import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
+import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
 
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
-let inMemoryCallLogRepository: InMemoryCallLogRepository;
+let inMemoryCallLogsRepository: InMemoryCallLogRepository;
+let inMemoryEquipmentRepository: InMemoryEquipmentRepository
 let sut: CreateCallLogUseCase;
 
 describe('Create Call Log', () => {
   beforeEach(() => {
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
-    inMemoryCallLogRepository = new InMemoryCallLogRepository();
+    inMemoryCallLogsRepository = new InMemoryCallLogRepository();
+    inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogsRepository, inMemoryEquipmentRepository);
     sut = new CreateCallLogUseCase(
       inMemoryCooperatorRepository,
-      inMemoryCallLogRepository,
+      inMemoryCallLogsRepository,
     );
   });
   it('should be able to Create a Call Log', async () => {
@@ -31,7 +34,7 @@ describe('Create Call Log', () => {
 
     expect(result.isRight()).toBe(true);
     expect(result.value).toEqual({
-      callLog: inMemoryCallLogRepository.items[0],
+      callLog: inMemoryCallLogsRepository.items[0],
     });
   });
 

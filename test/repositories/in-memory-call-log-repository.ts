@@ -1,8 +1,20 @@
-import { CallLogRepository } from '@/domain/management/application/repositories/call-log-repository';
+import { CallLogRepository, Count } from '@/domain/management/application/repositories/call-log-repository';
 import { CallLog } from '@/domain/management/enterprise/entities/callLog';
 
 export class InMemoryCallLogRepository implements CallLogRepository {
   public items: CallLog[] = [];
+  async count({ from, to }: Count): Promise<number> {
+    const amount = this.items.filter((item) => {
+      const itemDate = new Date(item.createdAt);
+
+      const matchesFrom = from ? itemDate >= new Date(from) : true;
+      const matchesTo = to ? itemDate <= new Date(to) : true;
+
+      return matchesFrom && matchesTo;
+    }).length;
+
+    return amount;
+  }
 
   async create(callLog: CallLog): Promise<void> {
     this.items.push(callLog);

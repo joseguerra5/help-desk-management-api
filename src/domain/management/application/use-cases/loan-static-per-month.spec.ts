@@ -1,26 +1,26 @@
-import { CountLoanCheckoutUseCase } from './count-loan-checkout';
 import { InMemoryLoanRecordRepository } from 'test/repositories/in-memory-loan-record-repository';
 import { makeLoanRecord } from 'test/factories/make-loan-record';
+import { InMemoryCooperatorRepository } from 'test/repositories/in-memory-cooperator-repository';
 import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
 import { InMemoryManagerRepository } from 'test/repositories/in-memory-manager-repository';
 import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
-import { InMemoryCooperatorRepository } from 'test/repositories/in-memory-cooperator-repository';
+import { LoanStaticPerMonthUseCase } from './loan-static-per-month';
 
 let inMemoryLoanRecordRepository: InMemoryLoanRecordRepository;
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
 let inMemoryEquipmentRepository: InMemoryEquipmentRepository
 let inMemoryManagerRepository: InMemoryManagerRepository
 let inMemoryCallLogsRepository: InMemoryCallLogRepository
-let sut: CountLoanCheckoutUseCase;
+let sut: LoanStaticPerMonthUseCase;
 
-describe('Get Loan Check out count', () => {
+describe('Get Loan static', () => {
   beforeEach(() => {
+    inMemoryManagerRepository = new InMemoryManagerRepository();
     inMemoryCallLogsRepository = new InMemoryCallLogRepository();
     inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
-    inMemoryManagerRepository = new InMemoryManagerRepository();
     inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogsRepository, inMemoryEquipmentRepository);
     inMemoryLoanRecordRepository = new InMemoryLoanRecordRepository(inMemoryCooperatorRepository, inMemoryManagerRepository);
-    sut = new CountLoanCheckoutUseCase(inMemoryLoanRecordRepository);
+    sut = new LoanStaticPerMonthUseCase(inMemoryLoanRecordRepository);
 
     vi.useFakeTimers();
   });
@@ -29,8 +29,27 @@ describe('Get Loan Check out count', () => {
     vi.useRealTimers();
   });
 
-  it('should be able to get vailable products count for the last 30 days', async () => {
+  it('should be able to get loan record static', async () => {
     vi.setSystemTime(new Date(2025, 0, 25, 0, 0, 0));
+
+    await inMemoryLoanRecordRepository.create(
+      makeLoanRecord({ ocurredAt: new Date(2024, 11, 22), type: 'CHECK_IN' }),
+    );
+
+    for (let i = 1; i <= 22; i++) {
+      await inMemoryLoanRecordRepository.create(
+        makeLoanRecord({ ocurredAt: new Date(2025, 0, i), type: 'CHECK_IN' }),
+      );
+    }
+
+
+    await inMemoryLoanRecordRepository.create(
+      makeLoanRecord({ ocurredAt: new Date(2024, 11, 22), type: 'CHECK_OUT' }),
+    );
+
+    await inMemoryLoanRecordRepository.create(
+      makeLoanRecord({ ocurredAt: new Date(2024, 11, 23), type: 'CHECK_OUT' }),
+    );
 
     for (let i = 1; i <= 22; i++) {
       await inMemoryLoanRecordRepository.create(
@@ -41,9 +60,9 @@ describe('Get Loan Check out count', () => {
     const result = await sut.execute();
 
     expect(result.isRight()).toBeTruthy();
-    expect(result.value).toEqual({
-      currentMonthAmount: 22,
-      previousMonthAmount: 0,
-    });
+    console.log(result.value)
+    //console.log(inMemoryLoanRecordRepository.items)
+
   });
+
 });

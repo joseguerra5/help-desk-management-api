@@ -31,10 +31,9 @@ import { CreateCallLogController } from './controllers/create-call-log.controlle
 import { CreateCallLogUseCase } from '@/domain/management/application/use-cases/create-call-log';
 import { FetchCallLogsController } from './controllers/fetch-call-logs.controller';
 import { FetchCallLogsUseCase } from '@/domain/management/application/use-cases/fetch-call-logs';
-import { GetCountLoanCheckOuController } from './controllers/count-loan-checkout';
 import { CountLoanCheckoutUseCase } from '@/domain/management/application/use-cases/count-loan-checkout';
 import { CountLoanCheckInUseCase } from '@/domain/management/application/use-cases/count-loan-checkin';
-import { GetCountLoanCheckInController } from './controllers/count-loan-checkin';
+import { GetCountLoanCheckInController } from './controllers/count-loan-checkin.controller';
 import { FetchEquipmentsController } from './controllers/fetch-equipments.controller';
 import { FetchEquipmentsUseCase } from '@/domain/management/application/use-cases/fetch-equipments';
 import { FetchLoanRecordController } from './controllers/fetch-loan-records.controller';
@@ -48,6 +47,13 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
 import { UploadAndCreateAttachmentUseCase } from '@/domain/management/application/use-cases/upload-and-create-attachment';
 import { GetAttachmentPresignedUrlController } from './controllers/get-presigned-attachment-url';
 import { GetAttachmentPresignedUrlUseCase } from '@/domain/management/application/use-cases/get-attachment-presigned-url.use-case';
+import { ReadNotificationController } from './controllers/read-notification.controller';
+import { FetchNotificationByRecipientIdController } from './controllers/fetch-notifications.controller';
+import { FetchNotificationsByRecipientIdUseCase } from '@/domain/notification/aplication/use-cases/fetch-notification';
+import { ReadNotificationUseCase } from '@/domain/notification/aplication/use-cases/read-notification';
+import { CountEquipmentsAvailableAndLoanedUseCase } from '@/domain/management/application/use-cases/count-equipments-loaned';
+import { CountEquipmentsAvailableAndLoanedController } from './controllers/count-equipments-loaned.controller';
+import { GetCountLoanCheckOutController } from './controllers/count-loan-checkout.controller';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -67,7 +73,7 @@ import { GetAttachmentPresignedUrlUseCase } from '@/domain/management/applicatio
     EditCooperatorController,
     CreateCallLogController,
     FetchCallLogsController,
-    GetCountLoanCheckOuController,
+    GetCountLoanCheckOutController,
     GetCountLoanCheckInController,
     FetchEquipmentsController,
     FetchLoanRecordController,
@@ -75,6 +81,9 @@ import { GetAttachmentPresignedUrlUseCase } from '@/domain/management/applicatio
     GetLoanRecordByIdController,
     UploadAttachmentController,
     GetAttachmentPresignedUrlController,
+    ReadNotificationController,
+    FetchNotificationByRecipientIdController,
+    CountEquipmentsAvailableAndLoanedController
   ],
   providers: [
     RegisterManagerUseCase,
@@ -99,7 +108,10 @@ import { GetAttachmentPresignedUrlUseCase } from '@/domain/management/applicatio
     GetManagerProfileUseCase,
     GetLoanRecordByIdUseCase,
     UploadAndCreateAttachmentUseCase,
-    GetAttachmentPresignedUrlUseCase
+    GetAttachmentPresignedUrlUseCase,
+    ReadNotificationUseCase,
+    FetchNotificationsByRecipientIdUseCase,
+    CountEquipmentsAvailableAndLoanedUseCase,
   ],
 })
 

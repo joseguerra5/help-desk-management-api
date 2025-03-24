@@ -1,8 +1,8 @@
 import { BadRequestException, Controller, Get, HttpCode } from "@nestjs/common";
 import { CountLoanCheckoutUseCase } from "@/domain/management/application/use-cases/count-loan-checkout";
 
-@Controller("/loan_record/check_out")
-export class GetCountLoanCheckOuController {
+@Controller("/metrics/check_out")
+export class GetCountLoanCheckOutController {
   constructor(private sut: CountLoanCheckoutUseCase) { }
   @Get()
   @HttpCode(200)
@@ -15,8 +15,10 @@ export class GetCountLoanCheckOuController {
       throw new BadRequestException(error.message)
     }
 
+    console.log(result.value.currentMonthAmount, result.value.previousMonthAmount)
     return {
-      amount: result.value.amount
+      currentMonthAmount: result.value.currentMonthAmount,
+      previousMonthAmount: result.value.currentMonthAmount / result.value.previousMonthAmount,
     }
   }
 }

@@ -12,7 +12,7 @@ let sut: FetchCooperatorUseCase;
 describe('Fetch Cooperators', () => {
   beforeEach(() => {
     inMemoryCallLogRepository = new InMemoryCallLogRepository();
-    inMemoryEquipmentRepository = new InMemoryCallLogRepository();
+    inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
     inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogRepository, inMemoryEquipmentRepository);
     sut = new FetchCooperatorUseCase(inMemoryCooperatorRepository);
   });

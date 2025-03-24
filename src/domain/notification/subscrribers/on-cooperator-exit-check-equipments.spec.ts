@@ -12,11 +12,13 @@ import { makeCooperatorEquipment } from 'test/factories/make-cooperator-equipmen
 import { makeEquipment } from 'test/factories/make-equipment'
 import { InventoryList } from '@/domain/management/enterprise/entities/inventory-list'
 import { makeManager } from 'test/factories/make-manager'
+import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository'
 
 let inMemoryNotificationRepository: InMemoryNotificationRepository
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository
-let inMemoryManagerRepository: InMemoryManagerRepository
 let inMemoryEquipmentRepository: InMemoryEquipmentRepository
+let inMemoryCallLogsRepository: InMemoryCallLogRepository
+let inMemoryManagerRepository: InMemoryManagerRepository
 let fakeSchedule: FakeScheduleRegistry
 let sendNotificationUseCase: SendNotificationUseCase
 
@@ -24,7 +26,8 @@ let sendNotificationExecuteSpy: MockInstance
 describe('On cooperator exit', () => {
   beforeEach(() => {
     inMemoryNotificationRepository = new InMemoryNotificationRepository()
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository()
+    inMemoryCallLogsRepository = new InMemoryCallLogRepository()
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogsRepository, inMemoryEquipmentRepository);
     inMemoryManagerRepository = new InMemoryManagerRepository()
     inMemoryEquipmentRepository = new InMemoryEquipmentRepository()
     fakeSchedule = new FakeScheduleRegistry()

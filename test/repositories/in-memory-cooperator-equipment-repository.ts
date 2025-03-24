@@ -1,10 +1,19 @@
-import { CooperatorEquipmentRepository } from '@/domain/management/application/repositories/cooperator-equipment-repository';
+import { CooperatorEquipmentRepository, Count } from '@/domain/management/application/repositories/cooperator-equipment-repository';
 import { CooperatorEquipment } from '@/domain/management/enterprise/entities/cooperator-equipment';
 
 export class InMemoryCooperatorEquipmentRepository
-  implements CooperatorEquipmentRepository
-{
+  implements CooperatorEquipmentRepository {
   public items: CooperatorEquipment[] = [];
+  async count({ status }: Count): Promise<number> {
+    const amount = this.items.filter((item) => {
+      if (status === "loaned") {
+        return !!item.cooperatorId;
+      }
+      return false;
+    }).length;
+
+    return amount;
+  }
   async findManyByCooperatorId(
     cooperatorId: string,
   ): Promise<CooperatorEquipment[]> {

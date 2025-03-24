@@ -3,15 +3,24 @@ import { InMemoryCooperatorRepository } from 'test/repositories/in-memory-cooper
 import { makeCooperator } from 'test/factories/make-cooperator';
 import { makeLoanRecord } from 'test/factories/make-loan-record';
 import { FetchLoanRecordByCooperatorIdUseCase } from './fetch-loan-record-by-cooperator-id';
+import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
+import { InMemoryManagerRepository } from 'test/repositories/in-memory-manager-repository';
+import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
 
 let inMemoryLoanRecordRepository: InMemoryLoanRecordRepository;
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
+let inMemoryEquipmentRepository: InMemoryEquipmentRepository
+let inMemoryManagerRepository: InMemoryManagerRepository
+let inMemoryCallLogsRepository: InMemoryCallLogRepository
 let sut: FetchLoanRecordByCooperatorIdUseCase;
 
 describe('Fetch Loan Records by Cooperator Id', () => {
   beforeEach(() => {
-    inMemoryLoanRecordRepository = new InMemoryLoanRecordRepository();
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
+    inMemoryCallLogsRepository = new InMemoryCallLogRepository();
+    inMemoryManagerRepository = new InMemoryManagerRepository();
+    inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogsRepository, inMemoryEquipmentRepository);
+    inMemoryLoanRecordRepository = new InMemoryLoanRecordRepository(inMemoryCooperatorRepository, inMemoryManagerRepository);
     sut = new FetchLoanRecordByCooperatorIdUseCase(inMemoryLoanRecordRepository);
   });
   it('should be able to fetch recent loan Records', async () => {

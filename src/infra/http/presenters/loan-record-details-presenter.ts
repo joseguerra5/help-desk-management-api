@@ -26,7 +26,6 @@ export class LoanRecordDetailsPresenter {
         id: loanRecord.attachment[0].id,
         title: loanRecord.attachment[0].title,
         url: loanRecord.attachment[0].url,
-        id: loanRecord.attachment[0].id
       } : null,
     }
   }

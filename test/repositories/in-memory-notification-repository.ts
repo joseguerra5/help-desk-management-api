@@ -3,6 +3,11 @@ import { Notification } from "@/domain/notification/enterprise/entities/notifica
 
 export class InMemoryNotificationRepository implements NotificationRepository {
   public items: Notification[] = [];
+  async findManyByRecipientId(recipientId: string): Promise<Notification[]> {
+    const notifications = this.items.filter((item) => item.recipientId.toString() === recipientId)
+
+    return notifications
+  }
   async findById(id: string) {
     const notification = this.items.find((item) => item.id.toString() === id)
 

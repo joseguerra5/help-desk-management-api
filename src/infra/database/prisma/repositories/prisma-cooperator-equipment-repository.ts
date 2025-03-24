@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { CooperatorEquipmentRepository } from '@/domain/management/application/repositories/cooperator-equipment-repository';
+import { CooperatorEquipmentRepository, Count } from '@/domain/management/application/repositories/cooperator-equipment-repository';
 import { CooperatorEquipment } from '@/domain/management/enterprise/entities/cooperator-equipment';
 import { PrismaCooperatorEquipmentMapper } from '../mappers/prisma-cooperator-equipment-mapper';
 
@@ -8,6 +8,15 @@ import { PrismaCooperatorEquipmentMapper } from '../mappers/prisma-cooperator-eq
 export class PrismaCooperatorEquipmentRepository
   implements CooperatorEquipmentRepository {
   constructor(private prisma: PrismaService) { }
+  async count({ status }: Count): Promise<number> {
+    const amount = await this.prisma.equipment.count({
+      where: {
+        cooperatorId: status === "loaned" ? { not: "" } : undefined,
+      },
+    });
+
+    return amount;
+  }
   async findManyByCooperatorId(
     cooperatorId: string,
   ): Promise<CooperatorEquipment[]> {

@@ -1,20 +1,20 @@
 import { Either, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
 import { CredentialDoNotMatchError } from './errors/credentials-not-match';
-import { LoanRecordRepository } from '../repositories/loan-record-repository';
+import { CallLogRepository } from '../repositories/call-log-repository';
 
-type CountLoanCheckinUseCaseReponse = Either<
+type CountCallLogsUseCaseReponse = Either<
   CredentialDoNotMatchError,
   {
-    currentMonthAmount,
-    previousMonthAmount,
+    currentMonthAmount: number,
+    previousMonthAmount: number,
   }
 >;
 
 @Injectable()
-export class CountLoanCheckInUseCase {
-  constructor(private loanRecordRepository: LoanRecordRepository) { }
-  async execute(): Promise<CountLoanCheckinUseCaseReponse> {
+export class CountCallLogsUseCase {
+  constructor(private callLogRepository: CallLogRepository) { }
+  async execute(): Promise<CountCallLogsUseCaseReponse> {
     const toDay = new Date();
 
     const firstDayCurrentMonth = new Date(toDay.getFullYear(), toDay.getMonth(), 1);
@@ -24,15 +24,13 @@ export class CountLoanCheckInUseCase {
     const lastDayPreviousMonth = new Date(toDay.getFullYear(), toDay.getMonth(), 0);
 
 
-    const currentMonthAmount = await this.loanRecordRepository.count({
+    const currentMonthAmount = await this.callLogRepository.count({
       from: firstDayCurrentMonth,
-      status: 'CHECK_IN',
     });
 
-    const previousMonthAmount = await this.loanRecordRepository.count({
+    const previousMonthAmount = await this.callLogRepository.count({
       from: firstDayPreviousMonth,
       to: lastDayPreviousMonth,
-      status: 'CHECK_IN',
     });
 
 

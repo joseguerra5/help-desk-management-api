@@ -5,56 +5,57 @@ import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { CooperatorFactory } from 'test/factories/make-cooperator';
-import { LoanRecordFactory } from 'test/factories/make-loan-record';
+import { CooperatorEquipmentFactory } from 'test/factories/make-cooperator-equipment';
+import { EquipmentFactory } from 'test/factories/make-equipment';
 import { ManagerFactory } from 'test/factories/make-manager';
 
-describe("Get loan record check in (E2E)", () => {
+describe("Fetch Equipments (E2E)", () => {
   let app: INestApplication;
   let managerFactory: ManagerFactory
-  let loanRecordFactory: LoanRecordFactory
+  let equipmentFactory: EquipmentFactory
+  let cooperatorEquipmentFactory: CooperatorEquipmentFactory
   let cooperatorFactory: CooperatorFactory
   let jwt: JwtService
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [ManagerFactory, CooperatorFactory, LoanRecordFactory]
+      providers: [ManagerFactory, EquipmentFactory, CooperatorFactory, CooperatorEquipmentFactory]
     }).compile();
 
     app = moduleRef.createNestApplication();
     managerFactory = moduleRef.get(ManagerFactory)
-    loanRecordFactory = moduleRef.get(LoanRecordFactory)
+    equipmentFactory = moduleRef.get(EquipmentFactory)
     cooperatorFactory = moduleRef.get(CooperatorFactory)
+    cooperatorEquipmentFactory = moduleRef.get(CooperatorEquipmentFactory)
     jwt = moduleRef.get(JwtService)
     await app.init();
   });
-  test("[GET] /loan_record/check_in", async () => {
+  test("[GET] /equipments", async () => {
     const user = await managerFactory.makePrismaManager()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
 
-    await Promise.all([
-      loanRecordFactory.makePrismaLoanRecord({
-        cooperatorId: cooperator.id,
-        madeBy: user.id,
-        type: 'CHECK_IN'
-      }),
+    for (let i = 1; i <= 22; i++) {
+      const equipment = await equipmentFactory.makePrismaEquipment(
+        { createdAt: new Date(2024, 11, i), },
+      );
 
-      loanRecordFactory.makePrismaLoanRecord({
+      await cooperatorEquipmentFactory.makePrismaCooperatorEquipment({
         cooperatorId: cooperator.id,
-        madeBy: user.id,
-        type: 'CHECK_IN'
+        equipmentId: equipment.id
       })
-    ])
+    }
 
     const response = await request(app.getHttpServer())
-      .get(`/loan_record/check_in`)
+      .get(`/metrics/equipments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
 
-    expect(response.body.amount).toEqual(2)
+    expect(response.body.currentLoanedAmount).toEqual(22)
+    expect(response.body.totalAmount).toEqual(22)
   })
 })

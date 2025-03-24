@@ -1,11 +1,24 @@
 import { PaginationEquipmentsParams } from '@/core/repositories/pagination-param';
-import { EquipmentRepository, FindManyEquipments } from '@/domain/management/application/repositories/equipment-repository';
+import { Count, EquipmentRepository, FindManyEquipments } from '@/domain/management/application/repositories/equipment-repository';
 import { Equipment } from '@/domain/management/enterprise/entities/equipment';
 import { EquipmentDetails } from '@/domain/management/enterprise/entities/value-objects/equipment-with-details';
 import { EquipmentType } from '@prisma/client';
 
 export class InMemoryEquipmentRepository implements EquipmentRepository {
   public items: Equipment[] = [];
+  async count({ status }: Count): Promise<number> {
+    const amount = this.items.filter((item) => {
+      if (status === "available") {
+        return !item.brokenAt && !item.cooperatorId;
+      }
+      if (status === "loaned") {
+        return !!item.cooperatorId;
+      }
+      return false;
+    }).length;
+
+    return amount;
+  }
   async findManyBySearchParms({ page, search, status, type }: PaginationEquipmentsParams): Promise<FindManyEquipments> {
     let filteredItems = this.items;
 
@@ -42,7 +55,7 @@ export class InMemoryEquipmentRepository implements EquipmentRepository {
       data: paginatedItems.map(equipment => {
         return EquipmentDetails.create({
           createdAt: equipment.createdAt,
-          equipmentId: equipment.id,
+          id: equipment.id,
           name: equipment.name,
           serialNumber: equipment.serialNumber,
           type: equipment.type as EquipmentType,

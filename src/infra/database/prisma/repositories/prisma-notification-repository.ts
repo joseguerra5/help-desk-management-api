@@ -7,6 +7,16 @@ import { PrismaNotificationMapper } from "../mappers/prisma-notification-mapper"
 @Injectable()
 export class PrismaNotificationRepository implements NotificationRepository {
   constructor(private prisma: PrismaService) { }
+  async findManyByRecipientId(recipientId: string): Promise<Notification[]> {
+    const notifications = await this.prisma.notification.findMany({
+      where: {
+        recipientId,
+      },
+
+    })
+
+    return notifications.map(PrismaNotificationMapper.toDoomain)
+  }
   async create(notification: Notification): Promise<void> {
     const data = PrismaNotificationMapper.toPersistence(notification)
 
@@ -15,12 +25,14 @@ export class PrismaNotificationRepository implements NotificationRepository {
     })
   }
   async findById(id: string): Promise<Notification | null> {
-    const notification = await this.prisma.notification.findUnique({
-      where: {
-        id,
-      },
+    console.log("no prisma repositorio id", id)
 
-    })
+    console.log("Buscando notificações com ID:", await this.prisma.notification.findMany())
+
+    const notification = await this.prisma.notification.findUnique({
+      where: { id: String(id).trim() },
+    });
+    console.log("Resultado da busca:", notification);
 
     if (!notification) {
       return null

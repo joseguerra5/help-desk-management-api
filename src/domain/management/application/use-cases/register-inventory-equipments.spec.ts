@@ -6,18 +6,26 @@ import { makeCooperator } from 'test/factories/make-cooperator';
 import { InventoryList } from '../../enterprise/entities/inventory-list';
 import { makeCooperatorEquipment } from 'test/factories/make-cooperator-equipment';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
+import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
+import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
+import { InMemoryManagerRepository } from 'test/repositories/in-memory-manager-repository';
 
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
 let inMemoryCooperatorEquipmentRepository: InMemoryCooperatorEquipmentRepository;
+let inMemoryManagerRepository: InMemoryManagerRepository;
+let inMemoryEquipmentRepository: InMemoryEquipmentRepository
+let inMemoryCallLogsRepository: InMemoryCallLogRepository
 let inMemoryLoanRecordRepository: InMemoryLoanRecordRepository;
 let sut: RegisterInventoryUseCase;
 
 describe('Register inventory', () => {
   beforeEach(() => {
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
-    inMemoryCooperatorEquipmentRepository =
-      new InMemoryCooperatorEquipmentRepository();
-    inMemoryLoanRecordRepository = new InMemoryLoanRecordRepository();
+    inMemoryCallLogsRepository = new InMemoryCallLogRepository();
+    inMemoryCooperatorEquipmentRepository = new InMemoryCooperatorEquipmentRepository();
+    inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
+    inMemoryManagerRepository = new InMemoryManagerRepository();
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogsRepository, inMemoryEquipmentRepository);
+    inMemoryLoanRecordRepository = new InMemoryLoanRecordRepository(inMemoryCooperatorRepository, inMemoryManagerRepository);
     sut = new RegisterInventoryUseCase(
       inMemoryCooperatorRepository,
       inMemoryCooperatorEquipmentRepository,

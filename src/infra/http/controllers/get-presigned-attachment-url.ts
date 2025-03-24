@@ -12,7 +12,6 @@ export class GetAttachmentPresignedUrlController {
   async handle(
     @Param("attachmentId") attachmentId: string,
   ) {
-    console.log("id do attachment na req", attachmentId)
     const result = await this.getAttachmentPresignedUrl.execute({
       attachmentId
     })

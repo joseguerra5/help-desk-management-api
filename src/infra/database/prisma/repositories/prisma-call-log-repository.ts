@@ -1,12 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { CallLogRepository } from '@/domain/management/application/repositories/call-log-repository';
+import { CallLogRepository, Count } from '@/domain/management/application/repositories/call-log-repository';
 import { CallLog } from '@/domain/management/enterprise/entities/callLog';
 import { PrismaCallLogMapper } from '../mappers/prisma-call-log-mapper';
 
 @Injectable()
 export class PrismaCallLogRepository implements CallLogRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+  async count({ from, to }: Count): Promise<number> {
+    const count = await this.prisma.loanRecord.count({
+      where: {
+        ocurredAt: {
+          gte: from ? new Date(from) : undefined,
+          lte: to ? new Date(to) : new Date(),
+        },
+      },
+    });
+    return count;
+  }
   async save(callLog: CallLog): Promise<void> {
     const data = PrismaCallLogMapper.toPersistence(callLog);
 

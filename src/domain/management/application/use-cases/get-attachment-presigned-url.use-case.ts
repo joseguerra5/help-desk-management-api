@@ -26,11 +26,9 @@ export class GetAttachmentPresignedUrlUseCase {
   async execute({
     attachmentId,
   }: GetAttachmentPresignedUrlUseCaseRequest): Promise<GetAttachmentPresignedUrlUseCaseReponse> {
-    console.log("id da req no caso de uso", attachmentId)
 
     const attachment = await this.attachmentRepository.findById(attachmentId);
 
-    console.log("attach no caso de uso", attachment)
 
     if (!attachment) {
       throw left(new ResourceNotFoundError('Attachment', attachmentId));
@@ -38,7 +36,6 @@ export class GetAttachmentPresignedUrlUseCase {
 
     const { url } = await this.presignedUrl.presignedUrl(attachment.url);
 
-    console.log("url no caso de uso", url)
 
     return right({
       url,

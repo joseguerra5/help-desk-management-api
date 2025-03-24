@@ -1,0 +1,54 @@
+import { AppModule } from '@/infra/app.module'
+import { DatabaseModule } from '@/infra/database/database.module'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { Test } from '@nestjs/testing'
+import request from 'supertest'
+import { ManagerFactory } from 'test/factories/make-manager'
+import { NotificationFactory } from 'test/factories/make-notification'
+
+describe('Get question by slug (E2E)', () => {
+  let app: INestApplication
+  let managerFactory: ManagerFactory
+  let notificationFactory: NotificationFactory
+  let jwt: JwtService
+
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule, DatabaseModule],
+      providers: [ManagerFactory, NotificationFactory, PrismaService],
+    }).compile()
+
+    app = moduleRef.createNestApplication()
+    managerFactory = moduleRef.get(ManagerFactory)
+    notificationFactory = moduleRef.get(NotificationFactory)
+    jwt = moduleRef.get(JwtService)
+    await app.init()
+  })
+  test('[GET] /notifications', async () => {
+    const user = await managerFactory.makePrismaManager({
+      name: 'Jhon Doe',
+    })
+
+    const accessToken = jwt.sign({ sub: user.id.toString() })
+
+    await notificationFactory.makePrismaNotification({
+      recipientId: user.id,
+    })
+
+    await notificationFactory.makePrismaNotification({
+      recipientId: user.id,
+    })
+
+    const response = await request(app.getHttpServer())
+      .get(`/notifications`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send()
+
+    console.log(response.value)
+    expect(response.statusCode).toBe(200)
+
+    expect(response.value)
+  })
+})

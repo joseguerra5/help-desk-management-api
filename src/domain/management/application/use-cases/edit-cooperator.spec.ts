@@ -2,15 +2,19 @@ import { InMemoryCooperatorRepository } from 'test/repositories/in-memory-cooper
 import { makeCooperator } from 'test/factories/make-cooperator';
 import { AlreadyExistsError } from './errors/already-exist-error';
 import { EditCooperatorUseCase } from './edit-cooperator';
-import { InMemoryCooperatorEquipmentRepository } from 'test/repositories/in-memory-cooperator-equipment-repository';
+import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
+import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
 
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
+let inMemoryEquipmentRepository: InMemoryEquipmentRepository
+let inMemoryCallLogsRepository: InMemoryCallLogRepository
 let sut: EditCooperatorUseCase;
 
 describe('Edit Cooperator', () => {
   beforeEach(() => {
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
-    new InMemoryCooperatorEquipmentRepository();
+    inMemoryCallLogsRepository = new InMemoryCallLogRepository();
+    inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogsRepository, inMemoryEquipmentRepository);
     sut = new EditCooperatorUseCase(inMemoryCooperatorRepository);
   });
   it('should be able Edit a cooperator', async () => {

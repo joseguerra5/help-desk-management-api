@@ -4,6 +4,7 @@ import { Notification as PrismaNotification, Prisma } from '@prisma/client'
 
 export class PrismaNotificationMapper {
   static toDoomain(raw: PrismaNotification): Notification {
+    console.log("rraw", raw)
     return Notification.create(
       {
         content: raw.content,

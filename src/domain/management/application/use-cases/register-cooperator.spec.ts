@@ -4,14 +4,20 @@ import { makeCooperator } from 'test/factories/make-cooperator';
 import { AlreadyExistsError } from './errors/already-exist-error';
 import { InMemoryManagerRepository } from 'test/repositories/in-memory-manager-repository';
 import { makeManager } from 'test/factories/make-manager';
+import { InMemoryEquipmentRepository } from 'test/repositories/in-memory-equipments-repository';
+import { InMemoryCallLogRepository } from 'test/repositories/in-memory-call-log-repository';
 
 let inMemoryCooperatorRepository: InMemoryCooperatorRepository;
+let inMemoryEquipmentRepository: InMemoryEquipmentRepository
+let inMemoryCallLogsRepository: InMemoryCallLogRepository
 let inMemoryManagerRepository: InMemoryManagerRepository;
 let sut: RegisterCooperatorUseCase;
 
 describe('Register Cooperator', () => {
   beforeEach(() => {
-    inMemoryCooperatorRepository = new InMemoryCooperatorRepository();
+    inMemoryCallLogsRepository = new InMemoryCallLogRepository();
+    inMemoryEquipmentRepository = new InMemoryEquipmentRepository();
+    inMemoryCooperatorRepository = new InMemoryCooperatorRepository(inMemoryCallLogsRepository, inMemoryEquipmentRepository);
     inMemoryManagerRepository = new InMemoryManagerRepository();
     sut = new RegisterCooperatorUseCase(inMemoryCooperatorRepository, inMemoryManagerRepository);
   });

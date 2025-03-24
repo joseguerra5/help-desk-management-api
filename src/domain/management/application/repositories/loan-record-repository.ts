@@ -4,6 +4,7 @@ import { LoanRecordDetails } from '../../enterprise/entities/value-objects/loan-
 
 export interface Count {
   from?: Date;
+  to?: Date;
   status?: RecordType;
 }
 

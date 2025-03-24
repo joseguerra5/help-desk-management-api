@@ -19,8 +19,8 @@ export interface LoanRecordDetailsProps {
   equipments: EquipmentDetails[],
   ocurredAt: Date,
   attachment: {
-    url: string,
     title: string,
+    url: string,
     id: string
   }[] | null
 }
@@ -60,6 +60,11 @@ export class LoanRecordDetails extends ValueObject<LoanRecordDetailsProps> {
 
   get nif() {
     return this.props.nif
+  }
+
+
+  get url() {
+    return this.props.url
   }
 
   static create(props: LoanRecordDetailsProps): LoanRecordDetails {

@@ -62,12 +62,14 @@ export class InMemoryLoanRecordRepository implements LoanRecordRepository {
         userName: cooperator.userName,
         employeeId: cooperator.employeeId,
         departureDate: cooperator.departureDate,
+        nif: cooperator.nif
       },
       equipments: loanRecord.equipments.map(Equipment.create),
       attachment: loanRecord.attachment
         ? {
           url: loanRecord.attachment.attachmentId,
           title: loanRecord.attachment.attachmentId,
+          id: loanRecord.attachment.attachmentId,
         }
         : null,
     });
@@ -126,9 +128,11 @@ export class InMemoryLoanRecordRepository implements LoanRecordRepository {
             userName: cooperator.userName,
             employeeId: cooperator.employeeId,
             departureDate: cooperator.departureDate,
+            nif: cooperator.nif
           },
           equipments: loanRecord.equipments.map(Equipment.create),
           attachment: {
+            id: loanRecord.attachment.attachmentId,
             url: loanRecord.attachment.attachmentId,
             title: loanRecord.attachment.attachmentId,
           }
@@ -141,13 +145,16 @@ export class InMemoryLoanRecordRepository implements LoanRecordRepository {
       }
     };
   }
-  async count({ from, status }: Count): Promise<number> {
+  async count({ from, to, status }: Count): Promise<number> {
+    console.log(from, to, status)
     const amount = this.items.filter((item) => {
       const matchesStatus = status ? item.type === status : true;
-      const matchesDate = from
-        ? new Date(item.ocurredAt) >= new Date(from)
-        : true;
-      return matchesDate && matchesStatus;
+      const itemDate = new Date(item.ocurredAt);
+
+      const matchesFrom = from ? itemDate >= new Date(from) : true;
+      const matchesTo = to ? itemDate <= new Date(to) : true;
+
+      return matchesStatus && matchesFrom && matchesTo;
     }).length;
 
     return amount;

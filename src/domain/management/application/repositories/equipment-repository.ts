@@ -11,8 +11,14 @@ export interface FindManyEquipments {
   }
 }
 
+export interface Count {
+  status: "loaned" | "available"
+}
+
 export abstract class EquipmentRepository {
   abstract create(equipment: Equipment): Promise<void>;
+  abstract count(params: Count): Promise<number>;
+
   abstract save(equipment: Equipment): Promise<void>;
   abstract findById(id: string): Promise<Equipment | null>;
   abstract findBySerialNumber(id: string): Promise<Equipment | null>;

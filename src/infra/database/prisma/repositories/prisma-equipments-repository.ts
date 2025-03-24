@@ -1,14 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { Equipment } from '@/domain/management/enterprise/entities/equipment';
-import { EquipmentRepository, FindManyEquipments } from '@/domain/management/application/repositories/equipment-repository';
+import { Count, EquipmentRepository, FindManyEquipments } from '@/domain/management/application/repositories/equipment-repository';
 import { PrismaEquipmentMapper } from '../mappers/prisma-equipment-mapper';
 import { PaginationEquipmentsParams } from '@/core/repositories/pagination-param';
 import { PrismaEquipmentDetailsMapper } from '../mappers/prisma-equipment-details-mapper';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PrismaEquipmentRepository implements EquipmentRepository {
   constructor(private prisma: PrismaService) { }
+  async count({ status }: Count): Promise<number> {
+    const where: Prisma.EquipmentWhereInput = {};
+
+    if (status === "available") {
+      where.brokenAt = null;
+    }
+
+    if (status === "loaned") {
+      where.cooperatorId = { not: null };
+    }
+
+    const amount = await this.prisma.equipment.count({
+      where,
+    });
+
+    return amount;
+  }
+
   async findManyBySearchParms({ page, search, status, type, cooperatorId }: PaginationEquipmentsParams): Promise<FindManyEquipments> {
     const totalCount = await this.prisma.equipment.count()
     const equipments = await this.prisma.equipment.findMany({

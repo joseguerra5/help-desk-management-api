@@ -69,11 +69,14 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
     }
   }
 
-  async count({ from, status }: Count): Promise<number> {
+  async count({ from, status, to }: Count): Promise<number> {
     const count = await this.prisma.loanRecord.count({
       where: {
         type: status,
-        ocurredAt: from ? { gte: new Date(from) } : undefined,
+        ocurredAt: {
+          gte: from ? new Date(from) : undefined,
+          lte: to ? new Date(to) : new Date(),
+        },
       },
     });
     return count;

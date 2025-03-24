@@ -8,7 +8,7 @@ import { CooperatorFactory } from 'test/factories/make-cooperator';
 import { LoanRecordFactory } from 'test/factories/make-loan-record';
 import { ManagerFactory } from 'test/factories/make-manager';
 
-describe("Get loan record check out (E2E)", () => {
+describe("Get loan record check in (E2E)", () => {
   let app: INestApplication;
   let managerFactory: ManagerFactory
   let loanRecordFactory: LoanRecordFactory
@@ -27,7 +27,7 @@ describe("Get loan record check out (E2E)", () => {
     jwt = moduleRef.get(JwtService)
     await app.init();
   });
-  test("[GET] /loan_record/check_out", async () => {
+  test("[GET] /metrics/check_in", async () => {
     const user = await managerFactory.makePrismaManager()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
@@ -38,23 +38,23 @@ describe("Get loan record check out (E2E)", () => {
       loanRecordFactory.makePrismaLoanRecord({
         cooperatorId: cooperator.id,
         madeBy: user.id,
-        type: 'CHECK_OUT'
+        type: 'CHECK_IN'
       }),
 
       loanRecordFactory.makePrismaLoanRecord({
         cooperatorId: cooperator.id,
         madeBy: user.id,
-        type: 'CHECK_OUT'
+        type: 'CHECK_IN'
       })
     ])
 
     const response = await request(app.getHttpServer())
-      .get(`/loan_record/check_out`)
+      .get(`/metrics/check_in`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
 
-    expect(response.body.amount).toEqual(2)
+    expect(response.body.currentMonthAmount).toEqual(2)
   })
 })
