@@ -19,6 +19,7 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
     page,
     search,
     status,
+    equipmentsStatus
   }: PaginationCooperatorParams): Promise<FindManyCooperators> {
     const totalCount = await this.prisma.cooperator.count()
     const cooperators = await this.prisma.cooperator.findMany({
@@ -29,6 +30,10 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
             : status === 'inactive'
               ? { not: null }
               : undefined,
+        Equipment:
+          equipmentsStatus === 'active'
+            ? { some: {} }
+            : undefined,
         OR: search
           ? [
             { employeeId: { contains: search, mode: 'insensitive' } },

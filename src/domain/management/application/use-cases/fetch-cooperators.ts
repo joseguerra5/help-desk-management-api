@@ -6,6 +6,7 @@ interface FetchCooperatorUseCaseRequest {
   page: number;
   status?: 'inactive' | 'active';
   search?: string;
+  equipmentsStatus?: 'inactive' | 'active';
 }
 
 type FetchCooperatorUseCaseReponse = Either<
@@ -20,11 +21,13 @@ export class FetchCooperatorUseCase {
     page,
     status,
     search,
+    equipmentsStatus
   }: FetchCooperatorUseCaseRequest): Promise<FetchCooperatorUseCaseReponse> {
     const cooperators = await this.cooperatorRepository.findMany({
       page,
       status,
       search,
+      equipmentsStatus
     });
 
     return right({

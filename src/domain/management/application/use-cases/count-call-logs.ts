@@ -28,6 +28,7 @@ export class CountCallLogsUseCase {
       from: firstDayCurrentMonth,
     });
 
+
     const previousMonthAmount = await this.callLogRepository.count({
       from: firstDayPreviousMonth,
       to: lastDayPreviousMonth,

@@ -8,14 +8,15 @@ import { PrismaCallLogMapper } from '../mappers/prisma-call-log-mapper';
 export class PrismaCallLogRepository implements CallLogRepository {
   constructor(private prisma: PrismaService) { }
   async count({ from, to }: Count): Promise<number> {
-    const count = await this.prisma.loanRecord.count({
+    const count = await this.prisma.callLog.count({
       where: {
-        ocurredAt: {
+        createdAt: {
           gte: from ? new Date(from) : undefined,
           lte: to ? new Date(to) : new Date(),
         },
       },
     });
+
     return count;
   }
   async save(callLog: CallLog): Promise<void> {

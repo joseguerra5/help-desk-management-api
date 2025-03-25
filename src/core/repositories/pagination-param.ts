@@ -13,6 +13,7 @@ export interface PaginationLoanRecordParams {
 export interface PaginationCooperatorParams {
   page: number;
   status?: 'inactive' | 'active';
+  equipmentsStatus?: 'inactive' | 'active'
   search?: string;
 }
 

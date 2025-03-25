@@ -36,6 +36,7 @@ export class CallLogFactory {
       data: PrismaCallLogMapper.toPersistence(calllog)
     })
 
+
     return calllog
   }
 }

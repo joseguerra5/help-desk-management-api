@@ -26,10 +26,10 @@ describe('Count CallLog current month and previous month', () => {
     await inMemoryCallLogsRepository.create(makeCallLog({ cooperatorId: cooperator.id }))
     await inMemoryCallLogsRepository.create(makeCallLog({ cooperatorId: cooperator.id }))
 
+
     const result = await sut.execute();
 
     expect(result.isRight()).toBeTruthy();
-    console.log(result.value)
 
     if (result.isRight()) {
       expect(result.value.currentMonthAmount).toEqual(3);

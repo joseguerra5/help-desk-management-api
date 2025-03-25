@@ -12,6 +12,7 @@ export const fetchParamSchema = z.object({
     .pipe(z.number().min(1)),
   status: z.string().optional(),
   search: z.string().optional(),
+  equipmentsStatus: z.string().optional(),
 })
 
 export type FetchParamSchema = z.infer<typeof fetchParamSchema>
@@ -25,7 +26,13 @@ export class FetchCooperatorController {
   async handle(
     @Query(new ZodValidadtionPipe(fetchParamSchema)) query: FetchParamSchema,
   ) {
-    const { page, search } = query
+    const { page, search, } = query
+
+    let equipmentsStatus: 'inactive' | 'active' | undefined;
+
+    if (query.equipmentsStatus) {
+      equipmentsStatus = query.equipmentsStatus as 'inactive' | 'active'
+    }
 
     let status: 'inactive' | 'active' | undefined;
 
@@ -37,6 +44,7 @@ export class FetchCooperatorController {
       search,
       status,
       page,
+      equipmentsStatus
     })
 
     if (result.isLeft()) {

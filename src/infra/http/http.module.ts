@@ -54,6 +54,8 @@ import { ReadNotificationUseCase } from '@/domain/notification/aplication/use-ca
 import { CountEquipmentsAvailableAndLoanedUseCase } from '@/domain/management/application/use-cases/count-equipments-loaned';
 import { CountEquipmentsAvailableAndLoanedController } from './controllers/count-equipments-loaned.controller';
 import { GetCountLoanCheckOutController } from './controllers/count-loan-checkout.controller';
+import { CountCallLogsController } from './controllers/count-call-logs.controller';
+import { CountCallLogsUseCase } from '@/domain/management/application/use-cases/count-call-logs';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -83,7 +85,8 @@ import { GetCountLoanCheckOutController } from './controllers/count-loan-checkou
     GetAttachmentPresignedUrlController,
     ReadNotificationController,
     FetchNotificationByRecipientIdController,
-    CountEquipmentsAvailableAndLoanedController
+    CountEquipmentsAvailableAndLoanedController,
+    CountCallLogsController
   ],
   providers: [
     RegisterManagerUseCase,
@@ -112,6 +115,7 @@ import { GetCountLoanCheckOutController } from './controllers/count-loan-checkou
     ReadNotificationUseCase,
     FetchNotificationsByRecipientIdUseCase,
     CountEquipmentsAvailableAndLoanedUseCase,
+    CountCallLogsUseCase
   ],
 })
 
