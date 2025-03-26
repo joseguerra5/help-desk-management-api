@@ -55,8 +55,6 @@ describe("Get loan record check out (E2E)", () => {
 
     expect(response.statusCode).toBe(200)
 
-    console.log(response.body)
-
     expect(response.body.currentMonthAmount).toEqual(2)
   })
 })

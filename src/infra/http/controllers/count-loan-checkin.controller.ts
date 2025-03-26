@@ -10,9 +10,7 @@ export class GetCountLoanCheckInController {
     const result = await this.sut.execute()
 
     if (result.isLeft()) {
-      const error = result.value
-
-      throw new BadRequestException(error.message)
+      throw new BadRequestException()
     }
 
     return {

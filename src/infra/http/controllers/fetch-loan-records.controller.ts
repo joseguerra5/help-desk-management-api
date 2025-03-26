@@ -42,9 +42,7 @@ export class FetchLoanRecordController {
 
 
     if (result.isLeft()) {
-      const error = result.value
-
-      throw new BadRequestException(error)
+      throw new BadRequestException()
     }
 
     const loanRecords = result.value.data

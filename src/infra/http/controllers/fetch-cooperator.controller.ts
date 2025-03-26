@@ -48,9 +48,8 @@ export class FetchCooperatorController {
     })
 
     if (result.isLeft()) {
-      const error = result.value
 
-      throw new BadRequestException(error)
+      throw new BadRequestException()
     }
 
     const cooperators = result.value.data

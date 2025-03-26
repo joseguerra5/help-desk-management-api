@@ -2,10 +2,11 @@ import { BadRequestException, Controller, Get, HttpCode } from "@nestjs/common";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { UserPayload } from "@/infra/auth/jwt.estrategy";
 import { FetchNotificationsByRecipientIdUseCase } from "@/domain/notification/aplication/use-cases/fetch-notification";
+import { PrismaNotificationMapper } from "@/infra/database/prisma/mappers/prisma-notification-mapper";
 
 
 
-@Controller("/notifications")
+@Controller("/me/notifications")
 export class FetchNotificationByRecipientIdController {
   constructor(private fetchNotificationsByRecipientId: FetchNotificationsByRecipientIdUseCase) { }
   @Get()
@@ -27,10 +28,9 @@ export class FetchNotificationByRecipientIdController {
       throw new BadRequestException(error)
     }
 
-    const notifications = result.value.notifications
 
     return {
-      notifications
+      notifications: result.value.notifications.map(PrismaNotificationMapper.toPersistence)
     }
   }
 }

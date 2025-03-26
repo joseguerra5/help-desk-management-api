@@ -25,14 +25,9 @@ export class PrismaNotificationRepository implements NotificationRepository {
     })
   }
   async findById(id: string): Promise<Notification | null> {
-    console.log("no prisma repositorio id", id)
-
-    console.log("Buscando notificações com ID:", await this.prisma.notification.findMany())
-
     const notification = await this.prisma.notification.findUnique({
       where: { id: String(id).trim() },
     });
-    console.log("Resultado da busca:", notification);
 
     if (!notification) {
       return null

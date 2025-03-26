@@ -2,7 +2,6 @@ import { Either, left, right } from '@/core/either';
 import { AlreadyExistsError } from './errors/already-exist-error';
 import { Injectable } from '@nestjs/common';
 import { Equipment } from '../../enterprise/entities/equipment';
-import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { EquipmentType } from '../../enterprise/entities/equipment';
 import { EquipmentRepository } from '../repositories/equipment-repository';
 import { ManagerRepository } from '../repositories/manager-repository';
@@ -16,7 +15,7 @@ interface RegisterEquipmentUseCaseRequest {
 }
 
 type RegisterEquipmentUseCaseReponse = Either<
-  AlreadyExistsError | ResourceNotFoundError | NotAllowedError,
+  AlreadyExistsError | NotAllowedError,
   {
     equipment: Equipment;
   }

@@ -42,11 +42,10 @@ describe('Get question by slug (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get(`/notifications`)
+      .get(`/me/notifications`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    console.log(response.value)
     expect(response.statusCode).toBe(200)
 
     expect(response.value)

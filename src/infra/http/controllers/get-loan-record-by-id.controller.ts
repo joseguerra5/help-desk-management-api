@@ -1,5 +1,5 @@
 import { ResourceNotFoundError } from "@/domain/management/application/use-cases/errors/resource-not-found-error";
-import { BadRequestException, ConflictException, Controller, Get, HttpCode, Param } from "@nestjs/common";
+import { BadRequestException, Controller, Get, HttpCode, NotFoundException, Param } from "@nestjs/common";
 import { GetLoanRecordByIdUseCase } from "@/domain/management/application/use-cases/get-loan-record-by-id";
 import { LoanRecordDetailsPresenter } from "../presenters/loan-record-details-presenter";
 
@@ -25,7 +25,7 @@ export class GetLoanRecordByIdController {
 
       switch (error.constructor) {
         case ResourceNotFoundError:
-          throw new ConflictException(error.message)
+          throw new NotFoundException(error.message)
         default:
           throw new BadRequestException(error.message)
       }

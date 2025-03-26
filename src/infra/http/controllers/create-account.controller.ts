@@ -6,12 +6,14 @@ import {
   Controller,
   HttpCode,
   Post,
+  UnauthorizedException,
   UsePipes,
 } from '@nestjs/common';
 import { ZodValidadtionPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
 import { AlreadyExistsError } from '@/domain/management/application/use-cases/errors/already-exist-error';
 import { Public } from '@/infra/auth/public';
+import { CredentialDoNotMatchError } from '@/domain/management/application/use-cases/errors/credentials-not-match';
 
 export const createAccountBodySchema = z.object({
   name: z.string(),
@@ -55,6 +57,8 @@ export class CreateAccountController {
       switch (error.constructor) {
         case AlreadyExistsError:
           throw new ConflictException(error.message);
+        case CredentialDoNotMatchError:
+          throw new UnauthorizedException(error.message);
         default:
           throw new BadRequestException(error.message);
       }

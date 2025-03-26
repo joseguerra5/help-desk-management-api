@@ -1,5 +1,5 @@
 import { ResourceNotFoundError } from "@/domain/management/application/use-cases/errors/resource-not-found-error";
-import { BadRequestException, ConflictException, Controller, Get, HttpCode, Param } from "@nestjs/common";
+import { BadRequestException, Controller, Get, HttpCode, NotFoundException, Param } from "@nestjs/common";
 import { GetAttachmentPresignedUrlUseCase } from "@/domain/management/application/use-cases/get-attachment-presigned-url.use-case";
 
 
@@ -21,7 +21,7 @@ export class GetAttachmentPresignedUrlController {
 
       switch (error.constructor) {
         case ResourceNotFoundError:
-          throw new ConflictException(error.message)
+          throw new NotFoundException(error.message)
         default:
           throw new BadRequestException(error.message)
       }

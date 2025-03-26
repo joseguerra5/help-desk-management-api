@@ -1,11 +1,10 @@
 import { Either, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
-import { CredentialDoNotMatchError } from './errors/credentials-not-match';
 import { EquipmentRepository } from '../repositories/equipment-repository';
 import { CooperatorEquipmentRepository } from '../repositories/cooperator-equipment-repository';
 
 type CountEquipmentsAvailableAndLoanedUseCaseReponse = Either<
-  CredentialDoNotMatchError,
+  null,
   {
     currentLoanedAmount: number,
     totalAmount: number,

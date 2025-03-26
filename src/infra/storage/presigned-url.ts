@@ -27,7 +27,6 @@ export class R2PresignedUrl implements PresignedUrl {
   }
   async presignedUrl(fileKey: string): Promise<{ url: string }> {
 
-    console.log("fileKey no service", fileKey)
     const bucketName = this.envService.get('AWS_BUCKET_NAME')
 
 

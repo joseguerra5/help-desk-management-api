@@ -5,6 +5,7 @@ import {
   Controller,
   HttpCode,
   Post,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ZodValidadtionPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
@@ -12,6 +13,7 @@ import { AlreadyExistsError } from '@/domain/management/application/use-cases/er
 import { RegisterCooperatorUseCase } from '@/domain/management/application/use-cases/register-cooperator';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.estrategy';
+import { NotAllowedError } from '@/core/errors/not-allowed-error';
 
 export const registerCooperatorBodySchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -64,6 +66,8 @@ export class RegisterCooperatorController {
       switch (error.constructor) {
         case AlreadyExistsError:
           throw new ConflictException(error.message);
+        case NotAllowedError:
+          throw new UnauthorizedException(error.message);
         default:
           throw new BadRequestException(error.message);
       }

@@ -4,6 +4,7 @@ import {
   ConflictException,
   Controller,
   HttpCode,
+  NotFoundException,
   Param,
   Put,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import { z } from 'zod';
 import { AlreadyExistsError } from '@/domain/management/application/use-cases/errors/already-exist-error';
 import { EditCooperatorUseCase } from '@/domain/management/application/use-cases/edit-cooperator';
 import { CooperatorPresenter } from '../presenters/cooperator-presenter';
+import { ResourceNotFoundError } from '@/domain/management/application/use-cases/errors/resource-not-found-error';
 
 export const editCooperatorBodySchema = z.object({
   name: z.string(),
@@ -55,6 +57,8 @@ export class EditCooperatorController {
       switch (error.constructor) {
         case AlreadyExistsError:
           throw new ConflictException(error.message);
+        case ResourceNotFoundError:
+          throw new NotFoundException(error.message);
         default:
           throw new BadRequestException(error.message);
       }

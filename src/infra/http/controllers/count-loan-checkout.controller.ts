@@ -10,15 +10,12 @@ export class GetCountLoanCheckOutController {
     const result = await this.sut.execute()
 
     if (result.isLeft()) {
-      const error = result.value
-
-      throw new BadRequestException(error.message)
+      throw new BadRequestException()
     }
 
-    console.log(result.value.currentMonthAmount, result.value.previousMonthAmount)
     return {
       currentMonthAmount: result.value.currentMonthAmount,
-      previousMonthAmount: result.value.currentMonthAmount / result.value.previousMonthAmount,
+      previousMonthAmount: result.value.previousMonthAmount,
     }
   }
 }

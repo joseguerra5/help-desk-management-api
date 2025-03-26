@@ -60,9 +60,6 @@ describe('Get Loan static', () => {
     const result = await sut.execute();
 
     expect(result.isRight()).toBeTruthy();
-    console.log(result.value)
-    //console.log(inMemoryLoanRecordRepository.items)
-
   });
 
 });

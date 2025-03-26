@@ -16,9 +16,8 @@ export class FetchCallLogsController {
     })
 
     if (result.isLeft()) {
-      const error = result.value
 
-      throw new BadRequestException(error)
+      throw new BadRequestException()
     }
 
     const callLogs = result.value.callLogs

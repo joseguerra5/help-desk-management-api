@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, FileTypeValidator, HttpCode, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Controller, FileTypeValidator, HttpCode, MaxFileSizeValidator, ParseFilePipe, Post, UnsupportedMediaTypeException, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadAndCreateAttachmentUseCase } from "@/domain/management/application/use-cases/upload-and-create-attachment";
 import { InvalidAttachmentTypeError } from "@/domain/management/application/use-cases/errors/invalite-attachment-type-error";
@@ -25,21 +25,19 @@ export class UploadAttachmentController {
     )
     file: Express.Multer.File
   ) {
-    console.log(file)
     const result = await this.uploadAndCreateAttachment.execute({
       fileName: file.originalname,
       fileType: file.mimetype,
       body: file.buffer
     })
 
-    console.log(result.value)
 
     if (result.isLeft()) {
       const error = result.value
 
       switch (error.constructor) {
         case InvalidAttachmentTypeError:
-          throw new BadRequestException(error.message)
+          throw new UnsupportedMediaTypeException(error.message)
         default:
           throw new BadRequestException(error.message)
       }

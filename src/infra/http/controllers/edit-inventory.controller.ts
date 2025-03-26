@@ -1,18 +1,18 @@
 import {
   BadRequestException,
   Body,
-  ConflictException,
   Controller,
   HttpCode,
+  NotFoundException,
   Param,
   Put,
 } from '@nestjs/common';
 import { ZodValidadtionPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
-import { AlreadyExistsError } from '@/domain/management/application/use-cases/errors/already-exist-error';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.estrategy';
 import { RegisterInventoryUseCase } from '@/domain/management/application/use-cases/register-inventory-equipments';
+import { ResourceNotFoundError } from '@/domain/management/application/use-cases/errors/resource-not-found-error';
 
 export const editInventoryBodySchema = z.object({
   equipmentsIds: z.array(z.string().uuid()).nullable()
@@ -47,8 +47,8 @@ export class EditInventoryController {
       const error = result.value;
 
       switch (error.constructor) {
-        case AlreadyExistsError:
-          throw new ConflictException(error.message);
+        case ResourceNotFoundError:
+          throw new NotFoundException(error.message);
         default:
           throw new BadRequestException(error.message);
       }

@@ -1,16 +1,16 @@
 import {
   BadRequestException,
   Body,
-  ConflictException,
   Controller,
   HttpCode,
+  NotFoundException,
   Param,
   Put,
 } from '@nestjs/common';
 import { ZodValidadtionPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
-import { AlreadyExistsError } from '@/domain/management/application/use-cases/errors/already-exist-error';
 import { RegisterDepartureDateUseCase } from '@/domain/management/application/use-cases/register-departure-date';
+import { ResourceNotFoundError } from '@/domain/management/application/use-cases/errors/resource-not-found-error';
 
 export const registerDepartureDateBodySchema = z.object({
   departureDate: z.string(),
@@ -37,13 +37,13 @@ export class RegisterDepartureDateController {
     });
 
     if (result.isLeft()) {
-      const error = result.value;
+      const error = result.value
 
       switch (error.constructor) {
-        case AlreadyExistsError:
-          throw new ConflictException(error.message);
+        case ResourceNotFoundError:
+          throw new NotFoundException(error.message)
         default:
-          throw new BadRequestException(error.message);
+          throw new BadRequestException(error.message)
       }
     }
 

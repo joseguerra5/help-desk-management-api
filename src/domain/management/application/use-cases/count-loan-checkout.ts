@@ -1,10 +1,9 @@
 import { Either, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
-import { CredentialDoNotMatchError } from './errors/credentials-not-match';
 import { LoanRecordRepository } from '../repositories/loan-record-repository';
 
 type CountLoanCheckoutUseCaseReponse = Either<
-  CredentialDoNotMatchError,
+  null,
   {
     currentMonthAmount: number;
     previousMonthAmount: number;

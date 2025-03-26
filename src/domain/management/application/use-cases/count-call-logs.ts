@@ -1,10 +1,9 @@
 import { Either, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
-import { CredentialDoNotMatchError } from './errors/credentials-not-match';
 import { CallLogRepository } from '../repositories/call-log-repository';
 
 type CountCallLogsUseCaseReponse = Either<
-  CredentialDoNotMatchError,
+  null,
   {
     currentMonthAmount: number,
     previousMonthAmount: number,

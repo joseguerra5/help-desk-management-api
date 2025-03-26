@@ -1,5 +1,4 @@
 import { Either, left, right } from '@/core/either';
-import { AlreadyExistsError } from './errors/already-exist-error';
 import { Injectable } from '@nestjs/common';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
@@ -15,7 +14,7 @@ interface LinkAttachmentToLoanRecordUseCaseRequest {
 }
 
 type LinkAttachmentToLoanRecordUseCaseReponse = Either<
-  AlreadyExistsError,
+  ResourceNotFoundError,
   {
     loanRecord: LoanRecord;
   }

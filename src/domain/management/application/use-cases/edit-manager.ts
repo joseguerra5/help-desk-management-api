@@ -22,7 +22,7 @@ interface EditManagerUseCaseRequest {
 }
 
 type EditManagerUseCaseReponse = Either<
-  AlreadyExistsError,
+  AlreadyExistsError | ResourceNotFoundError | NotAllowedError | CredentialDoNotMatchError,
   {
     manager: Manager;
   }
@@ -34,7 +34,7 @@ export class EditManagerUseCase {
     private managerRepository: ManagerRepository,
     private hashGenerator: HashGenerator,
     private hashComparer: HashComparer,
-  ) {}
+  ) { }
   async execute({
     managerId,
     name,

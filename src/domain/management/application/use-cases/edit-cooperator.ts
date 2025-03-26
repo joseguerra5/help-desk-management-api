@@ -15,7 +15,7 @@ interface EditCooperatorUseCaseRequest {
 }
 
 type EditCooperatorUseCaseReponse = Either<
-  AlreadyExistsError,
+  AlreadyExistsError | ResourceNotFoundError,
   {
     cooperator: Cooperator;
   }

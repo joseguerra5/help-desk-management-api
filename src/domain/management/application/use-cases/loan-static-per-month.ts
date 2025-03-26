@@ -34,7 +34,6 @@ export class LoanStaticPerMonthUseCase {
         start,
         end,
       })
-      console.log(start.toISOString(), end.toISOString());
     }
 
     const statistics = await Promise.all(

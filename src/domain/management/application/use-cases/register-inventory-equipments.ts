@@ -1,5 +1,4 @@
 import { Either, left, right } from '@/core/either';
-import { AlreadyExistsError } from './errors/already-exist-error';
 import { Injectable } from '@nestjs/common';
 import { CooperatorRepository } from '../repositories/cooperator-repository';
 import { InventoryList } from '../../enterprise/entities/inventory-list';
@@ -18,7 +17,7 @@ interface RegisterInventoryUseCaseRequest {
 }
 
 type RegisterInventoryUseCaseReponse = Either<
-  AlreadyExistsError,
+  ResourceNotFoundError,
   {
     cooperator: Cooperator;
   }
@@ -64,7 +63,8 @@ export class RegisterInventoryUseCase {
 
       await this.loanRecordRepository.create(loanRecord);
 
-      cooperator.inventory = new InventoryList([]); // Atualizando o inventário do cooperador para vazio
+      cooperator.inventory = new InventoryList([])
+
       await this.cooperatorRepository.save(cooperator);
 
       return right({

@@ -81,7 +81,7 @@ export class PrismaCooperatorRepository implements CooperatorRepository {
   async findByEmployeeId(id: string): Promise<Cooperator | null> {
     const cooperator = await this.prisma.cooperator.findUnique({
       where: {
-        id,
+        employeeId: id,
       },
       include: {
         Equipment: true

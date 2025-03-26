@@ -5,6 +5,7 @@ import {
   Controller,
   HttpCode,
   Post,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ZodValidadtionPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
@@ -13,6 +14,7 @@ import { RegisterEquipmentUseCase } from '@/domain/management/application/use-ca
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.estrategy';
 import { EquipmentType } from '@prisma/client';
+import { NotAllowedError } from '@/core/errors/not-allowed-error';
 
 export const registerEquipmentBodySchema = z.object({
   type: z.enum([EquipmentType.BLM, EquipmentType.COMPUTER, EquipmentType.HEADSET, EquipmentType.ICCID, EquipmentType.KEYBOARD, EquipmentType.MONITOR, EquipmentType.MOUSE, EquipmentType.OTHERS]),
@@ -53,6 +55,8 @@ export class RegisterEquipmentController {
       switch (error.constructor) {
         case AlreadyExistsError:
           throw new ConflictException(error.message);
+        case NotAllowedError:
+          throw new UnauthorizedException(error.message);
         default:
           throw new BadRequestException(error.message);
       }

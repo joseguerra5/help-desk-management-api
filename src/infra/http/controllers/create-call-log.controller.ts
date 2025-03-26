@@ -1,19 +1,19 @@
 import {
   BadRequestException,
   Body,
-  ConflictException,
   Controller,
   HttpCode,
+  NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
 import { ZodValidadtionPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
-import { AlreadyExistsError } from '@/domain/management/application/use-cases/errors/already-exist-error';
 import { CreateCallLogUseCase } from '@/domain/management/application/use-cases/create-call-log';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.estrategy';
 import { CallType } from '@/domain/management/enterprise/entities/callLog';
+import { ResourceNotFoundError } from '@/domain/management/application/use-cases/errors/resource-not-found-error';
 
 export const createCallLogBodySchema = z.object({
   type: z.string(),
@@ -51,8 +51,8 @@ export class CreateCallLogController {
       const error = result.value;
 
       switch (error.constructor) {
-        case AlreadyExistsError:
-          throw new ConflictException(error.message);
+        case ResourceNotFoundError:
+          throw new NotFoundException(error.message);
         default:
           throw new BadRequestException(error.message);
       }

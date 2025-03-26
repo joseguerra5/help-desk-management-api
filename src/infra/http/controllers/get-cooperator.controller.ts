@@ -1,6 +1,6 @@
 import { ResourceNotFoundError } from "@/domain/management/application/use-cases/errors/resource-not-found-error";
 import { GetCooperatorByIdUseCase } from "@/domain/management/application/use-cases/get-cooperator-by-id";
-import { BadRequestException, ConflictException, Controller, Get, HttpCode, Param } from "@nestjs/common";
+import { BadRequestException, Controller, Get, HttpCode, NotFoundException, Param } from "@nestjs/common";
 import { CooperatorDetailsPresenter } from "../presenters/cooperator-details-presenter";
 
 
@@ -24,7 +24,7 @@ export class GetCooperatorByIdController {
 
       switch (error.constructor) {
         case ResourceNotFoundError:
-          throw new ConflictException(error.message)
+          throw new NotFoundException(error.message)
         default:
           throw new BadRequestException(error.message)
       }

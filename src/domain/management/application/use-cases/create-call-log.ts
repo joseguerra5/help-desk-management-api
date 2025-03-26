@@ -1,5 +1,4 @@
 import { Either, left, right } from '@/core/either';
-import { AlreadyExistsError } from './errors/already-exist-error';
 import { Injectable } from '@nestjs/common';
 import { CooperatorRepository } from '../repositories/cooperator-repository';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
@@ -15,7 +14,7 @@ interface CreateCallLogUseCaseRequest {
 }
 
 type CreateCallLogUseCaseReponse = Either<
-  AlreadyExistsError | ResourceNotFoundError,
+  ResourceNotFoundError,
   {
     callLog: CallLog;
   }
@@ -26,7 +25,7 @@ export class CreateCallLogUseCase {
   constructor(
     private cooperatorRepository: CooperatorRepository,
     private CallLogRepository: CallLogRepository,
-  ) {}
+  ) { }
   async execute({
     cooperatorId,
     madeBy,

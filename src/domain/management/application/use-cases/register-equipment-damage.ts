@@ -1,5 +1,4 @@
 import { Either, left, right } from '@/core/either';
-import { AlreadyExistsError } from './errors/already-exist-error';
 import { Injectable } from '@nestjs/common';
 import { Equipment } from '../../enterprise/entities/equipment';
 import { EquipmentRepository } from '../repositories/equipment-repository';
@@ -12,7 +11,7 @@ interface RegisterEquipmentDamageUseCaseRequest {
 }
 
 type RegisterEquipmentDamageUseCaseReponse = Either<
-  AlreadyExistsError,
+  ResourceNotFoundError,
   {
     equipment: Equipment;
   }

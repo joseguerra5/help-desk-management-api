@@ -1,4 +1,4 @@
-import { PresignedUrl, PresignedUrlParams } from '@/domain/management/application/storage/get-presigned-url';
+import { PresignedUrl } from '@/domain/management/application/storage/get-presigned-url';
 import { randomUUID } from 'node:crypto';
 
 interface URL {
@@ -7,8 +7,7 @@ interface URL {
 export class FakePresignedUrl implements PresignedUrl {
   public urls: URL[] = [];
 
-  async presignedUrl(fileKey: PresignedUrlParams): Promise<{ url: string; }> {
-    console.log("aqui", fileKey)
+  async presignedUrl(fileKey: string): Promise<{ url: string; }> {
     const url = `${randomUUID()} - ${fileKey}`;
 
     this.urls.push({

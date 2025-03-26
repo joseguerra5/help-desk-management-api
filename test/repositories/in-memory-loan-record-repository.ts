@@ -146,7 +146,6 @@ export class InMemoryLoanRecordRepository implements LoanRecordRepository {
     };
   }
   async count({ from, to, status }: Count): Promise<number> {
-    console.log(from, to, status)
     const amount = this.items.filter((item) => {
       const matchesStatus = status ? item.type === status : true;
       const itemDate = new Date(item.ocurredAt);

@@ -16,7 +16,7 @@ interface RegisterManagerUseCaseRequest {
 }
 
 type RegisterManagerUseCaseReponse = Either<
-  AlreadyExistsError,
+  AlreadyExistsError | CredentialDoNotMatchError,
   {
     manager: Manager;
   }
@@ -27,7 +27,7 @@ export class RegisterManagerUseCase {
   constructor(
     private managerRepository: ManagerRepository,
     private hashGenerator: HashGenerator,
-  ) {}
+  ) { }
   async execute({
     name,
     userName,

@@ -1,5 +1,5 @@
 import { ResourceNotFoundError } from "@/domain/management/application/use-cases/errors/resource-not-found-error";
-import { BadRequestException, ConflictException, Controller, Get, HttpCode } from "@nestjs/common";
+import { BadRequestException, Controller, Get, HttpCode, NotFoundException } from "@nestjs/common";
 import { UserPayload } from "@/infra/auth/jwt.estrategy";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { GetManagerProfileUseCase } from "@/domain/management/application/use-cases/get-manager-profile";
@@ -28,7 +28,7 @@ export class GetManagerProfileController {
 
       switch (error.constructor) {
         case ResourceNotFoundError:
-          throw new ConflictException(error.message)
+          throw new NotFoundException(error.message)
         default:
           throw new BadRequestException(error.message)
       }

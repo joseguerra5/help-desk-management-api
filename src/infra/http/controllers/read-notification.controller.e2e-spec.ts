@@ -39,11 +39,6 @@ describe('Get question by slug (E2E)', () => {
       recipientId: user.id,
     })
 
-    console.log("aqui", await prisma.notification.findFirst({
-      where: {
-        id: notification.id.toString()
-      }
-    }))
 
 
     const response = await request(app.getHttpServer())
@@ -51,7 +46,6 @@ describe('Get question by slug (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    //console.log(response)
     expect(response.statusCode).toBe(200)
 
     const notificationOnDatabase = await prisma.notification.findFirst({

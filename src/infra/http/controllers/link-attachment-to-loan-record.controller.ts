@@ -1,16 +1,16 @@
 import {
   BadRequestException,
   Body,
-  ConflictException,
   Controller,
   HttpCode,
+  NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
 import { ZodValidadtionPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
-import { AlreadyExistsError } from '@/domain/management/application/use-cases/errors/already-exist-error';
 import { LinkAttachmentToLoanRecordUseCase } from '@/domain/management/application/use-cases/link-attachment-to-loan-record';
+import { ResourceNotFoundError } from '@/domain/management/application/use-cases/errors/resource-not-found-error';
 
 export const registerCooperatorBodySchema = z.object({
   attachmentId: z.string()
@@ -41,13 +41,13 @@ export class LinkAttachmentToLoanRecordController {
 
 
     if (result.isLeft()) {
-      const error = result.value;
+      const error = result.value
 
       switch (error.constructor) {
-        case AlreadyExistsError:
-          throw new ConflictException(error.message);
+        case ResourceNotFoundError:
+          throw new NotFoundException(error.message)
         default:
-          throw new BadRequestException(error.message);
+          throw new BadRequestException(error.message)
       }
     }
 
