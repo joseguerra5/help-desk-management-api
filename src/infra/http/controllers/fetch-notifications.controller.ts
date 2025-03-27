@@ -30,7 +30,8 @@ export class FetchNotificationByRecipientIdController {
 
 
     return {
-      notifications: result.value.notifications.map(PrismaNotificationMapper.toPersistence)
+      notifications: result.value.notifications.map(PrismaNotificationMapper.toPersistence),
+      count: result.value.count
     }
   }
 }

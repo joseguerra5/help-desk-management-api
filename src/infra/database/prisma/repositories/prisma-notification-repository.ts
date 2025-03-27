@@ -1,4 +1,4 @@
-import { NotificationRepository } from "@/domain/notification/aplication/repositories/notification-repository";
+import { Count, NotificationRepository } from "@/domain/notification/aplication/repositories/notification-repository";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { Notification } from "@/domain/notification/enterprise/entities/notification";
@@ -7,12 +7,26 @@ import { PrismaNotificationMapper } from "../mappers/prisma-notification-mapper"
 @Injectable()
 export class PrismaNotificationRepository implements NotificationRepository {
   constructor(private prisma: PrismaService) { }
+  async count({ status, recipientId }: Count): Promise<number> {
+    const count = await this.prisma.notification.count({
+      where: {
+        recipientId,
+        readAt:
+          status === 'read' ?
+            { not: null } : null
+      },
+    });
+
+    return count;
+  }
   async findManyByRecipientId(recipientId: string): Promise<Notification[]> {
     const notifications = await this.prisma.notification.findMany({
       where: {
         recipientId,
       },
-
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return notifications.map(PrismaNotificationMapper.toDoomain)

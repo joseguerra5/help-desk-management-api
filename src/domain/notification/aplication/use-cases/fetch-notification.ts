@@ -12,6 +12,7 @@ interface FetchNotificationsByRecipientIdUseCaseRequest {
 
 type FetchNotificationsByRecipientIdUseCaseReponse = Either<ResourceNotFoundError | NotAllowedError, {
   notifications: Notification[]
+  count: number
 }>
 
 @Injectable()
@@ -21,14 +22,19 @@ export class FetchNotificationsByRecipientIdUseCase {
     recipientId,
   }: FetchNotificationsByRecipientIdUseCaseRequest): Promise<FetchNotificationsByRecipientIdUseCaseReponse> {
     const notifications = await this.notificationsRepository.findManyByRecipientId(recipientId)
+    const notificationsUnreadCount = await this.notificationsRepository.count({ recipientId, status: 'unread' })
 
+    if (notifications.length === 0) {
+      return left(new ResourceNotFoundError('Notification', recipientId))
+    }
     if (recipientId !== notifications[0].recipientId.toString()) {
       return left(new NotAllowedError())
     }
 
 
     return right({
-      notifications
+      notifications,
+      count: notificationsUnreadCount
     })
   }
 }
