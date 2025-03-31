@@ -27,7 +27,7 @@ describe("Fetch Cooperators (E2E)", () => {
   test("[GET] /cooperator", async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
     for (let i = 1; i <= 22; i++) {
       await cooperatorFactory.makePrismaCooperator(

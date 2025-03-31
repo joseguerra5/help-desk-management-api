@@ -25,7 +25,7 @@ describe("Get manager profile (E2E)", () => {
   test("[GET] /me", async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
 
     const response = await request(app.getHttpServer())

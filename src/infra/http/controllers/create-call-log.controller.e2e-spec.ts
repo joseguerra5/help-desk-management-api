@@ -30,7 +30,7 @@ describe("Create CallLog (E2E)", () => {
   test("[POST] /cooperator/:cooperatorId/calllog", async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
 

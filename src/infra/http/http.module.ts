@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../database/database.module';
-import { CryptographyModule } from '../cryptography/cryptography.module';
 import { CreateAccountController } from './controllers/create-account.controller';
 import { RegisterManagerUseCase } from '@/domain/management/application/use-cases/register-manager';
 import { AuthenticateController } from './controllers/authenticate.controller';
@@ -56,9 +55,13 @@ import { CountEquipmentsAvailableAndLoanedController } from './controllers/count
 import { GetCountLoanCheckOutController } from './controllers/count-loan-checkout.controller';
 import { CountCallLogsController } from './controllers/count-call-logs.controller';
 import { CountCallLogsUseCase } from '@/domain/management/application/use-cases/count-call-logs';
+import { GetQrCodeTo2faController } from './controllers/get-qr-code-to-2FA.controller';
+import { GenerateSecretToTwoFactorAuthUseCase } from '@/domain/management/application/use-cases/generate-secret-two-factor';
+import { CryptographyModule } from '../cryptography/cryptography.module';
+import { TwofaModule } from '../2fa/2fa.module';
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule, StorageModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule, TwofaModule],
   controllers: [
     CreateAccountController,
     AuthenticateController,
@@ -86,7 +89,8 @@ import { CountCallLogsUseCase } from '@/domain/management/application/use-cases/
     ReadNotificationController,
     FetchNotificationByRecipientIdController,
     CountEquipmentsAvailableAndLoanedController,
-    CountCallLogsController
+    CountCallLogsController,
+    GetQrCodeTo2faController
   ],
   providers: [
     RegisterManagerUseCase,
@@ -115,7 +119,8 @@ import { CountCallLogsUseCase } from '@/domain/management/application/use-cases/
     ReadNotificationUseCase,
     FetchNotificationsByRecipientIdUseCase,
     CountEquipmentsAvailableAndLoanedUseCase,
-    CountCallLogsUseCase
+    CountCallLogsUseCase,
+    GenerateSecretToTwoFactorAuthUseCase
   ],
 })
 

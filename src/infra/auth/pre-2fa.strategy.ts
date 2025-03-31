@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -8,13 +8,12 @@ import { z } from 'zod';
 const tokenPayloadSchema = z.object({
   sub: z.string().uuid(),
   isTwoFactorAuthenticated: z.boolean().default(false),
-  isTwoFactorAuthenticationEnabled: z.boolean().optional(),
 });
 
 export type UserPayload = z.infer<typeof tokenPayloadSchema>;
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class PreJwtStrategy extends PassportStrategy(Strategy, 'pre-jwt') {
   constructor(config: ConfigService<Env, true>) {
     const publicKey = config.get('JWT_PUBLIC_KEY', { infer: true });
 
@@ -26,12 +25,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: UserPayload) {
-    const parsedPayload = tokenPayloadSchema.parse(payload);
-
-    if (!parsedPayload.isTwoFactorAuthenticated) {
-      throw new UnauthorizedException("Autenticação de dois fatores não confirmada.");
-    }
-
-    return parsedPayload
+    return tokenPayloadSchema.parse(payload);
   }
 }

@@ -30,7 +30,7 @@ describe("Fetch CallLogs (E2E)", () => {
   test("[GET] /cooperator/:cooperatorId/call_logs", async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
 
