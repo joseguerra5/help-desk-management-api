@@ -17,6 +17,8 @@ export function makeManager(
       name: faker.person.fullName(),
       password: faker.internet.password(),
       userName: faker.person.firstName(),
+      isTwoFactorAuthenticationEnabled: true,
+      twoFactorAuthenticationSecret: "test",
       ...override,
     },
     id,
@@ -30,6 +32,8 @@ export class ManagerFactory {
 
   async makePrismaManager(data: Partial<ManagerProps> = {}): Promise<Manager> {
     const manager = makeManager(data)
+
+    console.log("aqui", manager)
 
     await this.prisma.user.create({
       data: PrismaManagerMapper.toPersistence(manager)

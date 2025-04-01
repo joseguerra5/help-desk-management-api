@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  ForbiddenException,
   HttpCode,
   Post,
   UnauthorizedException,
@@ -12,6 +13,7 @@ import { z } from 'zod';
 import { Public } from '@/infra/auth/public';
 import { AuthenticateManagerUseCase } from '@/domain/management/application/use-cases/authenticate-manager';
 import { CredentialDoNotMatchError } from '@/domain/management/application/use-cases/errors/credentials-not-match';
+import { TwoFactorAuthMethodRequiredError } from '@/domain/management/application/use-cases/errors/two-factor-auth-method-error';
 
 export const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -43,6 +45,8 @@ export class AuthenticateController {
       switch (error.constructor) {
         case CredentialDoNotMatchError:
           throw new UnauthorizedException(error.message);
+        case TwoFactorAuthMethodRequiredError:
+          throw new ForbiddenException(error.message);
         default:
           throw new BadRequestException(error.message);
       }

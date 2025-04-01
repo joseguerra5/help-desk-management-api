@@ -30,7 +30,7 @@ describe("Get loan record check out (E2E)", () => {
   test("[GET] /loan_record/check_out", async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
 

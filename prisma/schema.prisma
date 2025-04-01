@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  name       String
-  userName   String    @unique @map("user_name")
-  email      String    @unique
-  employeeId String    @unique @map("employee_id")
-  password   String
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime? @updatedAt @map("updated_at")
+  id                               String    @id @default(uuid())
+  name                             String
+  userName                         String    @unique @map("user_name")
+  email                            String    @unique
+  employeeId                       String    @unique @map("employee_id")
+  twoFactorAuthenticationSecret    String?   @map("two_factor_authentication_secret")
+  isTwoFactorAuthenticationEnabled Boolean   @default(false) @map("is_two_factor_authentication_enabled")
+  password                         String
+  createdAt                        DateTime  @default(now()) @map("created_at")
+  updatedAt                        DateTime? @updatedAt @map("updated_at")
 
-  callLog    CallLog[]
-  loanRecord LoanRecord[]
+  callLog       CallLog[]
+  loanRecord    LoanRecord[]
   notifications Notification[]
 
   @@map("users")
@@ -140,4 +142,3 @@ model Notification {
 
   @@map("notifications")
 }
-

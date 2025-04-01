@@ -10,9 +10,30 @@ export interface ManagerProps {
   password: string;
   createdAt: Date;
   updatedAt?: Date | null;
+  twoFactorAuthenticationSecret?: string;
+  isTwoFactorAuthenticationEnabled: boolean;
 }
 
 export class Manager extends Entity<ManagerProps> {
+  get twoFactorAuthenticationSecret() {
+    return this.props.twoFactorAuthenticationSecret;
+  }
+
+  set twoFactorAuthenticationSecret(twoFactorAuthenticationSecret: string) {
+    this.props.twoFactorAuthenticationSecret = twoFactorAuthenticationSecret;
+    this.touch();
+  }
+
+  get isTwoFactorAuthenticationEnabled() {
+    return this.props.isTwoFactorAuthenticationEnabled;
+  }
+
+  set isTwoFactorAuthenticationEnabled(isTwoFactorAuthenticationEnabled: boolean) {
+    this.props.isTwoFactorAuthenticationEnabled = isTwoFactorAuthenticationEnabled;
+    this.touch();
+  }
+
+
   get name() {
     return this.props.name;
   }

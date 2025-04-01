@@ -22,7 +22,8 @@ describe("Create account (E2E)", () => {
   test("[POST] /session", async () => {
     await managerFactory.makePrismaManager({
       email: "jhondoe@example.com",
-      password: await hash("12345678", 8)
+      password: await hash("12345678", 8),
+      isTwoFactorAuthenticationEnabled: true
     })
 
     const response = await request(app.getHttpServer()).post("/session").send({

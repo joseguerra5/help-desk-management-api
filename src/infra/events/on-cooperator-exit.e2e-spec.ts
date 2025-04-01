@@ -43,7 +43,7 @@ describe('On cooperator exit (E2E)', () => {
   it('should send a notification when answer is created', async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
     const cooperator = await cooperatorFactory.makePrismaCooperator()
     const equipment = await equipmentFactory.makePrismaEquipment()

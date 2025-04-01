@@ -3,11 +3,10 @@ import { DatabaseModule } from '@/infra/database/database.module';
 import { INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { hash } from 'bcryptjs';
-import request from 'supertest'
+import request from 'supertest';
 import { ManagerFactory } from 'test/factories/make-manager';
 
-describe("Edit manager (E2E)", () => {
+describe("Get qr url to 2fa enable (E2E)", () => {
   let app: INestApplication;
   let managerFactory: ManagerFactory
   let jwt: JwtService
@@ -22,24 +21,21 @@ describe("Edit manager (E2E)", () => {
     jwt = moduleRef.get(JwtService)
     await app.init();
   });
-  test("[PUT] /cooperator/:cooperatorId/inventory", async () => {
+  test("[GET] /2fa/qr_code", async () => {
     const user = await managerFactory.makePrismaManager({
-      password: await hash("123123", 8)
+      isTwoFactorAuthenticationEnabled: false
     })
 
-    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: false })
+
 
     const response = await request(app.getHttpServer())
-      .put(`/accounts`)
+      .get(`/2fa/qr_code`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        name: "jhon Doe",
-        userName: "DoeJ",
-        employeeId: "123123",
-        email: "jhondoe@email.com",
-        password: "123123"
-      })
+      .send()
 
-    expect(response.statusCode).toBe(201)
+    console.log(response.body)
+    expect(response.statusCode).toBe(200)
+
   })
 })

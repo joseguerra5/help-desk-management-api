@@ -13,6 +13,8 @@ export class PrismaManagerMapper {
       createdAt: manager.createdAt,
       updatedAt: manager.updatedAt,
       id: manager.id.toString(),
+      isTwoFactorAuthenticationEnabled: manager.isTwoFactorAuthenticationEnabled,
+      twoFactorAuthenticationSecret: manager.twoFactorAuthenticationSecret
     };
   }
 
@@ -26,6 +28,8 @@ export class PrismaManagerMapper {
         userName: raw.userName,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
+        isTwoFactorAuthenticationEnabled: raw.isTwoFactorAuthenticationEnabled,
+        twoFactorAuthenticationSecret: raw.twoFactorAuthenticationSecret ? raw.twoFactorAuthenticationSecret : undefined
       },
       new UniqueEntityId(raw.id),
     );

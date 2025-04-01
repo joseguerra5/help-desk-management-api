@@ -33,7 +33,7 @@ describe('Get question by slug (E2E)', () => {
       name: 'Jhon Doe',
     })
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
     const notification = await notificationFactory.makePrismaNotification({
       recipientId: user.id,

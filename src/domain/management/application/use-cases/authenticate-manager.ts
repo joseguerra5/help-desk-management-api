@@ -2,8 +2,10 @@ import { Either, left, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
 import { CredentialDoNotMatchError } from './errors/credentials-not-match';
 import { HashComparer } from '../cryptography/hash-comparer';
-import { Encrypter } from '../cryptography/encrypter';
 import { ManagerRepository } from '../repositories/manager-repository';
+import { TwoFactorAuthRequiredError } from './errors/two-factor-auth-required-error';
+import { TwoFactorAuthMethodRequiredError } from './errors/two-factor-auth-method-error';
+import { Encrypter } from '../cryptography/encrypter';
 
 interface AuthenticateManagerUseCaseRequest {
   email: string;
@@ -11,10 +13,8 @@ interface AuthenticateManagerUseCaseRequest {
 }
 
 type AuthenticateManagerUseCaseReponse = Either<
-  CredentialDoNotMatchError,
-  {
-    accessToken: string;
-  }
+  CredentialDoNotMatchError | TwoFactorAuthRequiredError | TwoFactorAuthMethodRequiredError,
+  { accessToken: string }
 >;
 
 @Injectable()
@@ -23,7 +23,7 @@ export class AuthenticateManagerUseCase {
     private managerRepository: ManagerRepository,
     private hashCompare: HashComparer,
     private encrypter: Encrypter,
-  ) {}
+  ) { }
   async execute({
     password,
     email,
@@ -43,12 +43,19 @@ export class AuthenticateManagerUseCase {
       return left(new CredentialDoNotMatchError());
     }
 
+    if (!manager.isTwoFactorAuthenticationEnabled) {
+      return left(new TwoFactorAuthMethodRequiredError())
+    }
+
     const accessToken = await this.encrypter.encrypt({
       sub: manager.id.toString(),
+      isTwoFactorAuthenticated: false,
+      isTwoFactorAuthenticationEnabled: manager.isTwoFactorAuthenticationEnabled
     });
 
     return right({
       accessToken,
     });
+
   }
 }

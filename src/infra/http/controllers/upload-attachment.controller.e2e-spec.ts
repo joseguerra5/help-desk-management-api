@@ -26,7 +26,7 @@ describe('Upload attachments (E2E)', () => {
   test('[POST] /attachments', async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
 
     const response = await request(app.getHttpServer())
       .post('/attachments')
