@@ -7,7 +7,7 @@ import { JwtStrategy } from './jwt.estrategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { TwofaModule } from '../2fa/2fa.module';
-import { PreJwtStrategy } from './pre-2fa.strategy';
+import { JwtNo2FAStrategy } from './pre-2fa.strategy';
 
 @Module({
   imports: [
@@ -31,9 +31,9 @@ import { PreJwtStrategy } from './pre-2fa.strategy';
     }),
   ],
   providers: [
-    PreJwtStrategy,
     JwtStrategy,
     EnvService,
+    JwtNo2FAStrategy,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

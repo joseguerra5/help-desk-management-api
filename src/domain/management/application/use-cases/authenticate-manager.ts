@@ -43,10 +43,6 @@ export class AuthenticateManagerUseCase {
       return left(new CredentialDoNotMatchError());
     }
 
-    if (!manager.isTwoFactorAuthenticationEnabled) {
-      return left(new TwoFactorAuthMethodRequiredError())
-    }
-
     const accessToken = await this.encrypter.encrypt({
       sub: manager.id.toString(),
       isTwoFactorAuthenticated: false,

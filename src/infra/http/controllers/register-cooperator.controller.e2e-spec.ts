@@ -30,7 +30,7 @@ describe("Create Cooperator (E2E)", () => {
   test("[POST] /cooperator", async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true })
     const equipment1 = await equipmentFactory.makePrismaEquipment()
     const equipment2 = await equipmentFactory.makePrismaEquipment()
 

@@ -17,13 +17,12 @@ type ReadNotificationUseCaseReponse = Either<ResourceNotFoundError | NotAllowedE
 
 @Injectable()
 export class ReadNotificationUseCase {
-  // dependencias
   constructor(private notificationsRepository: NotificationRepository) { }
-  // ter apenas um metodo, responsabilidade única do solid
   async execute({
     recipientId,
     notificationId
   }: ReadNotificationUseCaseRequest): Promise<ReadNotificationUseCaseReponse> {
+    console.log("no caso de uso", recipientId, notificationId)
     const notification = await this.notificationsRepository.findById(notificationId)
 
     if (!notification) {
@@ -37,7 +36,7 @@ export class ReadNotificationUseCase {
 
     notification.read()
 
-    await this.notificationsRepository.create(notification)
+    await this.notificationsRepository.save(notification)
 
     return right({
       notification

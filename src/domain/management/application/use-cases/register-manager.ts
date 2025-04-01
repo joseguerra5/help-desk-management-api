@@ -62,6 +62,7 @@ export class RegisterManagerUseCase {
       name,
       password: passwordHash,
       userName,
+      isTwoFactorAuthenticationEnabled: false,
     });
 
     await this.managerRepository.create(manager);

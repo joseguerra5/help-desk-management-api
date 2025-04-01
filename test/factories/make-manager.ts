@@ -33,7 +33,6 @@ export class ManagerFactory {
   async makePrismaManager(data: Partial<ManagerProps> = {}): Promise<Manager> {
     const manager = makeManager(data)
 
-    console.log("aqui", manager)
 
     await this.prisma.user.create({
       data: PrismaManagerMapper.toPersistence(manager)

@@ -4,6 +4,7 @@ import { ManagerRepository } from '../repositories/manager-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found-error';
 import { TwoFactorAuthenticationCodeValidation } from '../auth/two-factor-auth-code-valid';
 import { TwoFactorAuthInvalidError } from './errors/two-factor-invalid-error';
+import { Encrypter } from '../cryptography/encrypter';
 
 interface EnableTwoFactorAuthUseCaseRequest {
   managerId: string;
@@ -12,7 +13,7 @@ interface EnableTwoFactorAuthUseCaseRequest {
 
 type EnableTwoFactorAuthUseCaseReponse = Either<
   TwoFactorAuthInvalidError,
-  { success: true }
+  { accessToken: string }
 >;
 
 @Injectable()
@@ -20,6 +21,8 @@ export class EnableTwoFactorAuthUseCase {
   constructor(
     private managerRepository: ManagerRepository,
     private twoFactorVerifier: TwoFactorAuthenticationCodeValidation,
+    private encrypter: Encrypter,
+
   ) { }
   async execute({
     managerId,
@@ -39,6 +42,12 @@ export class EnableTwoFactorAuthUseCase {
     manager.isTwoFactorAuthenticationEnabled = true;
     await this.managerRepository.save(manager);
 
-    return right({ success: true })
+
+    const accessToken = await this.encrypter.encrypt({
+      sub: manager.id.toString(),
+      isTwoFactorAuthenticated: true,
+    });
+
+    return right({ accessToken, })
   }
 }

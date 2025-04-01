@@ -8,12 +8,13 @@ import { z } from 'zod';
 const tokenPayloadSchema = z.object({
   sub: z.string().uuid(),
   isTwoFactorAuthenticated: z.boolean().default(false),
+  isTwoFactorAuthenticationEnabled: z.boolean().optional(),
 });
 
 export type UserPayload = z.infer<typeof tokenPayloadSchema>;
 
 @Injectable()
-export class PreJwtStrategy extends PassportStrategy(Strategy, 'pre-jwt') {
+export class JwtNo2FAStrategy extends PassportStrategy(Strategy, 'jwt-no-2fa') {
   constructor(config: ConfigService<Env, true>) {
     const publicKey = config.get('JWT_PUBLIC_KEY', { infer: true });
 

@@ -34,7 +34,7 @@ describe('Authenticate manager', () => {
 
     const result = await sut.execute({
       code: "test",
-      id: manager.id.toString()
+      managerId: manager.id.toString()
     });
 
     expect(result.isRight()).toBe(true);
@@ -53,7 +53,7 @@ describe('Authenticate manager', () => {
 
     const result = await sut.execute({
       code: "wrong-code",
-      id: manager.id.toString()
+      managerId: manager.id.toString()
     });
 
     expect(result.isLeft()).toBe(true);

@@ -7,7 +7,7 @@ import { TwoFactorAuthenticationCodeValidation } from '../auth/two-factor-auth-c
 import { TwoFactorAuthInvalidError } from './errors/two-factor-invalid-error';
 
 interface ValidateTwoFactorAuthUseCaseRequest {
-  id: string;
+  managerId: string;
   code: string;
 }
 
@@ -27,9 +27,9 @@ export class ValidateTwoFactorAuthUseCase {
   ) { }
   async execute({
     code,
-    id,
+    managerId,
   }: ValidateTwoFactorAuthUseCaseRequest): Promise<ValidateTwoFactorAuthUseCaseReponse> {
-    const manager = await this.managerRepository.findById(id);
+    const manager = await this.managerRepository.findById(managerId);
 
     if (!manager) {
       return left(new CredentialDoNotMatchError());
@@ -39,6 +39,7 @@ export class ValidateTwoFactorAuthUseCase {
       manager,
       code,
     );
+
 
     if (!isValidCode) {
       return left(new TwoFactorAuthInvalidError());

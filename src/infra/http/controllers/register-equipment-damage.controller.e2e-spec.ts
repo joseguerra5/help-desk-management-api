@@ -30,7 +30,7 @@ describe("Edit Cooperator Inventory (E2E)", () => {
   test("[PUT] /equipments/:equipmentId/damage", async () => {
     const user = await managerFactory.makePrismaManager()
 
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+    const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true })
 
     const equipment = await equipmentFactory.makePrismaEquipment()
 

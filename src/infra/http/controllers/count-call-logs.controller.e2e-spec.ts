@@ -29,6 +29,7 @@ describe("Fetch Equipments (E2E)", () => {
     await app.init();
   });
   test("[GET] /equipments", async () => {
+    const currentMonth = new Date().getMonth()
     const user = await managerFactory.makePrismaManager()
 
     const accessToken = jwt.sign({ sub: user.id.toString(), isTwoFactorAuthenticated: true, })
@@ -37,12 +38,12 @@ describe("Fetch Equipments (E2E)", () => {
 
     for (let i = 1; i <= 22; i++) {
       await callLogsFactory.makePrismaCallLog(
-        { createdAt: new Date(2025, 2, i), cooperatorId: cooperator.id, madeBy: user.id },
+        { createdAt: new Date(2025, currentMonth, i), cooperatorId: cooperator.id, madeBy: user.id },
       );
     }
 
     await callLogsFactory.makePrismaCallLog(
-      { createdAt: new Date(2025, 1, 1), cooperatorId: cooperator.id, madeBy: user.id },
+      { createdAt: new Date(2025, (currentMonth - 1), 1), cooperatorId: cooperator.id, madeBy: user.id },
     );
 
     const response = await request(app.getHttpServer())

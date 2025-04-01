@@ -59,6 +59,10 @@ import { GetQrCodeTo2faController } from './controllers/get-qr-code-to-2FA.contr
 import { GenerateSecretToTwoFactorAuthUseCase } from '@/domain/management/application/use-cases/generate-secret-two-factor';
 import { CryptographyModule } from '../cryptography/cryptography.module';
 import { TwofaModule } from '../2fa/2fa.module';
+import { Validate2FACodeController } from './controllers/validate-two-factor-auth.controller';
+import { ValidateTwoFactorAuthUseCase } from '@/domain/management/application/use-cases/validate-two-factor-auth';
+import { Enable2FAController } from './controllers/enable-two-factor-auth.controller';
+import { EnableTwoFactorAuthUseCase } from '@/domain/management/application/use-cases/enable-two-factor-auth';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule, TwofaModule],
@@ -90,7 +94,10 @@ import { TwofaModule } from '../2fa/2fa.module';
     FetchNotificationByRecipientIdController,
     CountEquipmentsAvailableAndLoanedController,
     CountCallLogsController,
-    GetQrCodeTo2faController
+    GetQrCodeTo2faController,
+    Validate2FACodeController,
+    Enable2FAController
+
   ],
   providers: [
     RegisterManagerUseCase,
@@ -120,7 +127,9 @@ import { TwofaModule } from '../2fa/2fa.module';
     FetchNotificationsByRecipientIdUseCase,
     CountEquipmentsAvailableAndLoanedUseCase,
     CountCallLogsUseCase,
-    GenerateSecretToTwoFactorAuthUseCase
+    GenerateSecretToTwoFactorAuthUseCase,
+    ValidateTwoFactorAuthUseCase,
+    EnableTwoFactorAuthUseCase
   ],
 })
 

@@ -38,6 +38,9 @@ describe('Get question by slug (E2E)', () => {
     const notification = await notificationFactory.makePrismaNotification({
       recipientId: user.id,
     })
+    console.log(await prisma.notification.findMany())
+
+    console.log(notification)
 
 
 
@@ -46,6 +49,7 @@ describe('Get question by slug (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
+    console.log(response.body)
     expect(response.statusCode).toBe(200)
 
     const notificationOnDatabase = await prisma.notification.findFirst({
