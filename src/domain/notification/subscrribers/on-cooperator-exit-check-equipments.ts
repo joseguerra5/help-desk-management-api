@@ -38,7 +38,7 @@ export class OnCooperatorExitCheckEquipment implements EventHandler {
         managers.map(manager => {
           this.sendNotification.execute({
             recipientId: manager.id.toString(),
-            title: `Colaborador com equipamentos pendentes`,
+            title: `Colaborador ${cooperator.userName} com equipamentos pendentes`,
             content: `O colaborador ${cooperator.userName} ainda possui ${cooperator.inventory.currentItems.length} equipamento(s) emprestado(s).`,
           })
         }

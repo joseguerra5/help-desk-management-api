@@ -22,13 +22,11 @@ export class ReadNotificationUseCase {
     recipientId,
     notificationId
   }: ReadNotificationUseCaseRequest): Promise<ReadNotificationUseCaseReponse> {
-    console.log("no caso de uso", recipientId, notificationId)
     const notification = await this.notificationsRepository.findById(notificationId)
 
     if (!notification) {
       return left(new ResourceNotFoundError("Notification", notificationId))
     }
-
 
     if (recipientId !== notification.recipientId.toString()) {
       return left(new NotAllowedError())

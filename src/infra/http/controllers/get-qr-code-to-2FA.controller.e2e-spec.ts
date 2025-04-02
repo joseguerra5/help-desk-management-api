@@ -34,7 +34,6 @@ describe("Get qr url to 2fa enable (E2E)", () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    console.log(response.body)
     expect(response.statusCode).toBe(200)
 
   })

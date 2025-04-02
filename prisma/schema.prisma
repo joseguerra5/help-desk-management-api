@@ -8,42 +8,107 @@ datasource db {
 }
 
 model User {
-  id                               String    @id @default(uuid())
+  id                               String         @id @default(uuid())
   name                             String
-  userName                         String    @unique @map("user_name")
-  email                            String    @unique
-  employeeId                       String    @unique @map("employee_id")
-  twoFactorAuthenticationSecret    String?   @map("two_factor_authentication_secret")
-  isTwoFactorAuthenticationEnabled Boolean   @default(false) @map("is_two_factor_authentication_enabled")
+  userName                         String         @unique @map("user_name")
+  email                            String         @unique
+  employeeId                       String         @unique @map("employee_id")
   password                         String
-  createdAt                        DateTime  @default(now()) @map("created_at")
-  updatedAt                        DateTime? @updatedAt @map("updated_at")
-
-  callLog       CallLog[]
-  loanRecord    LoanRecord[]
-  notifications Notification[]
+  createdAt                        DateTime       @default(now()) @map("created_at")
+  updatedAt                        DateTime?      @updatedAt @map("updated_at")
+  isTwoFactorAuthenticationEnabled Boolean        @default(false) @map("is_two_factor_authentication_enabled")
+  twoFactorAuthenticationSecret    String?        @map("two_factor_authentication_secret")
+  callLog                          CallLog[]
+  loanRecord                       LoanRecord[]
+  notifications                    Notification[]
 
   @@map("users")
 }
 
 model Cooperator {
-  id            String    @id @default(uuid())
+  id            String       @id @default(uuid())
   name          String
-  userName      String    @unique @map("user_name")
-  employeeId    String    @unique @map("employee_id")
-  nif           String    @unique
+  userName      String       @unique @map("user_name")
+  employeeId    String       @unique @map("employee_id")
+  nif           String       @unique
   phone         String
-  email         String    @unique
-  createdAt     DateTime  @default(now()) @map("created_at")
-  departureDate DateTime? @map("departure_date")
-  updatedAt     DateTime? @updatedAt @map("updated_at")
-
-  CallLog    CallLog[]
-  Attachment Attachment[]
-  LoanRecord LoanRecord[]
-  Equipment  Equipment[]
+  email         String       @unique
+  createdAt     DateTime     @default(now()) @map("created_at")
+  departureDate DateTime?    @map("departure_date")
+  updatedAt     DateTime?    @updatedAt @map("updated_at")
+  Attachment    Attachment[]
+  CallLog       CallLog[]
+  Equipment     Equipment[]
+  LoanRecord    LoanRecord[]
 
   @@map("cooperators")
+}
+
+model Equipment {
+  id           String        @id @default(uuid())
+  serialNumber String        @unique @map("serial_number")
+  type         EquipmentType
+  name         String
+  createdAt    DateTime      @default(now()) @map("created_at")
+  brokenAt     DateTime?     @map("broken_at")
+  brokenReason String?       @map("broken_reason")
+  cooperatorId String?       @map("cooperator_id")
+  cooperator   Cooperator?   @relation(fields: [cooperatorId], references: [id])
+  loanRecords  LoanRecord[]  @relation("LoanRecordEquipment")
+
+  @@map("equipments")
+}
+
+model LoanRecord {
+  id           String         @id @default(uuid())
+  cooperatorId String         @map("cooperator_id")
+  madeBy       String         @map("made_by")
+  type         LoanRecordType
+  ocurredAt    DateTime       @map("ocurred_at")
+  attachment   Attachment[]
+  cooperator   Cooperator     @relation(fields: [cooperatorId], references: [id])
+  madeByUser   User           @relation(fields: [madeBy], references: [id])
+  equipments   Equipment[]    @relation("LoanRecordEquipment")
+
+  @@map("loan_records")
+}
+
+model CallLog {
+  id           String      @id @default(uuid())
+  cooperatorId String      @map("cooperator_id")
+  madeBy       String      @map("made_by")
+  type         CallLogType
+  description  String
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime?   @updatedAt @map("updated_at")
+  cooperator   Cooperator  @relation(fields: [cooperatorId], references: [id])
+  madeByUser   User        @relation(fields: [madeBy], references: [id])
+
+  @@map("call_logs")
+}
+
+model Attachment {
+  id           String      @id @default(uuid())
+  title        String
+  url          String
+  cooperatorId String?     @map("cooperator_id")
+  loanRecordId String?     @map("loan_record_id")
+  cooperator   Cooperator? @relation(fields: [cooperatorId], references: [id])
+  loanRecord   LoanRecord? @relation(fields: [loanRecordId], references: [id])
+
+  @@map("attachments")
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  recipientId String    @map("recipient_id")
+  title       String
+  content     String
+  readAt      DateTime? @map("read_at")
+  createdAt   DateTime  @default(now()) @map("created")
+  recipient   User      @relation(fields: [recipientId], references: [id])
+
+  @@map("notifications")
 }
 
 enum EquipmentType {
@@ -57,41 +122,9 @@ enum EquipmentType {
   OTHERS
 }
 
-model Equipment {
-  id           String        @id @default(uuid())
-  cooperatorId String?       @map("cooperator_id")
-  serialNumber String        @unique @map("serial_number")
-  type         EquipmentType
-  name         String
-  createdAt    DateTime      @default(now()) @map("created_at")
-  brokenAt     DateTime?     @map("broken_at")
-  brokenReason String?       @map("broken_reason")
-
-  loanRecords LoanRecord[] @relation("LoanRecordEquipment")
-  cooperator  Cooperator?  @relation(fields: [cooperatorId], references: [id])
-
-  @@map("equipments")
-}
-
 enum LoanRecordType {
   CHECK_IN
   CHECK_OUT
-}
-
-model LoanRecord {
-  id           String         @id @default(uuid())
-  cooperatorId String         @map("cooperator_id")
-  madeBy       String         @map("made_by")
-  type         LoanRecordType
-  ocurredAt    DateTime       @map("ocurred_at")
-
-  cooperator Cooperator @relation(fields: [cooperatorId], references: [id])
-  madeByUser User       @relation(fields: [madeBy], references: [id])
-
-  equipments Equipment[]  @relation("LoanRecordEquipment")
-  attachment Attachment[]
-
-  @@map("loan_records")
 }
 
 enum CallLogType {
@@ -99,46 +132,4 @@ enum CallLogType {
   CITRIX_ISSUE
   PROCEDURE_QUESTION
   OTHERS
-}
-
-model CallLog {
-  id           String      @id @default(uuid())
-  cooperatorId String      @map("cooperator_id")
-  madeBy       String      @map("made_by")
-  type         CallLogType
-  description  String
-  createdAt    DateTime    @default(now()) @map("created_at")
-  updatedAt    DateTime?   @updatedAt @map("updated_at")
-
-  cooperator Cooperator @relation(fields: [cooperatorId], references: [id])
-  madeByUser User       @relation(fields: [madeBy], references: [id])
-
-  @@map("call_logs")
-}
-
-model Attachment {
-  id           String  @id @default(uuid())
-  title        String
-  url          String
-  cooperatorId String? @map("cooperator_id")
-  loanRecordId String? @map("loan_record_id")
-
-  cooperator Cooperator? @relation(fields: [cooperatorId], references: [id])
-  loanRecord LoanRecord? @relation(fields: [loanRecordId], references: [id])
-
-  @@map("attachments")
-}
-
-model Notification {
-  id          String @id @default(uuid())
-  recipientId String @map("recipient_id")
-
-  title     String
-  content   String
-  readAt    DateTime? @map("read_at")
-  createdAt DateTime  @default(now()) @map("created")
-
-  recipient User @relation(fields: [recipientId], references: [id])
-
-  @@map("notifications")
 }
