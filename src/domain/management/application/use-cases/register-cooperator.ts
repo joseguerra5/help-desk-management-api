@@ -55,10 +55,12 @@ export class RegisterCooperatorUseCase {
       return left(new AlreadyExistsError('EmployeeId', employeeId));
     }
 
+
+
     const cooperator = Cooperator.create({
       email,
       employeeId,
-      nif,
+      nif: nif ? nif : null,
       name,
       phone,
       userName,

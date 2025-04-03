@@ -30,7 +30,7 @@ model Cooperator {
   name          String
   userName      String       @unique @map("user_name")
   employeeId    String       @unique @map("employee_id")
-  nif           String       @unique
+  nif           String?       @unique
   phone         String
   email         String       @unique
   createdAt     DateTime     @default(now()) @map("created_at")

@@ -9,7 +9,7 @@ export interface CooperatorDetailsProps {
   name: string,
   userName: string,
   employeeId: string,
-  nif: string,
+  nif?: string | null,
   phone: string,
   email: string,
   createdAt: Date,

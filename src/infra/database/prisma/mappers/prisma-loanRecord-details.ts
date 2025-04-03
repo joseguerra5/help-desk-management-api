@@ -30,7 +30,7 @@ export class PrismaLoanRecordDetailsMapper {
         userName: raw.cooperator.userName,
         employeeId: raw.cooperator.employeeId,
         departureDate: raw.cooperator.departureDate,
-        nif: raw.cooperator.nif
+        nif: raw.cooperator.nif,
       },
       ocurredAt: raw.ocurredAt,
       type: raw.type,

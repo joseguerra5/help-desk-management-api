@@ -12,7 +12,7 @@ export interface LoanRecordDetailsProps {
     userName: string,
     employeeId: string,
     departureDate: Date | null,
-    nif: string
+    nif?: string | null,
   }
   madeBy: Manager,
   type: string,
