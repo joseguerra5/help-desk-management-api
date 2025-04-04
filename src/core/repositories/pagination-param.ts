@@ -8,6 +8,7 @@ export interface PaginationParams {
 export interface PaginationLoanRecordParams {
   page: number;
   status?: RecordType;
+  search?: string;
 }
 
 export interface PaginationCooperatorParams {

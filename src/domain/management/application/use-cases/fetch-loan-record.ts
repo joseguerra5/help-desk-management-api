@@ -6,6 +6,7 @@ import { FindManyLoanRecords, LoanRecordRepository } from '../repositories/loan-
 interface FetchLoanRecordUseCaseRequest {
   page: number;
   status?: RecordType;
+  search?: string;
 }
 
 type FetchLoanRecordUseCaseReponse = Either<
@@ -19,9 +20,10 @@ export class FetchLoanRecordUseCase {
   async execute({
     page,
     status,
+    search
   }: FetchLoanRecordUseCaseRequest): Promise<FetchLoanRecordUseCaseReponse> {
     const loanRecords = await this.loanRecordRepository.findMany(
-      { page, status, }
+      { page, status, search }
     );
 
     return right({

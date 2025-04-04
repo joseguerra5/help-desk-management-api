@@ -8,7 +8,7 @@ import {
 } from '@/domain/management/application/repositories/loan-record-repository';
 import { LoanRecord } from '@/domain/management/enterprise/entities/loan-record';
 import { PrismaLoanRecordMapper } from '../mappers/prisma-loan-record-mapper';
-import { LoanRecordType } from '@prisma/client';
+import { LoanRecordType, Prisma } from '@prisma/client';
 import { PDFAttachmentRepository } from '@/domain/management/application/repositories/PDF-attachment-repository';
 import { PrismaLoanRecordDetailsMapper } from '../mappers/prisma-loanRecord-details';
 import { LoanRecordDetails } from '@/domain/management/enterprise/entities/value-objects/loan-record-details';
@@ -38,9 +38,19 @@ export class PrismaLoanRecordRepository implements LoanRecordRepository {
 
     return PrismaLoanRecordDetailsMapper.toDomain(loanRecord);
   }
-  async findMany({ page, status }: PaginationLoanRecordParams): Promise<FindManyLoanRecords> {
-    const whereCondition = status ? { type: status === 'CHECK_IN' ? LoanRecordType.CHECK_IN : LoanRecordType.CHECK_OUT } : {};
-
+  async findMany({ page, status, search }: PaginationLoanRecordParams): Promise<FindManyLoanRecords> {
+    const whereCondition: Prisma.LoanRecordWhereInput = {
+      ...(status && {
+        type: status === 'CHECK_IN' ? LoanRecordType.CHECK_IN : LoanRecordType.CHECK_OUT
+      }),
+      ...(search && {
+        OR: [
+          { cooperator: { employeeId: { contains: search, mode: 'insensitive' } } },
+          { cooperator: { userName: { contains: search, mode: 'insensitive' } } },
+          { cooperator: { name: { contains: search, mode: 'insensitive' } } },
+        ],
+      }),
+    };
     const totalCount = await this.prisma.loanRecord.count({
       where: whereCondition
     });

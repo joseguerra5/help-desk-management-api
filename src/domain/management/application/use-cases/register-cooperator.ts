@@ -55,7 +55,12 @@ export class RegisterCooperatorUseCase {
       return left(new AlreadyExistsError('EmployeeId', employeeId));
     }
 
+    const cooperatorWithsameEmail =
+      await this.cooperatorRepository.findByEmail(email);
 
+    if (cooperatorWithsameEmail) {
+      return left(new AlreadyExistsError('E-mail', email));
+    }
 
     const cooperator = Cooperator.create({
       email,

@@ -12,6 +12,7 @@ const queryParamSchema = z.object({
     .transform(Number)
     .pipe(z.number().min(1)),
   status: z.string().optional(),
+  search: z.string().optional(),
 })
 
 const queryValidationPipe = new ZodValidadtionPipe(queryParamSchema)
@@ -26,7 +27,7 @@ export class FetchLoanRecordController {
   async handle(
     @Query(queryValidationPipe) query: QueryParamSchema,
   ) {
-    const { page } = query
+    const { page, search } = query
 
     let status: 'CHECK_IN' | 'CHECK_OUT' | undefined;
 
@@ -37,7 +38,8 @@ export class FetchLoanRecordController {
 
     const result = await this.fetchLoanRecord.execute({
       page,
-      status
+      status,
+      search
     })
 
 
